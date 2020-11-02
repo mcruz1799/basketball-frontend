@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A442550C46B00AEB104 /* AppDelegate.swift */; };
+		D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A462550C46B00AEB104 /* SceneDelegate.swift */; };
+		D3E18A492550C46B00AEB104 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A482550C46B00AEB104 /* ContentView.swift */; };
+		D3E18A4B2550C47100AEB104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E18A4A2550C47100AEB104 /* Assets.xcassets */; };
+		D3E18A4E2550C47100AEB104 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E18A4D2550C47100AEB104 /* Preview Assets.xcassets */; };
+		D3E18A512550C47100AEB104 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */; };
+		D3E18A5C2550C47200AEB104 /* basketball_frontendTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A5B2550C47200AEB104 /* basketball_frontendTests.swift */; };
+		D3E18A672550C47200AEB104 /* basketball_frontendUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A662550C47200AEB104 /* basketball_frontendUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D3E18A582550C47200AEB104 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3E18A392550C46B00AEB104 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3E18A402550C46B00AEB104;
+			remoteInfo = "basketball-frontend";
+		};
+		D3E18A632550C47200AEB104 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3E18A392550C46B00AEB104 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3E18A402550C46B00AEB104;
+			remoteInfo = "basketball-frontend";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D3E18A412550C46B00AEB104 /* basketball-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "basketball-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3E18A442550C46B00AEB104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D3E18A462550C46B00AEB104 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D3E18A482550C46B00AEB104 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D3E18A4A2550C47100AEB104 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D3E18A4D2550C47100AEB104 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D3E18A502550C47100AEB104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D3E18A522550C47100AEB104 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3E18A572550C47200AEB104 /* basketball-frontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "basketball-frontendTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3E18A5B2550C47200AEB104 /* basketball_frontendTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = basketball_frontendTests.swift; sourceTree = "<group>"; };
+		D3E18A5D2550C47200AEB104 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3E18A622550C47200AEB104 /* basketball-frontendUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "basketball-frontendUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3E18A662550C47200AEB104 /* basketball_frontendUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = basketball_frontendUITests.swift; sourceTree = "<group>"; };
+		D3E18A682550C47200AEB104 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D3E18A3E2550C46B00AEB104 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A542550C47200AEB104 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A5F2550C47200AEB104 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D3E18A382550C46B00AEB104 = {
+			isa = PBXGroup;
+			children = (
+				D3E18A432550C46B00AEB104 /* basketball-frontend */,
+				D3E18A5A2550C47200AEB104 /* basketball-frontendTests */,
+				D3E18A652550C47200AEB104 /* basketball-frontendUITests */,
+				D3E18A422550C46B00AEB104 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D3E18A422550C46B00AEB104 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A412550C46B00AEB104 /* basketball-frontend.app */,
+				D3E18A572550C47200AEB104 /* basketball-frontendTests.xctest */,
+				D3E18A622550C47200AEB104 /* basketball-frontendUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D3E18A432550C46B00AEB104 /* basketball-frontend */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A442550C46B00AEB104 /* AppDelegate.swift */,
+				D3E18A462550C46B00AEB104 /* SceneDelegate.swift */,
+				D3E18A482550C46B00AEB104 /* ContentView.swift */,
+				D3E18A4A2550C47100AEB104 /* Assets.xcassets */,
+				D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */,
+				D3E18A522550C47100AEB104 /* Info.plist */,
+				D3E18A4C2550C47100AEB104 /* Preview Content */,
+			);
+			path = "basketball-frontend";
+			sourceTree = "<group>";
+		};
+		D3E18A4C2550C47100AEB104 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A4D2550C47100AEB104 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D3E18A5A2550C47200AEB104 /* basketball-frontendTests */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A5B2550C47200AEB104 /* basketball_frontendTests.swift */,
+				D3E18A5D2550C47200AEB104 /* Info.plist */,
+			);
+			path = "basketball-frontendTests";
+			sourceTree = "<group>";
+		};
+		D3E18A652550C47200AEB104 /* basketball-frontendUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A662550C47200AEB104 /* basketball_frontendUITests.swift */,
+				D3E18A682550C47200AEB104 /* Info.plist */,
+			);
+			path = "basketball-frontendUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D3E18A402550C46B00AEB104 /* basketball-frontend */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3E18A6B2550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontend" */;
+			buildPhases = (
+				D3E18A3D2550C46B00AEB104 /* Sources */,
+				D3E18A3E2550C46B00AEB104 /* Frameworks */,
+				D3E18A3F2550C46B00AEB104 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "basketball-frontend";
+			productName = "basketball-frontend";
+			productReference = D3E18A412550C46B00AEB104 /* basketball-frontend.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D3E18A562550C47200AEB104 /* basketball-frontendTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3E18A6E2550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontendTests" */;
+			buildPhases = (
+				D3E18A532550C47200AEB104 /* Sources */,
+				D3E18A542550C47200AEB104 /* Frameworks */,
+				D3E18A552550C47200AEB104 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3E18A592550C47200AEB104 /* PBXTargetDependency */,
+			);
+			name = "basketball-frontendTests";
+			productName = "basketball-frontendTests";
+			productReference = D3E18A572550C47200AEB104 /* basketball-frontendTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D3E18A612550C47200AEB104 /* basketball-frontendUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3E18A712550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontendUITests" */;
+			buildPhases = (
+				D3E18A5E2550C47200AEB104 /* Sources */,
+				D3E18A5F2550C47200AEB104 /* Frameworks */,
+				D3E18A602550C47200AEB104 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3E18A642550C47200AEB104 /* PBXTargetDependency */,
+			);
+			name = "basketball-frontendUITests";
+			productName = "basketball-frontendUITests";
+			productReference = D3E18A622550C47200AEB104 /* basketball-frontendUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D3E18A392550C46B00AEB104 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Matthew Cruz";
+				TargetAttributes = {
+					D3E18A402550C46B00AEB104 = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					D3E18A562550C47200AEB104 = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = D3E18A402550C46B00AEB104;
+					};
+					D3E18A612550C47200AEB104 = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = D3E18A402550C46B00AEB104;
+					};
+				};
+			};
+			buildConfigurationList = D3E18A3C2550C46B00AEB104 /* Build configuration list for PBXProject "basketball-frontend" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D3E18A382550C46B00AEB104;
+			productRefGroup = D3E18A422550C46B00AEB104 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D3E18A402550C46B00AEB104 /* basketball-frontend */,
+				D3E18A562550C47200AEB104 /* basketball-frontendTests */,
+				D3E18A612550C47200AEB104 /* basketball-frontendUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D3E18A3F2550C46B00AEB104 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3E18A512550C47100AEB104 /* LaunchScreen.storyboard in Resources */,
+				D3E18A4E2550C47100AEB104 /* Preview Assets.xcassets in Resources */,
+				D3E18A4B2550C47100AEB104 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A552550C47200AEB104 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A602550C47200AEB104 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D3E18A3D2550C46B00AEB104 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
+				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
+				D3E18A492550C46B00AEB104 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A532550C47200AEB104 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3E18A5C2550C47200AEB104 /* basketball_frontendTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3E18A5E2550C47200AEB104 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3E18A672550C47200AEB104 /* basketball_frontendUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D3E18A592550C47200AEB104 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3E18A402550C46B00AEB104 /* basketball-frontend */;
+			targetProxy = D3E18A582550C47200AEB104 /* PBXContainerItemProxy */;
+		};
+		D3E18A642550C47200AEB104 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3E18A402550C46B00AEB104 /* basketball-frontend */;
+			targetProxy = D3E18A632550C47200AEB104 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3E18A502550C47100AEB104 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D3E18A692550C47200AEB104 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D3E18A6A2550C47200AEB104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D3E18A6C2550C47200AEB104 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"basketball-frontend/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "basketball-frontend/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontend";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D3E18A6D2550C47200AEB104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"basketball-frontend/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "basketball-frontend/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontend";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D3E18A6F2550C47200AEB104 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "basketball-frontendTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontendTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/basketball-frontend.app/basketball-frontend";
+			};
+			name = Debug;
+		};
+		D3E18A702550C47200AEB104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "basketball-frontendTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontendTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/basketball-frontend.app/basketball-frontend";
+			};
+			name = Release;
+		};
+		D3E18A722550C47200AEB104 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "basketball-frontendUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontendUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "basketball-frontend";
+			};
+			name = Debug;
+		};
+		D3E18A732550C47200AEB104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "basketball-frontendUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.basketball-frontendUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "basketball-frontend";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D3E18A3C2550C46B00AEB104 /* Build configuration list for PBXProject "basketball-frontend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3E18A692550C47200AEB104 /* Debug */,
+				D3E18A6A2550C47200AEB104 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3E18A6B2550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3E18A6C2550C47200AEB104 /* Debug */,
+				D3E18A6D2550C47200AEB104 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3E18A6E2550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontendTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3E18A6F2550C47200AEB104 /* Debug */,
+				D3E18A702550C47200AEB104 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3E18A712550C47200AEB104 /* Build configuration list for PBXNativeTarget "basketball-frontendUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3E18A722550C47200AEB104 /* Debug */,
+				D3E18A732550C47200AEB104 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D3E18A392550C46B00AEB104 /* Project object */;
+}
