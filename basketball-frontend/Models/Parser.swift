@@ -9,24 +9,29 @@
 import Foundation
 import Alamofire
 
-let url: String = "http://secure-hollows-77457.herokuapp.com/"
+let url: String = "http://secure-hollows-77457.herokuapp.com"
 
 class Parser {
   
-  var games: [Game] = []
+  var user: Data<User>?
   
   required init() {
-    AF.request(url + "/games").responseDecodable(of: Games.self) { response in
-      if let value: Games = response.value {
-        self.games = value.items
+    print("CONSOLE")
+
+
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/1").responseDecodable(of: Data<User>.self) { response in
+      if let value: Data<User> = response.value {
+        self.user = value
       }
     }
   }
   
-  func update() -> [Game] {
-    if games.isEmpty {
+  func update() -> Data<User>? {
+    if user != nil {
+      return self.user
+    } else {
       _ = type(of: self).init()
     }
-    return self.games
+    return self.user
   }
 }
