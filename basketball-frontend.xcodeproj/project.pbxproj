@@ -10,7 +10,8 @@
 		0554311FBEDF8B9F22AEBF09 /* Pods_basketball_frontendTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */; };
 		347CD6A62C9C8F352796A6D2 /* Pods_basketball_frontend_basketball_frontendUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */; };
 		7E0F2E3625522A0500BA9C24 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0F2E3525522A0500BA9C24 /* Parser.swift */; };
-		7EC3670D255258180022DAE0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Game.swift */; };
+		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
+		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
 		D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A442550C46B00AEB104 /* AppDelegate.swift */; };
 		D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A462550C46B00AEB104 /* SceneDelegate.swift */; };
@@ -45,7 +46,8 @@
 		3887307D0DC4C3A65DD0F1FC /* Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend-basketball-frontendUITests/Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig"; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E0F2E3525522A0500BA9C24 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		7EC3670C255258180022DAE0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		7EC3670C255258180022DAE0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend_basketball_frontendUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontendTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,8 +113,8 @@
 		7E0F2E34255229F400BA9C24 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7EC3670C255258180022DAE0 /* Models.swift */,
 				7E0F2E3525522A0500BA9C24 /* Parser.swift */,
-				7EC3670C255258180022DAE0 /* Game.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -120,8 +122,17 @@
 		7EC3670825522B080022DAE0 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				7EC3671125525A470022DAE0 /* ViewModel.swift */,
 			);
 			path = "View Models";
+			sourceTree = "<group>";
+		};
+		7EC3671625534A900022DAE0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D3E18A482550C46B00AEB104 /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C627360190EF6FD956339B30 /* Frameworks */ = {
@@ -159,11 +170,11 @@
 		D3E18A432550C46B00AEB104 /* basketball-frontend */ = {
 			isa = PBXGroup;
 			children = (
+				7EC3671625534A900022DAE0 /* Views */,
 				7EC3670825522B080022DAE0 /* View Models */,
 				7E0F2E34255229F400BA9C24 /* Models */,
 				D3E18A442550C46B00AEB104 /* AppDelegate.swift */,
 				D3E18A462550C46B00AEB104 /* SceneDelegate.swift */,
-				D3E18A482550C46B00AEB104 /* ContentView.swift */,
 				D3E18A4A2550C47100AEB104 /* Assets.xcassets */,
 				D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */,
 				D3E18A522550C47100AEB104 /* Info.plist */,
@@ -438,9 +449,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E0F2E3625522A0500BA9C24 /* Parser.swift in Sources */,
-				7EC3670D255258180022DAE0 /* Game.swift in Sources */,
+				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
+				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,
 				D3E18A492550C46B00AEB104 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
