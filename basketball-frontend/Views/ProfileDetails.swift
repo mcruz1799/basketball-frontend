@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct ProfileDetail: View {
-  @Observed var viewModel = ViewModel()
+  @ObservedObject var viewModel = ViewModel()
   
   var body: some View {
     VStack {
