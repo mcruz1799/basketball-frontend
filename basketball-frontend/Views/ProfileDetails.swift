@@ -25,11 +25,11 @@ struct ProfileDetail: View {
         Text("Jeff Xu")
       }.padding()
       
-      List {
-        ForEach(viewModel.favorites) { favorite in
-          FavoriteRow(favortee: favorite)
-        }
-      }
+//      List {
+//        ForEach(viewModel.user.favorites) { favorite in
+//          FavoriteRow(favoritee: favorite)
+//        }
+//      }
     }
   }
 }
