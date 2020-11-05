@@ -13,25 +13,22 @@ let url: String = "http://secure-hollows-77457.herokuapp.com"
 
 class Parser {
   
-  var user: Data<User>?
+  var games: [Games] = []
   
   required init() {
-    print("CONSOLE")
-
-
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/1").responseDecodable(of: Data<User>.self) { response in
-      if let value: Data<User> = response.value {
-        self.user = value
+    AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+      if let value: ListData<Games> = response.value {
+        self.games = value.data
+//        print(self.games)
       }
     }
   }
   
-  func update() -> Data<User>? {
-    if user != nil {
-      return self.user
-    } else {
+  func update() -> [Games] {
+    if games.isEmpty {
       _ = type(of: self).init()
     }
-    return self.user
+    return self.games
   }
 }
+
