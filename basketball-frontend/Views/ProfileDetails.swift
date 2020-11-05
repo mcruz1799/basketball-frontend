@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct ProfileDetail: View {
-  @Observed var viewModel = ViewModel()
+  @ObservedObject var viewModel = ViewModel()
   
   var body: some View {
     VStack {
@@ -25,11 +25,11 @@ struct ProfileDetail: View {
         Text("Jeff Xu")
       }.padding()
       
-      List {
-        ForEach(viewModel.favorites) { favorite in
-          FavoriteRow(favortee: favorite)
-        }
-      }
+//      List {
+//        ForEach(viewModel.user.favorites) { favorite in
+//          FavoriteRow(favoritee: favorite)
+//        }
+//      }
     }
   }
 }
