@@ -156,8 +156,34 @@ class ViewModel: ObservableObject {
   }
 }
 
-var viewModel: ViewModel = ViewModel()
+//var viewModel: ViewModel = ViewModel()
 //DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
 //  print(viewModel.user)
 //}
+
+func unfavorite(id: Int) {
+  AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: nil).validate(statusCode: 200 ..< 299).responseJSON { AFdata in
+    do {
+      guard let jsonObject = try JSONSerialization.jsonObject(with: AFdata.data!) as? [String: Any] else {
+        print("Error: Cannot convert data to JSON object")
+        return
+      }
+      guard let prettyJsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
+        print("Error: Cannot convert JSON object to Pretty JSON data")
+        return
+      }
+      guard let prettyPrintedJson = String(data: prettyJsonData, encoding: .utf8) else {
+        print("Error: Could print JSON in String")
+        return
+      }
+      
+      print(prettyPrintedJson)
+    } catch {
+      print("Error: Trying to convert JSON data to string")
+      return
+    }
+  }
+}
+
+unfavorite(id: 1)
 

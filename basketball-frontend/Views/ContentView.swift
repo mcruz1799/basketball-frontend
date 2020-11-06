@@ -11,30 +11,13 @@ import SwiftUI
 struct ContentView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   
-  @State var games: [Games] = []
-  
   var body: some View {
-    
-//    VStack {
-//      List(games) {
-//        game in GameRow(game: game)
-//      }
-//    }.onAppear(perform: self.getGames)
-    GamesTableView(games: viewModel.games).onAppear(perform: viewModel.update)
-  }
-  
-  func getGames() {
-    games = viewModel.games
+    VStack {
+      Text(viewModel.user?.username ?? "")
+      GamesTableView(games: viewModel.games).onAppear(perform: { viewModel.update(); viewModel.getUser(username: "username") })
+    }
   }
 }
-
-//struct GameRow: View {
-//  let game: Games
-//
-//  var body: some View {
-//    Text(game.name)
-//  }
-//}
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
