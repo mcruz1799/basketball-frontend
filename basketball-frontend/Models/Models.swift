@@ -27,7 +27,7 @@ struct Users: Decodable {
   }
 }
 
-struct Games: Decodable {
+struct Games: Decodable, Identifiable {
   let id: Int
   let name: String
   let date: String
@@ -51,7 +51,7 @@ struct Games: Decodable {
 struct Player: Decodable {
   let id: Int
   let status: String
-  let game: Data<Games>
+  let game: APIData<Games>
   enum CodingKeys: String, CodingKey {
     case id
     case status
@@ -63,7 +63,7 @@ struct Favorite: Decodable {
   let id: Int
   let favoriter_id: Int
   let favoritee_id: Int
-  let user: Data<Users>
+  let user: APIData<Users>
   enum CodingKeys: String, CodingKey {
     case id
     case favoriter_id
@@ -80,8 +80,8 @@ struct User: Decodable {
   let lastName: String
   let dob: String
   let phone: String
-  let players: [Data<Player>]
-  let favorites: [Data<Favorite>]
+  let players: [APIData<Player>]
+  let favorites: [APIData<Favorite>]
   enum CodingKeys: String, CodingKey {
     case id
     case username
@@ -104,9 +104,9 @@ struct Game: Decodable {
   let priv: Bool
   let longitude: Double
   let latitude: Double
-  let invited: [Data<Users>]
-  let maybe: [Data<Users>]
-  let going: [Data<Users>]
+  let invited: [APIData<Users>]
+  let maybe: [APIData<Users>]
+  let going: [APIData<Users>]
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -144,7 +144,7 @@ struct ListData<T>: Decodable where T: Decodable {
   }
 }
 
-struct Data<T>: Decodable where T: Decodable {
+struct APIData<T>: Decodable where T: Decodable {
   var data: T
   enum CodingKeys: String, CodingKey {
     case data
