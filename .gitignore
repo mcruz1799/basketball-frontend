@@ -1,6 +1,10 @@
 **/basketball-frontend.xcodeproj/xcuserdata/
 **/Pods/
 **/.build/
+*.pbxproj
+*.xcconfig
+*.plist
+*.xcuserstate
 
 # Compiled source #
 ###################
