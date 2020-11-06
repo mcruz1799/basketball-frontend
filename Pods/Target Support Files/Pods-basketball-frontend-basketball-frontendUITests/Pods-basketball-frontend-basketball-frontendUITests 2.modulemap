@@ -1,0 +1,6 @@
+framework module Pods_basketball_frontend_basketball_frontendUITests {
+  umbrella header "Pods-basketball-frontend-basketball-frontendUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

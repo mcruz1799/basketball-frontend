@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-basketball-frontend-basketball-frontendUITests/Pods-basketball-frontend-basketball-frontendUITests-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
