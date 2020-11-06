@@ -20,7 +20,6 @@ class ViewModel: ObservableObject {
   
   func update() {
     self.games = self.parser.update()
-    print(self.games)
   }
   
 }

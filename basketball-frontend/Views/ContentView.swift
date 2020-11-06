@@ -11,20 +11,21 @@ import SwiftUI
 struct ContentView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   
-  @State var games: [Games] = []
+  //  @State var games: [Games] = []
   
   var body: some View {
     
     VStack {
-      List(games) {  
+      Button(action: { self.viewModel.update() }) { Text("Update")}
+      List(viewModel.games) {
         game in GameRow(game: game)
       }
-    }.onAppear(perform: self.getGames)
+    }.onAppear { self.viewModel.update() }
   }
   
-  func getGames() {
-    games = viewModel.games
-  }
+  //  func getGames() {
+  //    games = viewModel.games
+  //  }
 }
 
 struct GameRow: View {

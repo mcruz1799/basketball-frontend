@@ -19,7 +19,7 @@ class Parser {
     AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
-//        print(self.games)
+        print(self.games)
       }
     }
   }
@@ -28,6 +28,7 @@ class Parser {
     if games.isEmpty {
       _ = type(of: self).init()
     }
+//    print(self.games)
     return self.games
   }
 }
