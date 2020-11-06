@@ -11,11 +11,14 @@ import SwiftUI
 struct ContentView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   
+<<<<<<< HEAD
   //  @State var games: [Games] = []
   
+=======
+>>>>>>> api
   var body: some View {
-    
     VStack {
+<<<<<<< HEAD
       Button(action: { self.viewModel.update() }) { Text("Update")}
       List(viewModel.games) {
         game in GameRow(game: game)
@@ -33,6 +36,11 @@ struct GameRow: View {
   
   var body: some View {
     Text(game.name)
+=======
+      Text(viewModel.user?.username ?? "")
+      GamesTableView(games: viewModel.games).onAppear(perform: { viewModel.update(); viewModel.getUser(username: "username") })
+    }
+>>>>>>> api
   }
 }
 
