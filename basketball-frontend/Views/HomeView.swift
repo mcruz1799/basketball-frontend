@@ -15,7 +15,7 @@ struct HomeView: View {
 				
 				VStack {
 					Text("Username:")
-					Text(viewModel.user?.data.firstName ?? "JJ")
+//					Text(viewModel.user?.data.firstName ?? "JJ")
 				}
 			}
 			

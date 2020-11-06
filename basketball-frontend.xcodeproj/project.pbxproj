@@ -10,7 +10,6 @@
 		0554311FBEDF8B9F22AEBF09 /* Pods_basketball_frontendTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */; };
 		347CD6A62C9C8F352796A6D2 /* Pods_basketball_frontend_basketball_frontendUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */; };
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
-		7E0F2E3625522A0500BA9C24 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0F2E3525522A0500BA9C24 /* Parser.swift */; };
 		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
@@ -50,7 +49,6 @@
 		3887307D0DC4C3A65DD0F1FC /* Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend-basketball-frontendUITests/Pods-basketball-frontend-basketball-frontendUITests.release.xcconfig"; sourceTree = "<group>"; };
 		46D660CE255366670020F38F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E0F2E3525522A0500BA9C24 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		7EC3670C255258180022DAE0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC3670C255258180022DAE0 /* Models.swift */,
-				7E0F2E3525522A0500BA9C24 /* Parser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -460,7 +457,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E0F2E3625522A0500BA9C24 /* Parser.swift in Sources */,
 				D3A46A992555D816004B09D2 /* HomeView.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
