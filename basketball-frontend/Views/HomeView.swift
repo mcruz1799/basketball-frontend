@@ -15,13 +15,7 @@ struct HomeView: View {
 				
 				VStack {
 					Text("Username:")
-//					Text(viewModel.user?.data.firstName ?? "JJ")
 				}
-			}
-			
-			func getUser() {
-				print("CONSOLE")
-				self.viewModel.update()
 			}
 		}
 
