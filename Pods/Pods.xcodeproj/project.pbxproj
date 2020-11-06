@@ -1380,11 +1380,10 @@
 			};
 			name = Debug;
 		};
-		231528393B7084E13F97FF9EF804A1C0 /* Debug */ = {
+		2DED27FE3A24EED0D532498C0DAD5A6E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1446,11 +1445,10 @@
 			};
 			name = Debug;
 		};
-		353D2EB3545D27343B51B709D9C0420B /* Release */ = {
+		372428EA8B2D21EA43C5EE768B089C8B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1842,8 +1840,9 @@
 		3A076285B7DB65B00AEA63889B5BAEFF /* Build configuration list for PBXNativeTarget "Pods-basketball-frontend" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AB3DB06A6A317D87043471DBDE8C1265 /* Debug */,
-				42766A8673134E5957EA036A47B791B3 /* Release */,
+
+				2DED27FE3A24EED0D532498C0DAD5A6E /* Debug */,
+				372428EA8B2D21EA43C5EE768B089C8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
