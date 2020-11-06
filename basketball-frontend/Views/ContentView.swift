@@ -15,11 +15,12 @@ struct ContentView: View {
   
   var body: some View {
     
-    VStack {
-      List(games) {  
-        game in GameRow(game: game)
-      }
-    }.onAppear(perform: self.getGames)
+//    VStack {
+//      List(games) {
+//        game in GameRow(game: game)
+//      }
+//    }.onAppear(perform: self.getGames)
+    GamesTableView(games: viewModel.games).onAppear(perform: viewModel.update)
   }
   
   func getGames() {
@@ -27,13 +28,13 @@ struct ContentView: View {
   }
 }
 
-struct GameRow: View {
-  let game: Games
-  
-  var body: some View {
-    Text(game.name)
-  }
-}
+//struct GameRow: View {
+//  let game: Games
+//
+//  var body: some View {
+//    Text(game.name)
+//  }
+//}
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
