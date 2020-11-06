@@ -15,8 +15,7 @@
 		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
-		D33F4E7A2553B15E00A5C0BE /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F4E792553B15E00A5C0BE /* AppView.swift */; };
-		D33F4E7C2553B43400A5C0BE /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F4E7B2553B43400A5C0BE /* CreateView.swift */; };
+		D33F4E782553A86F00A5C0BE /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F4E772553A86F00A5C0BE /* NavBar.swift */; };
 		D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A442550C46B00AEB104 /* AppDelegate.swift */; };
 		D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A462550C46B00AEB104 /* SceneDelegate.swift */; };
 		D3E18A492550C46B00AEB104 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E18A482550C46B00AEB104 /* ContentView.swift */; };
@@ -54,14 +53,12 @@
 		7E0F2E3525522A0500BA9C24 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		7EC3670C255258180022DAE0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		7EC36720255390BC0022DAE0 /* APIPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = APIPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend_basketball_frontendUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontendTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2B849F504731F6FF9D13D2 /* Pods-basketball-frontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend/Pods-basketball-frontend.release.xcconfig"; sourceTree = "<group>"; };
 		CFED0C95F3B92AFEC6EB8354 /* Pods-basketball-frontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.debug.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D33F4E792553B15E00A5C0BE /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		D33F4E7B2553B43400A5C0BE /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
+		D33F4E772553A86F00A5C0BE /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
 		D3E18A412550C46B00AEB104 /* basketball-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "basketball-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3E18A442550C46B00AEB104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3E18A462550C46B00AEB104 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,8 +139,7 @@
 				D3E18A482550C46B00AEB104 /* ContentView.swift */,
 				46D660C9255364A00020F38F /* ProfileDetails.swift */,
 				46D660CE255366670020F38F /* FavoriteRow.swift */,
-				D33F4E792553B15E00A5C0BE /* AppView.swift */,
-				D33F4E7B2553B43400A5C0BE /* CreateView.swift */,
+				D33F4E772553A86F00A5C0BE /* NavBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -192,7 +188,6 @@
 				D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */,
 				D3E18A522550C47100AEB104 /* Info.plist */,
 				D3E18A4C2550C47100AEB104 /* Preview Content */,
-				7EC36720255390BC0022DAE0 /* APIPlayground.playground */,
 			);
 			path = "basketball-frontend";
 			sourceTree = "<group>";
@@ -462,15 +457,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D33F4E7C2553B43400A5C0BE /* CreateView.swift in Sources */,
 				46D660CA255364A00020F38F /* ProfileDetails.swift in Sources */,
 				7E0F2E3625522A0500BA9C24 /* Parser.swift in Sources */,
+				D33F4E782553A86F00A5C0BE /* NavBar.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
 				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,
-				D33F4E7A2553B15E00A5C0BE /* AppView.swift in Sources */,
 				D3E18A492550C46B00AEB104 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

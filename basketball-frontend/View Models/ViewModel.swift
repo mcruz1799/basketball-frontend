@@ -12,14 +12,14 @@ class ViewModel: ObservableObject {
   
   var parser: Parser = Parser()
   
-  @Published var games: [Games] = [Games]()
+  @Published var user: Data<User>?
   
 //  init () {
 //    self.user = self.parser.update()
 //  }
   
   func update() {
-    self.games = self.parser.update()
+    self.user = self.parser.update()
   }
   
 }

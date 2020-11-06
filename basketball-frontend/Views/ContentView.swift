@@ -11,28 +11,17 @@ import SwiftUI
 struct ContentView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   
-  //  @State var games: [Games] = []
-  
   var body: some View {
     
     VStack {
-      Button(action: { self.viewModel.update() }) { Text("Update")}
-      List(viewModel.games) {
-        game in GameRow(game: game)
-      }
-    }.onAppear { self.viewModel.update() }
+      Text("Username:")
+      Text(viewModel.user?.data.firstName ?? "JJ")
+    }
   }
   
-  //  func getGames() {
-  //    games = viewModel.games
-  //  }
-}
-
-struct GameRow: View {
-  let game: Games
-  
-  var body: some View {
-    Text(game.name)
+  func getUser() {
+    print("CONSOLE")
+    self.viewModel.update()
   }
 }
 

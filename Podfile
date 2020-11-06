@@ -7,7 +7,6 @@ target 'basketball-frontend' do
 
   # Pods for basketball-frontend
   pod 'Alamofire', '~> 5.0'
-  pod 'RxSwift'
 
   target 'basketball-frontendTests' do
     inherit! :search_paths
