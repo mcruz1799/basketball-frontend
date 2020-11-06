@@ -9,9 +9,7 @@ import Foundation
 import Alamofire
 
 class ViewModel: ObservableObject {
-  
-  var parser: Parser = Parser()
-  
+    
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var groupedGames: Dictionary<String, [Games]> = Dictionary<String, [Games]>()
@@ -56,7 +54,6 @@ class ViewModel: ObservableObject {
   }
   
   func update() {
-    self.games = self.parser.update()
     AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
