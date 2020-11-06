@@ -12,13 +12,8 @@ class ViewModel: ObservableObject {
     
   @Published var games: [Games] = [Games]()
   @Published var user: User?
-  @Published var groupedGames: Dictionary<String, [Games]> = Dictionary<String, [Games]>()
   
   init () {}
-  
-  func groupGames() {
-    self.groupedGames = Dictionary(grouping: self.games, by: {$0.date })
-  }
   
   func unfavorite(id: Int) {
     AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: nil).validate(statusCode: 200 ..< 299).responseJSON { AFdata in
@@ -44,16 +39,15 @@ class ViewModel: ObservableObject {
     }
   }
   
-  func getUser(username: String) {
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/1").responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+  func getUser(id: String) {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
-        print(self.user)
       }
     }
   }
   
-  func update() {
+  func getGames() {
     AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
