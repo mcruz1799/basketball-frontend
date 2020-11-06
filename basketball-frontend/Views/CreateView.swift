@@ -1,21 +1,21 @@
 //
-//  NavBar.swift
+//  CreateView.swift
 //  basketball-frontend
 //
-//  Created by Matthew Cruz on 11/4/20.
+//  Created by Matthew Cruz on 11/6/20.
 //  Copyright © 2020 Matthew Cruz. All rights reserved.
 //
 
 import SwiftUI
 
-struct NavBar: View {
+struct CreateView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
-struct NavBar_Previews: PreviewProvider {
+struct CreateView_Previews: PreviewProvider {
     static var previews: some View {
-        NavBar()
+        CreateView()
     }
 }
