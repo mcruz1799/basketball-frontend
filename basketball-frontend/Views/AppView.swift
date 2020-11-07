@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct AppView: View {
+  @ObservedObject var viewModel: ViewModel = ViewModel()
+
 	init() {
 		UITabBar.appearance().backgroundColor = UIColor.orange
 	}
@@ -29,7 +31,7 @@ struct AppView: View {
 						.imageScale(.large)
 //					Text("Create Game")
 			}
-      ProfileView()
+      ProfileView(user: viewModel.user)  
         .tabItem{
 					Image(systemName: "person.circle")
 						.font(.system(size: 25))
