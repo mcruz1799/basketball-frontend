@@ -10,8 +10,7 @@ import Foundation
 import SwiftUI
 
 struct ProfileEditFrom: View {
-  
-  var viewModel: ViewModel
+  let user: User
   
   @State var username: String = ""
   @State var firstname: String = ""

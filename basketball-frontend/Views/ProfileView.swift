@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-			@ObservedObject var viewModel = ViewModel()
+  let user: User?
 			
 			var body: some View {
 				VStack {
@@ -33,8 +33,8 @@ struct ProfileView: View {
 			}
 		}
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-    }
-}
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileView()
+//    }
+//}

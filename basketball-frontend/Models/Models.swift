@@ -27,7 +27,7 @@ struct Users: Decodable {
   }
 }
 
-struct Games: Decodable, Identifiable {
+struct Games: Decodable, Encodable, Identifiable {
   let id: Int
   let name: String
   let date: String
