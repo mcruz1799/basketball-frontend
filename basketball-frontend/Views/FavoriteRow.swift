@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 
 struct FavoriteRow: View {
-  var favoritee: User
+  let favorite: Favorite
   
   var body: some View {
     HStack {
-      Text(favoritee.username)
+      Text(favorite.user.data.username)
       Spacer()
       Image("star-selected")
     }

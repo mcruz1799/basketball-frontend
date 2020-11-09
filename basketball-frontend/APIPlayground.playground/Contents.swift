@@ -182,4 +182,28 @@ func createGame() {
   }
 }
 
-print(createGame())
+//print(createGame())
+
+var time = "2000-01-01T13:16:43.000Z"
+var date = "2020-10-29"
+
+let isoDate = "2016-04-14T10:44:00+0000"
+
+let timeFormatter = DateFormatter()
+let dateFormatter = DateFormatter()
+dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+dateFormatter.dateFormat = "yyyy-MM-dd"
+timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+if let formatted: Date = dateFormatter.date(from:date)
+{
+  print(formatted)
+} else {
+  print("Not Format")
+}
+if let formattedTime: Date = timeFormatter.date(from:time)
+{
+  print(formattedTime)
+} else {
+  print("Not Format")
+}

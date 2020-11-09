@@ -28,14 +28,14 @@ struct Users: Decodable {
 }
 
 struct Games: Decodable, Encodable, Identifiable {
-  let id: Int
-  let name: String
-  let date: String
-  let time: String
-  let description: String
-  let priv: Bool
-  let longitude: Double
-  let latitude: Double
+  var id: Int
+  var name: String
+  var date: String
+  var time: String
+  var description: String
+  var priv: Bool
+  var longitude: Double
+  var latitude: Double
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -46,9 +46,12 @@ struct Games: Decodable, Encodable, Identifiable {
     case longitude
     case latitude
   }
+  func onTime() -> String {
+    return Helper.onTime(time: self.time)
+  }
 }
 
-struct Player: Decodable {
+struct Player: Decodable, Identifiable {
   let id: Int
   let status: String
   let game: APIData<Games>
@@ -59,7 +62,7 @@ struct Player: Decodable {
   }
 }
 
-struct Favorite: Decodable {
+struct Favorite: Decodable, Identifiable {
   let id: Int
   let favoriter_id: Int
   let favoritee_id: Int
@@ -120,6 +123,9 @@ struct Game: Decodable {
     case maybe
     case going
   }
+  func onTime() -> String {
+    return Helper.onTime(time: self.time)
+  }
 }
 
 struct ListData<T>: Decodable where T: Decodable {
@@ -165,3 +171,70 @@ struct APIData<T>: Decodable where T: Decodable {
     self.data = results.attributes
   }
 }
+
+extension Bundle {
+  // Borrowed from Paul Hudson (@twostraws)
+  func decode<T: Decodable>(_ type: T.Type, from file: String) -> T {
+    guard let url = self.url(forResource: file, withExtension: nil) else {
+      fatalError("Failed to locate \(file) in bundle.")
+    }
+    
+    guard let data = try? Data(contentsOf: url) else {
+      fatalError("Failed to load \(file) from bundle.")
+    }
+    
+    let decoder = JSONDecoder()
+    
+    guard let loaded = try? decoder.decode(T.self, from: data) else {
+      fatalError("Failed to decode \(file) from bundle.")
+    }
+    
+    return loaded
+  }
+}
+
+
+//dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//dateFormatter.dateFormat = "yyyy-MM-dd"
+//timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+//game.date = dateFormatter.date(from:game.date)
+//game.time = timeFormatter.date(from:game.time)
+
+class NormalizingDecoder: JSONDecoder {
+  
+  var dateFormatter: DateFormatter = DateFormatter()
+  var timeFormatter: DateFormatter = DateFormatter()
+  let calendar = Calendar.current
+  
+  override init() {
+    super.init()
+    //    dateFormatter = DateFormatter()
+    dateFormatter.timeStyle = .medium
+    keyDecodingStrategy = .convertFromSnakeCase
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    dateDecodingStrategy = .custom { (decoder) -> Date in
+      let container = try decoder.singleValueContainer()
+      let dateString = try container.decode(String.self)
+      let date = self.dateFormatter.date(from: dateString)
+      
+      if let date = date {
+        let midnightThen = self.calendar.startOfDay(for: date)
+        let millisecondsFromMidnight = date.timeIntervalSince(midnightThen)
+        
+        let today = Date()
+        let midnightToday = self.calendar.startOfDay(for: today)
+        let normalizedDate = midnightToday.addingTimeInterval(millisecondsFromMidnight)
+        
+        return normalizedDate
+      } else {
+        throw DecodingError.dataCorruptedError(in: container,
+                                               debugDescription:
+                                                "Date values must be formatted like \"7:27:02 AM\" " +
+                                                "or \"12:16:28 PM\".")
+      }
+    }
+  }
+}
+
