@@ -55,4 +55,83 @@ class ViewModel: ObservableObject {
     }
   }
   
+  func createUser(user: User, password: String, passwordConfirmation: String) {
+    let params = [
+      "firstname": user.firstName,
+      "lastname": user.lastName,
+      "username": user.username,
+      "email": user.email,
+      "dob": user.dob,
+      "phone": user.phone,
+      "password": password,
+      "password_confirmation": passwordConfirmation
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        self.user = value.data
+      }
+    }
+  }
+  
+  func createGame(game: Game) {
+    // TODO: use actual private value
+    let params = [
+      "name": game.name,
+      "date": game.date,
+      "time": game.time,
+      "description": game.description,
+      "private": "false",
+      "longitude": game.longitude,
+      "latitude": game.latitude
+    ] as [String : Any]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/games/", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        print(value.data)
+      }
+    }
+  }
+  
+  func editGame(game: Game) {
+    let params = [
+      "name": game.name,
+      "date": game.date,
+      "time": game.time,
+      "description": game.description,
+      "private": "false",
+      "longitude": game.longitude,
+      "latitude": game.latitude
+    ] as [String : Any]
+    
+    let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
+    
+    AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        print(value.data)
+      }
+    }
+  }
+  
+// TODO: use authorization token in backend
+//  func editUser() {
+//    let params = [
+//      "firstname": self.user?.firstName,
+//      "lastname": self.user?.lastName,
+//      "username": self.user?.username,
+//      "email": self.user?.email,
+//      "dob": self.user?.dob,
+//      "phone": self.user?.phone
+//    ]
+//
+//    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
+//      ( response: AFDataResponse<APIData<User>> ) in
+//      if let value: APIData<User> = response.value {
+//        self.user = value.data
+//      }
+//    }
+//  }
 }
