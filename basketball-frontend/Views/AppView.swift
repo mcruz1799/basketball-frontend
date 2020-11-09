@@ -10,35 +10,35 @@ import SwiftUI
 
 struct AppView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
-
-	init() {
-		UITabBar.appearance().backgroundColor = UIColor.orange
-	}
+  
+  init() {
+    UITabBar.appearance().backgroundColor = UIColor.orange
+  }
   var body: some View {
-
+    
     TabView{
-      HomeView()
+      HomeView(viewModel: viewModel)
         .tabItem{
-					Image(systemName: "house.fill")
-						.font(.system(size: 25))
-						.imageScale(.large)
-//					Text("Home")
+          Image(systemName: "house.fill")
+            .font(.system(size: 25))
+            .imageScale(.large)
+          Text("Home")
         }
-			CreateView()
-				.tabItem{
-					Image(systemName: "plus.circle.fill")
-						.font(.system(size: 36))
-						.imageScale(.large)
-//					Text("Create Game")
-			}
-      ProfileView(user: viewModel.user)  
+      CreateView()
         .tabItem{
-					Image(systemName: "person.circle")
-						.font(.system(size: 25))
-						.imageScale(.large)
-//          Text("Profile")
-      }
-		}
+          Image(systemName: "plus.circle.fill")
+            .font(.system(size: 36))
+            .imageScale(.large)
+          Text("Create Game")
+        }
+      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites)  
+        .tabItem{
+          Image(systemName: "person.circle")
+            .font(.system(size: 25))
+            .imageScale(.large)
+          Text("Profile")
+        }
+    }.onAppear { viewModel.fetchData() }  
   }
 }
 
@@ -71,7 +71,7 @@ struct AppView: View {
 //    }
 //}
 struct AppView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppView()
-    }
+  static var previews: some View {
+    AppView()
+  }
 }

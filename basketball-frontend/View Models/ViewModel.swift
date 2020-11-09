@@ -12,6 +12,8 @@ class ViewModel: ObservableObject {
     
   @Published var games: [Games] = [Games]()
   @Published var user: User?
+  @Published var players: [Player] = [Player]()
+  @Published var favorites: [Favorite] = [Favorite]()
   
   init () {}
   
@@ -42,13 +44,24 @@ class ViewModel: ObservableObject {
     }
   }
   
+  func fetchData() {
+    print("Fetch Data")
+    getUser(id: "4")
+    getGames()
+  }
+  
 //  get a user by id
 //  :param id (Int) - user id
 //  :return none
   func getUser(id: String) {
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/4").responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+      print(response)
       if let value: APIData<User> = response.value {
         self.user = value.data
+        print(self.user as Any)
+        self.players = value.data.players.map { $0.data }
+        self.favorites = value.data.favorites.map { $0.data }
+        print(self.favorites)
       }
     }
   }

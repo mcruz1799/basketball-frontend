@@ -9,17 +9,22 @@
 import SwiftUI
 
 struct HomeView: View {
-			
-			var body: some View {
-				
-				VStack {
-					Text("Username:")
-				}
-			}
-		}
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
+  @ObservedObject var viewModel: ViewModel
+  @State private var isOpen = false
+  
+  var body: some View {
+    GeometryReader { geometry in
+//      MapView()
+      // Content is passed as a closure to the bottom view
+      BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
+        GamesTableView(user: $viewModel.user, players: $viewModel.players)
+      }
+    }.edgesIgnoringSafeArea(.all)
+  }
 }
+
+//struct HomeView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    HomeView()
+//  }
+//}

@@ -9,13 +9,32 @@
 import SwiftUI
 
 struct CreateView: View {
-    var body: some View {
-        Text("Create a Game View")
+  // let viewModel: ViewModel
+  @State var game: Games = Games(id: 4, name: "", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0)
+  
+  var body: some View {
+    NavigationView {
+      Form {
+        TextField("Court Name", text: $game.name)
+        Toggle(isOn: $game.priv) {
+          Text("Private Game")
+        }
+//        DatePicker("Date", selection: $game.date, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+        TextField("Description", text: $game.description)
+        Section {
+          Button(action: {
+            // viewModel.createGame(game)
+          }) {
+            Text("Create Game")
+          }
+        }
+      }.navigationBarTitle("Set Game Details")
     }
+  }
 }
 
 struct CreateView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateView()
-    }
+  static var previews: some View {
+    CreateView()
+  }
 }
