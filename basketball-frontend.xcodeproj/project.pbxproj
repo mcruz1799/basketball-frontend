@@ -11,6 +11,11 @@
 		347CD6A62C9C8F352796A6D2 /* Pods_basketball_frontend_basketball_frontendUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */; };
 		4626385C2555DF7E0052CEB6 /* EditProfileForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */; };
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
+		7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689425590F3B0044B4D2 /* SelectLocation.swift */; };
+		7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */; };
+		7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468A52559A6DC0044B4D2 /* BottomView.swift */; };
+		7EB468AE2559CCEC0044B4D2 /* GameDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468AD2559CCEC0044B4D2 /* GameDetailsView.swift */; };
+		7EB468B32559F73B0044B4D2 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468B22559F73B0044B4D2 /* Helper.swift */; };
 		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
@@ -52,6 +57,12 @@
 		46D660CE255366670020F38F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E8B20152555E70F00842AF9 /* APIPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = APIPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7EB4689425590F3B0044B4D2 /* SelectLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocation.swift; sourceTree = "<group>"; };
+		7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTableView.swift; sourceTree = "<group>"; };
+		7EB468A12559A5480044B4D2 /* players.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
+		7EB468A52559A6DC0044B4D2 /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
+		7EB468AD2559CCEC0044B4D2 /* GameDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsView.swift; sourceTree = "<group>"; };
+		7EB468B22559F73B0044B4D2 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		7EC3670C255258180022DAE0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +155,10 @@
 				D3A46A982555D816004B09D2 /* HomeView.swift */,
 				46D660CE255366670020F38F /* FavoriteRow.swift */,
 				4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */,
+				7EB4689425590F3B0044B4D2 /* SelectLocation.swift */,
+				7EB468A52559A6DC0044B4D2 /* BottomView.swift */,
+				7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */,
+				7EB468AD2559CCEC0044B4D2 /* GameDetailsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -190,9 +205,11 @@
 				D3E18A462550C46B00AEB104 /* SceneDelegate.swift */,
 				D3E18A4A2550C47100AEB104 /* Assets.xcassets */,
 				D3E18A4F2550C47100AEB104 /* LaunchScreen.storyboard */,
+				7EB468B22559F73B0044B4D2 /* Helper.swift */,
 				D3E18A522550C47100AEB104 /* Info.plist */,
 				D3E18A4C2550C47100AEB104 /* Preview Content */,
 				7E8B20152555E70F00842AF9 /* APIPlayground.playground */,
+				7EB468A12559A5480044B4D2 /* players.json */,
 			);
 			path = "basketball-frontend";
 			sourceTree = "<group>";
@@ -463,9 +480,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3A46A992555D816004B09D2 /* HomeView.swift in Sources */,
+				7EB468AE2559CCEC0044B4D2 /* GameDetailsView.swift in Sources */,
+				7EB468B32559F73B0044B4D2 /* Helper.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
+				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
+				7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */,
+				7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
 				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,
 				D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */,

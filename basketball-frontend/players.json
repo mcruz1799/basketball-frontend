@@ -1,0 +1,68 @@
+[
+  "id":2,
+  "status":"going",
+  "game":
+  {"data":
+    {"id":"2","type":"game","attributes":
+      {"id":2,
+        "name":"game2",
+        "date":"2020-10-29",
+        "time":"2000-01-01T13:16:43.000Z",
+        "description":"test description",
+        "private":false,
+        "longitude":0.0,
+        "latitude":0.0
+      }
+    }
+  },
+  "id":3,
+  "status":"going",
+  "game":
+  {"data":
+    {"id":"2","type":"game","attributes":
+      {"id":2,
+        "name":"game2",
+        "date":"2020-10-29",
+        "time":"2000-01-01T13:16:43.000Z",
+        "description":"test description",
+        "private":false,
+        "longitude":0.0,
+        "latitude":0.0
+      }
+    }
+  },
+  "id":4,
+  "status":"going",
+  "game":
+  {"data":
+    {"id":"2","type":"game","attributes":
+      {"id":2,
+        "name":"game2",
+        "date":"2020-10-29",
+        "time":"2000-01-01T13:16:43.000Z",
+        "description":"test description",
+        "private":false,
+        "longitude":0.0,
+        "latitude":0.0
+      }
+    }
+  },
+  "id":5,
+  "status":"going",
+  "game":
+  {"data":
+    {"id":"2","type":"game","attributes":
+      {"id":2,
+        "name":"game2",
+        "date":"2020-10-29",
+        "time":"2000-01-01T13:16:43.000Z",
+        "description":"test description",
+        "private":false,
+        "longitude":0.0,
+        "latitude":0.0
+      }
+    }
+  }
+]
+ 
+ 
