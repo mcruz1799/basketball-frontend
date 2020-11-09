@@ -38,7 +38,7 @@ struct AppView: View {
             .imageScale(.large)
           Text("Profile")
         }
-    }.onAppear { viewModel.fetchData() }  
+		}.onAppear { self.viewModel.fetchData() }  
   }
 }
 
