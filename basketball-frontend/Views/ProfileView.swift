@@ -11,27 +11,27 @@ import SwiftUI
 struct ProfileView: View {
   let user: User?
 			
-			var body: some View {
-				VStack {
-					Text("username")
-						.padding()
-					
-					HStack {
-						Text("Name:")
-							.fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-							.padding(.leading)
-						Spacer()
-						Text("Jeff Xu")
-					}.padding()
-					
-		//      List {
-		//        ForEach(viewModel.user.favorites) { favorite in
-		//          FavoriteRow(favoritee: favorite)
-		//        }
-		//      }
-				}
-			}
-		}
+  var body: some View {
+    VStack {
+      Text("username")
+        .padding()
+      
+      HStack {
+        Text("Name:")
+          .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+          .padding(.leading)
+        Spacer()
+        Text("Jeff Xu")
+      }.padding()
+      
+//      List {
+//        ForEach(viewModel.user.favorites) { favorite in
+//          FavoriteRow(favoritee: favorite)
+//        }
+//      }
+    }
+  }
+}
 
 //struct ProfileView_Previews: PreviewProvider {
 //    static var previews: some View {
