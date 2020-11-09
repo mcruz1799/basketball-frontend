@@ -9,15 +9,28 @@
 import SwiftUI
 
 struct GameDetailsView: View {
-  let game: Games
+  //  let game: Games
   
-    var body: some View {
-      Text(game.name)
-    }
+  var body: some View {
+    NavigationView {
+      VStack {
+        Button(action: {
+        }) {
+          Text("Invite Friends")
+            .padding()
+            .background(Color.red)
+            .foregroundColor(.black)
+            .cornerRadius(40)
+        }
+      }
+      
+      //      Text(game.name)
+    }.navigationBarTitle("Game Details")
+  }
 }
 
-//struct GameDetailsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GameDetailsView()
-//    }
-//}
+struct GameDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        GameDetailsView()
+    }
+}

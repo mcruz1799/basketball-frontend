@@ -18,8 +18,8 @@ struct GamesTableView: View {
     NavigationView {
       List {
         ForEach(players) { player in
-          NavigationLink(destination: GameDetailsView(game: player.game.data)) {
-            GameRow(player: player)}
+//          NavigationLink(destination: GameDetailsView(game: player.game.data)) {
+//            GameRow(player: player)}
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
       .navigationBarHidden(true)}
@@ -39,7 +39,7 @@ struct GameRow: View {
         Text(player.status)
       }.padding(.bottom, 5)
       HStack {
-        Text(game.onTime())   
+        Text(game.onTime())
         Spacer()
         Image(systemName: "arrow.right")
       }
