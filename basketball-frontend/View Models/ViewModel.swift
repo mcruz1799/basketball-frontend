@@ -137,21 +137,26 @@ class ViewModel: ObservableObject {
   }
   
 // TODO: use authorization token in backend
-//  func editUser() {
-//    let params = [
-//      "firstname": self.user?.firstName,
-//      "lastname": self.user?.lastName,
-//      "username": self.user?.username,
-//      "email": self.user?.email,
-//      "dob": self.user?.dob,
-//      "phone": self.user?.phone
-//    ]
-//
-//    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
-//      ( response: AFDataResponse<APIData<User>> ) in
-//      if let value: APIData<User> = response.value {
-//        self.user = value.data
-//      }
-//    }
-//  }
+//  edit a user
+//  :param none
+//  :return none
+  func editUser() {
+    let params = [
+      "firstname": self.user?.firstName,
+      "lastname": self.user?.lastName,
+      "username": self.user?.username,
+      "email": self.user?.email,
+      "dob": self.user?.dob,
+      "phone": self.user?.phone,
+      "password": "secret",
+      "password_confirmation": "secret"
+    ]
+
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        self.user = value.data
+      }
+    }
+  }
 }
