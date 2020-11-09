@@ -15,6 +15,9 @@ class ViewModel: ObservableObject {
   
   init () {}
   
+//  unfavorite a user given a favorite id
+//  :param id (Int) - favorite id
+//  :return none
   func unfavorite(id: Int) {
     AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: nil).validate(statusCode: 200 ..< 299).responseJSON { AFdata in
       do {
@@ -39,6 +42,9 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  get a user by id
+//  :param id (Int) - user id
+//  :return none
   func getUser(id: String) {
     AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
@@ -47,6 +53,9 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  get all games
+//  :param none
+//  :return none
   func getGames() {
     AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
@@ -55,6 +64,11 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  create a new user
+//  :param user (User) - a User object
+//  :param password (String) - user password
+//  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
+//  :return none
   func createUser(user: User, password: String, passwordConfirmation: String) {
     let params = [
       "firstname": user.firstName,
@@ -75,6 +89,9 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  create a new game
+//  :param game (Game) - a Game object
+//  :return none
   func createGame(game: Game) {
     // TODO: use actual private value
     let params = [
@@ -95,6 +112,9 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  edit a game
+//  :param game (Game) - a Game object
+//  :return none
   func editGame(game: Game) {
     let params = [
       "name": game.name,
