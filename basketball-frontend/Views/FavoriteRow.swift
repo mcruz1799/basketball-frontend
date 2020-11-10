@@ -21,13 +21,13 @@ struct FavoriteRow: View {
       Spacer()
       if (isFavorited) {
         Button(action: {
-          unfavoriteActions()
+					self.unfavoriteActions()
         }) {
           Image("star-selected")
         }
       } else {
         Button(action: {
-          unfavoriteActions()
+					self.unfavoriteActions()
         }) {
           Image("star-deselected")
         }
