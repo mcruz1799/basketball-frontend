@@ -11,6 +11,7 @@ import SwiftUI
 struct ProfileView: View {
   @Binding var user: User?
   @Binding var favorites: [Favorite]
+  @ObservedObject var viewModel: ViewModel
   
   var body: some View {
     VStack {
@@ -35,7 +36,7 @@ struct ProfileView: View {
       }.padding()
       List {
         ForEach(favorites) { favorite in
-          FavoriteRow(favorite: favorite)
+          FavoriteRow(favorite: favorite, viewModel: viewModel)
         }
       }
     }

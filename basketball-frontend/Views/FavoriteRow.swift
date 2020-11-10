@@ -11,12 +11,37 @@ import SwiftUI
 
 struct FavoriteRow: View {
   let favorite: Favorite
+  @ObservedObject var viewModel: ViewModel
+  @State private var isFavorited: Bool = true
   
+//  TODO: be able to favorite after unfavorite (it doesn't work right now)
   var body: some View {
     HStack {
       Text(favorite.user.data.username)
       Spacer()
-      Image("star-selected")
+      if (isFavorited) {
+        Button(action: {
+          unfavoriteActions()
+        }) {
+          Image("star-selected")
+        }
+      } else {
+        Button(action: {
+          unfavoriteActions()
+        }) {
+          Image("star-deselected")
+        }
+      }
     }
+  }
+  
+  func favoriteActions() {
+    isFavorited = true
+    viewModel.favorite(favorite: favorite)
+  }
+  
+  func unfavoriteActions() {
+    isFavorited = false
+    viewModel.unfavorite(id: favorite.id)
   }
 }

@@ -31,7 +31,7 @@ struct AppView: View {
             .imageScale(.large)
           Text("Create Game")
         }
-      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites)  
+      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
         .tabItem{
           Image(systemName: "person.circle")
             .font(.system(size: 25))
