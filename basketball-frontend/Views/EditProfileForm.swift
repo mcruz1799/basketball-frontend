@@ -9,14 +9,26 @@
 import Foundation
 import SwiftUI
 
-struct ProfileEditFrom: View {
-  let user: User
+struct EditProfileForm: View {
+  var viewModel: ViewModel
   
   @State var username: String = ""
-  @State var firstname: String = ""
-  @State var lastname: String = ""
+  @State var firstName: String = ""
+  @State var lastName: String = ""
+  @State var email: String = ""
+  @State var phone: String = ""
   
   var body: some View {
+    Text("Edit Your Information").font(.largeTitle).bold()
+    Image("default-profile")
+      .resizable()
+      .scaledToFit()
+      .clipShape(Circle())
+      .overlay(
+        Circle()
+          .stroke(Color.white, lineWidth: 4)
+          .shadow(radius: 10)
+      )
     VStack {
       HStack {
         Text("Username:")
@@ -30,7 +42,7 @@ struct ProfileEditFrom: View {
         Text("First Name:")
           .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
           .padding(.leading)
-        TextField("First Name", text: $firstname)
+        TextField("First Name", text: $firstName)
           .padding(.trailing)
       }.padding()
       
@@ -38,15 +50,31 @@ struct ProfileEditFrom: View {
         Text("Last Name:")
           .fontWeight(.bold)
           .padding(.leading)
-        TextField("Last Name", text: $lastname)
+        TextField("Last Name", text: $lastName)
           .padding(.trailing)
       }.padding()
+      
+      HStack {
+        Text("Email:")
+          .fontWeight(.bold)
+          .padding(.leading)
+        TextField("Email", text: $email)
+          .padding(.trailing)
+      }.padding()
+      
+      HStack {
+        Text("Phone:")
+          .fontWeight(.bold)
+          .padding(.leading)
+        TextField("Phone", text: $phone)
+          .padding(.trailing)
+      }.padding()
+      
+      Button(action: {
+        self.viewModel.editUser(firstName: self.firstName, lastName: self.lastName, username: self.username, email: self.email, phone: self.phone)
+      }) {
+        Text("Save")
+      }
     }
-    .navigationBarTitle("Edit Your Information")
-//    .navigationBarItems(trailing:
-//      Button() {
-//        Text("Done")
-//      }
-//    )
   }
 }
