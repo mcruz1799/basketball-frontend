@@ -152,7 +152,8 @@ class ViewModel: ObservableObject {
       }
     }
   }
-  
+
+// TODO: use actual private value
 //  create a new game
 //  :param game (Game) - a Game object
 //  :return none
@@ -203,24 +204,68 @@ class ViewModel: ObservableObject {
   
 // TODO: use authorization token in backend
 //  edit a user
-//  :param none
+//  :param firstName (String) - first name of the user
+//  :param lastName (String) - last name of the user
+//  :param username (String) - username of the user, must be unique
+//  :param email (String) - email of the user, must be correctly formatted
+//  :param phone (String) - phone number of the user, must be correctly formatted
 //  :return none
-  func editUser() {
+  func editUser(firstName: String, lastName: String, username: String, email: String, phone: String) {
     let params = [
-      "firstname": self.user?.firstName,
-      "lastname": self.user?.lastName,
-      "username": self.user?.username,
-      "email": self.user?.email,
+      "firstname": firstName,
+      "lastname": lastName,
+      "username": username,
+      "email": email,
       "dob": self.user?.dob,
-      "phone": self.user?.phone,
+      "phone": phone,
       "password": "secret",
       "password_confirmation": "secret"
     ]
 
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
+      }
+    }
+    
+    getUser(id: String(self.user!.id))
+  }
+  
+  
+//  invite a user to a game
+//  :param userId (String) - a user ID
+//  :param gameId (String) - a game ID
+//  :return none
+  func inviteToGame(userId: String, gameId: String) {
+    let params = [
+      "status": "invited",
+      "user_id": userId,
+      "game_id": gameId
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>>) in
+      if let value: APIData<Player> = response.value {
+        print(value.data)
+      }
+    }
+  }
+  
+//  change the status of a player (can be used to edit player as well)
+//  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited")
+//  :return none
+  func changePlayerStatus(player: Player) {
+    let params = [
+      "status": player.status,
+      "user_id": String(player.userId),
+      "game_id": String(player.game.data.id)
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>>) in
+      if let value: APIData<Player> = response.value {
+        print(value.data)
       }
     }
   }
