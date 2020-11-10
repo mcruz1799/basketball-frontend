@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct GamesTableView: View {
+  @ObservedObject var viewModel: ViewModel
   @Binding var user: User?
   @Binding var players: [Player]
   //  let players = Bundle.main.decode([Player].self, from: "players.json")
@@ -18,8 +19,8 @@ struct GamesTableView: View {
     NavigationView {
       List {
         ForEach(players) { player in
-          //          NavigationLink(destination: GameDetailsView(game: player.game.data)) {
-          //            GameRow(player: player)}
+//          NavigationLink(destination: GameDetailsView(viewModel: viewModel, game: player)) {
+//            GameRow(player: player)}
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
       .navigationBarHidden(true)}

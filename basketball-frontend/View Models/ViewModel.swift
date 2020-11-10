@@ -11,10 +11,17 @@ import Alamofire
 class ViewModel: ObservableObject {
     
   @Published var games: [Games] = [Games]()
-  @Published var game: Game?
   @Published var user: User?
   @Published var players: [Player] = [Player]()
   @Published var favorites: [Favorite] = [Favorite]()
+  
+  @Published var game: Game?
+  @Published var invited: [Users] = [Users]()
+  @Published var maybe: [Users] = [Users]()
+  @Published var going: [Users] = [Users]()
+  
+  @Published var userLocation = Location()  
+
   
   init () {}
   
@@ -93,6 +100,30 @@ class ViewModel: ObservableObject {
     AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
+      }
+    }
+  }
+  
+  func getGame(id: Int) {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        self.game = value.data
+        self.invited = value.data.invited.map { $0.data }
+        self.maybe = value.data.maybe.map { $0.data }
+        self.going = value.data.going.map { $0.data }
+      }
+    }
+  }
+  
+  func updateStatus(player_id: Int, status: String) {
+    let params = [
+      "status": status,
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player_id), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>> ) in
+      if let value: APIData<Player> = response.value {
+        print(value)
       }
     }
   }

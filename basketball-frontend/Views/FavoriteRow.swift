@@ -27,7 +27,7 @@ struct FavoriteRow: View {
         }
       } else {
         Button(action: {
-					self.unfavoriteActions()
+					self.favoriteActions()
         }) {
           Image("star-deselected")
         }

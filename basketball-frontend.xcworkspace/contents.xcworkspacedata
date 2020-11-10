@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/matthewcruz/Documents/_Fall2020/443_Mobile_App_Dev/basketball-frontend/basketball-frontend/Models/Location.swift">
-   </FileRef>
-   <FileRef
       location = "group:basketball-frontend.xcodeproj">
    </FileRef>
    <FileRef
