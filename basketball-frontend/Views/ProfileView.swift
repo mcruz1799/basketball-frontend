@@ -25,7 +25,7 @@ struct ProfileView: View {
               .stroke(Color.white, lineWidth: 4)
               .shadow(radius: 10)
           )
-
+        
         Text(user?.username ?? "N/A")
           .padding()
         
@@ -43,16 +43,16 @@ struct ProfileView: View {
         }
       }
       .navigationBarItems(trailing:
-        NavigationLink(destination: EditProfileForm(
-                        viewModel: viewModel,
-                        username: viewModel.user!.username,
-                        firstName: viewModel.user?.firstName ?? "n/a",
-                        lastName: viewModel.user?.lastName ?? "n/a",
-                        email: viewModel.user?.email ?? "n/a",
-                        phone: viewModel.user?.phone ?? "n/a"))
-      {
-        Image(systemName: "pencil")
-      })
+                            NavigationLink(destination: EditProfileForm(
+                                            viewModel: viewModel,
+                                            username: viewModel.user!.username,
+                                            firstName: viewModel.user?.firstName ?? "n/a",
+                                            lastName: viewModel.user?.lastName ?? "n/a",
+                                            email: viewModel.user?.email ?? "n/a",
+                                            phone: viewModel.user?.phone ?? "n/a"))
+                            {
+                              Image(systemName: "pencil")
+                            })
     }
   }
 }

@@ -15,6 +15,14 @@ class ViewModel: ObservableObject {
   @Published var players: [Player] = [Player]()
   @Published var favorites: [Favorite] = [Favorite]()
   
+  @Published var game: Game?
+  @Published var invited: [Users] = [Users]()
+  @Published var maybe: [Users] = [Users]()
+  @Published var going: [Users] = [Users]()
+  
+  @Published var userLocation = Location()  
+
+  
   init () {}
   
 //  unfavorite a user given a favorite id
@@ -96,6 +104,17 @@ class ViewModel: ObservableObject {
     }
   }
   
+  func getGame(id: Int) {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        self.game = value.data
+        self.invited = value.data.invited.map { $0.data }
+        self.maybe = value.data.maybe.map { $0.data }
+        self.going = value.data.going.map { $0.data }
+      }
+    }
+  }
+  
 //  create a new user
 //  :param user (User) - a User object
 //  :param password (String) - user password
@@ -125,13 +144,15 @@ class ViewModel: ObservableObject {
 //  create a new game
 //  :param game (Game) - a Game object
 //  :return none
-  func createGame(game: Game) {
+  func createGame(game: Games, date: Date) {
+    // TODO: use actual private value
+    let acceptableDate = Helper.toAcceptableDate(date: date)
     let params = [
       "name": game.name,
-      "date": game.date,
-      "time": game.time,
+      "date": acceptableDate,
+      "time": acceptableDate,
       "description": game.description,
-      "private": "false",
+      "private": game.priv,
       "longitude": game.longitude,
       "latitude": game.latitude
     ] as [String : Any]
@@ -139,7 +160,7 @@ class ViewModel: ObservableObject {
     AF.request("http://secure-hollows-77457.herokuapp.com/games/", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
-        print(value.data)
+        self.game = value.data
       }
     }
   }
@@ -219,7 +240,7 @@ class ViewModel: ObservableObject {
   }
   
 //  change the status of a player (can be used to edit player as well)
-//  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited")
+//  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited". "not_going")
 //  :return none
   func changePlayerStatus(player: Player) {
     let params = [
