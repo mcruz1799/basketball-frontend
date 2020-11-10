@@ -9,8 +9,9 @@
 import SwiftUI
 
 struct CreateView: View {
-  // let viewModel: ViewModel
+   let viewModel: ViewModel
   @State var game: Games = Games(id: 4, name: "", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0)
+  @State var date: Date = Date()
   
   var body: some View {
     NavigationView {
@@ -19,11 +20,11 @@ struct CreateView: View {
         Toggle(isOn: $game.priv) {
           Text("Private Game")
         }
-//        DatePicker("Date", selection: $game.date, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+        DatePicker("Date", selection: $date, in: Date()..., displayedComponents: [.date, .hourAndMinute])
         TextField("Description", text: $game.description)
         Section {
           Button(action: {
-            // viewModel.createGame(game)
+            viewModel.createGame(game: game, date: date)
           }) {
             Text("Create Game")
           }
@@ -33,8 +34,8 @@ struct CreateView: View {
   }
 }
 
-struct CreateView_Previews: PreviewProvider {
-  static var previews: some View {
-    CreateView()
-  }
-}
+//struct CreateView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    CreateView()
+//  }
+//}

@@ -30,16 +30,15 @@ struct GameRow: View {
   let player: Player
   
   var body: some View {
-    let game = player.game.data
-    
+//    let game = player.game.data
     VStack {
       HStack {
-        Text(game.name).bold()
+        Text(player.game.data.name).bold()
         Spacer()
         Text(player.status)
       }.padding(.bottom, 5)
       HStack {
-        Text(game.onTime())
+        Text(player.game.data.onTime())
         Spacer()
         Image(systemName: "arrow.right")
       }

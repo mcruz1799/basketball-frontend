@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct GameDetailsView: View {
-  //  let game: Games
+//    let game: Games
+  @State var game: Games = Games(id: 4, name: "Schenley Park", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0)
   
   var body: some View {
     NavigationView {
@@ -18,6 +19,8 @@ struct GameDetailsView: View {
         }) {
           Text("Invite Friends")
             .padding()
+            .padding(.leading, 20)
+            .padding(.trailing, 20)
             .background(Color.red)
             .foregroundColor(.black)
             .cornerRadius(40)

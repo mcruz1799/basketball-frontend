@@ -17,7 +17,7 @@ struct HomeView: View {
 //      MapView()
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
-        GamesTableView(user: $viewModel.user, players: $viewModel.players)
+        GamesTableView(user: self.$viewModel.user, players: self.$viewModel.players)
       }
     }.edgesIgnoringSafeArea(.all)
   }

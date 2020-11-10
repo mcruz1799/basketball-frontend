@@ -24,7 +24,7 @@ struct AppView: View {
             .imageScale(.large)
           Text("Home")
         }
-      CreateView()
+      CreateView(viewModel: viewModel)
         .tabItem{
           Image(systemName: "plus.circle.fill")
             .font(.system(size: 36))
