@@ -45,6 +45,25 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  favorite another user and refresh the user info
+//  :param favorite (Favorite) - a Favorite object
+//  :return none
+  func favorite(favorite: Favorite) {
+    let params = [
+      "favoriter_id": favorite.favoriter_id,
+      "favoritee_id": favorite.favoritee_id
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Favorite>> ) in
+      if let value: APIData<Favorite> = response.value {
+        print(value.data)
+      }
+    }
+    
+    getUser(id: String(self.user!.id))
+  }
+  
   func fetchData() {
     print("Fetch Data")
     getUser(id: "4")
@@ -152,21 +171,26 @@ class ViewModel: ObservableObject {
   }
   
 // TODO: use authorization token in backend
-//  func editUser() {
-//    let params = [
-//      "firstname": self.user?.firstName,
-//      "lastname": self.user?.lastName,
-//      "username": self.user?.username,
-//      "email": self.user?.email,
-//      "dob": self.user?.dob,
-//      "phone": self.user?.phone
-//    ]
-//
-//    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
-//      ( response: AFDataResponse<APIData<User>> ) in
-//      if let value: APIData<User> = response.value {
-//        self.user = value.data
-//      }
-//    }
-//  }
+//  edit a user
+//  :param none
+//  :return none
+  func editUser() {
+    let params = [
+      "firstname": self.user?.firstName,
+      "lastname": self.user?.lastName,
+      "username": self.user?.username,
+      "email": self.user?.email,
+      "dob": self.user?.dob,
+      "phone": self.user?.phone,
+      "password": "secret",
+      "password_confirmation": "secret"
+    ]
+
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        self.user = value.data
+      }
+    }
+  }
 }

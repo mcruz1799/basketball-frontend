@@ -18,8 +18,8 @@ struct GamesTableView: View {
     NavigationView {
       List {
         ForEach(players) { player in
-//          NavigationLink(destination: GameDetailsView(game: player.game.data)) {
-//            GameRow(player: player)}
+          //          NavigationLink(destination: GameDetailsView(game: player.game.data)) {
+          //            GameRow(player: player)}
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
       .navigationBarHidden(true)}
@@ -30,7 +30,7 @@ struct GameRow: View {
   let player: Player
   
   var body: some View {
-//    let game = player.game.data
+    //    let game = player.game.data
     VStack {
       HStack {
         Text(player.game.data.name).bold()

@@ -14,7 +14,7 @@ struct HomeView: View {
   
   var body: some View {
     GeometryReader { geometry in
-//      MapView()
+      //      MapView()
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
         GamesTableView(user: self.$viewModel.user, players: self.$viewModel.players)
