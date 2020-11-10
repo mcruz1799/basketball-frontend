@@ -115,19 +115,6 @@ class ViewModel: ObservableObject {
     }
   }
   
-  func updateStatus(player_id: Int, status: String) {
-    let params = [
-      "status": status,
-    ]
-    
-    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player_id), method: .patch, parameters: params).responseDecodable {
-      ( response: AFDataResponse<APIData<Player>> ) in
-      if let value: APIData<Player> = response.value {
-        print(value)
-      }
-    }
-  }
-  
 //  create a new user
 //  :param user (User) - a User object
 //  :param password (String) - user password
