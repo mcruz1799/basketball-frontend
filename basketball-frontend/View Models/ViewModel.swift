@@ -44,6 +44,25 @@ class ViewModel: ObservableObject {
     }
   }
   
+//  favorite another user and refresh the user info
+//  :param favorite (Favorite) - a Favorite object
+//  :return none
+  func favorite(favorite: Favorite) {
+    let params = [
+      "favoriter_id": favorite.favoriter_id,
+      "favoritee_id": favorite.favoritee_id
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Favorite>> ) in
+      if let value: APIData<Favorite> = response.value {
+        print(value.data)
+      }
+    }
+    
+    getUser(id: String(self.user!.id))
+  }
+  
   func fetchData() {
     print("Fetch Data")
     getUser(id: "4")
