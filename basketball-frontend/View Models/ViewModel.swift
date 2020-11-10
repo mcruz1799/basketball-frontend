@@ -191,4 +191,42 @@ class ViewModel: ObservableObject {
       }
     }
   }
+  
+  
+//  invite a user to a game
+//  :param userId (String) - a user ID
+//  :param gameId (String) - a game ID
+//  :return none
+  func inviteToGame(userId: String, gameId: String) {
+    let params = [
+      "status": "invited",
+      "user_id": userId,
+      "game_id": gameId
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>>) in
+      if let value: APIData<Player> = response.value {
+        print(value.data)
+      }
+    }
+  }
+  
+//  change the status of a player (can be used to edit player as well)
+//  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited")
+//  :return none
+  func changePlayerStatus(player: Player) {
+    let params = [
+      "status": player.status,
+      "user_id": String(player.userId),
+      "game_id": String(player.gameId)
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>>) in
+      if let value: APIData<Player> = response.value {
+        print(value.data)
+      }
+    }
+  }
 }

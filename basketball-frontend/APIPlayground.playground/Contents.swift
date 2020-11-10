@@ -42,14 +42,16 @@ struct Games: Decodable, Encodable, Identifiable {
   }
 }
 
-struct Player: Decodable {
+struct Player: Decodable, Identifiable {
   let id: Int
+  let userId: Int
   let status: String
-  let game: APIData<Games>
+  let gameId: Int
   enum CodingKeys: String, CodingKey {
     case id
     case status
-    case game
+    case gameId = "game_id"
+    case userId = "user_id"
   }
 }
 
@@ -160,50 +162,45 @@ struct APIData<T>: Decodable where T: Decodable {
   }
 }
 
-func createGame() {
-  // TODO: use actual private value
+//var time = "2000-01-01T13:16:43.000Z"
+//var date = "2020-10-29"
+//
+//let isoDate = "2016-04-14T10:44:00+0000"
+//
+//let timeFormatter = DateFormatter()
+//let dateFormatter = DateFormatter()
+//dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//dateFormatter.dateFormat = "yyyy-MM-dd"
+//timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+//if let formatted: Date = dateFormatter.date(from:date)
+//{
+//  print(formatted)
+//} else {
+//  print("Not Format")
+//}
+//if let formattedTime: Date = timeFormatter.date(from:time)
+//{
+//  print(formattedTime)
+//} else {
+//  print("Not Format")
+//}
+
+let p = Player(id: 9, userId: 6, status: "going", gameId: 3)
+
+func changePlayerStatus(player: Player) {
   let params = [
-    "name": "game100",
-    "date": "2020-11-29 13:16:43",
-    "time": "2020-11-29 13:16:43",
-    "description": "hi",
-    "private": "false",
-    "longitude": "0.0",
-    "latitude": "0.0"
-  ] as [String : Any]
+    "status": player.status,
+    "user_id": String(player.userId),
+    "game_id": String(player.gameId)
+  ]
   
-  let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(4)
-  
-  AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
-    ( response: AFDataResponse<APIData<Game>> ) in
-    if let value: APIData<Game> = response.value {
+  AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
+    ( response: AFDataResponse<APIData<Player>>) in
+    if let value: APIData<Player> = response.value {
       print(value.data)
     }
   }
 }
 
-//print(createGame())
-
-var time = "2000-01-01T13:16:43.000Z"
-var date = "2020-10-29"
-
-let isoDate = "2016-04-14T10:44:00+0000"
-
-let timeFormatter = DateFormatter()
-let dateFormatter = DateFormatter()
-dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-dateFormatter.dateFormat = "yyyy-MM-dd"
-timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-if let formatted: Date = dateFormatter.date(from:date)
-{
-  print(formatted)
-} else {
-  print("Not Format")
-}
-if let formattedTime: Date = timeFormatter.date(from:time)
-{
-  print(formattedTime)
-} else {
-  print("Not Format")
-}
+print(changePlayerStatus(player: p))
