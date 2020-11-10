@@ -120,12 +120,12 @@ class ViewModel: ObservableObject {
       }
     }
   }
-  
+
+// TODO: use actual private value
 //  create a new game
 //  :param game (Game) - a Game object
 //  :return none
   func createGame(game: Game) {
-    // TODO: use actual private value
     let params = [
       "name": game.name,
       "date": game.date,
@@ -170,25 +170,31 @@ class ViewModel: ObservableObject {
   
 // TODO: use authorization token in backend
 //  edit a user
-//  :param none
+//  :param firstName (String) - first name of the user
+//  :param lastName (String) - last name of the user
+//  :param username (String) - username of the user, must be unique
+//  :param email (String) - email of the user, must be correctly formatted
+//  :param phone (String) - phone number of the user, must be correctly formatted
 //  :return none
-  func editUser() {
+  func editUser(firstName: String, lastName: String, username: String, email: String, phone: String) {
     let params = [
-      "firstname": self.user?.firstName,
-      "lastname": self.user?.lastName,
-      "username": self.user?.username,
-      "email": self.user?.email,
+      "firstname": firstName,
+      "lastname": lastName,
+      "username": username,
+      "email": email,
       "dob": self.user?.dob,
-      "phone": self.user?.phone,
+      "phone": phone,
       "password": "secret",
       "password_confirmation": "secret"
     ]
 
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .patch, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
       }
     }
+    
+    getUser(id: String(self.user!.id))
   }
 }

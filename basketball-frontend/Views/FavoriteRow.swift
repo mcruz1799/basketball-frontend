@@ -14,7 +14,6 @@ struct FavoriteRow: View {
   @ObservedObject var viewModel: ViewModel
   @State private var isFavorited: Bool = true
   
-//  TODO: be able to favorite after unfavorite (it doesn't work right now)
   var body: some View {
     HStack {
       Text(favorite.user.data.username)
@@ -27,7 +26,7 @@ struct FavoriteRow: View {
         }
       } else {
         Button(action: {
-          unfavoriteActions()
+          favoriteActions()
         }) {
           Image("star-deselected")
         }
