@@ -19,6 +19,8 @@
 		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
+		D3A112C8255A40020018B825 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A112C7255A40020018B825 /* Location.swift */; };
+		D3A112CA255A40CF0018B825 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A112C9255A40CF0018B825 /* MapView.swift */; };
 		D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A922555D7F2004B09D2 /* AppView.swift */; };
 		D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A942555D7FC004B09D2 /* ProfileView.swift */; };
 		D3A46A972555D80A004B09D2 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A962555D80A004B09D2 /* CreateView.swift */; };
@@ -70,6 +72,8 @@
 		BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontendTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2B849F504731F6FF9D13D2 /* Pods-basketball-frontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend/Pods-basketball-frontend.release.xcconfig"; sourceTree = "<group>"; };
 		CFED0C95F3B92AFEC6EB8354 /* Pods-basketball-frontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.debug.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D3A112C7255A40020018B825 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		D3A112C9255A40CF0018B825 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		D3A46A922555D7F2004B09D2 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		D3A46A942555D7FC004B09D2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D3A46A962555D80A004B09D2 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
@@ -134,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC3670C255258180022DAE0 /* Models.swift */,
+				D3A112C7255A40020018B825 /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 				7EB468A52559A6DC0044B4D2 /* BottomView.swift */,
 				7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */,
 				7EB468AD2559CCEC0044B4D2 /* GameDetailsView.swift */,
+				D3A112C9255A40CF0018B825 /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -481,12 +487,14 @@
 			files = (
 				D3A46A992555D816004B09D2 /* HomeView.swift in Sources */,
 				7EB468AE2559CCEC0044B4D2 /* GameDetailsView.swift in Sources */,
+				D3A112C8255A40020018B825 /* Location.swift in Sources */,
 				7EB468B32559F73B0044B4D2 /* Helper.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
 				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
 				7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */,
+				D3A112CA255A40CF0018B825 /* MapView.swift in Sources */,
 				7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
 				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,

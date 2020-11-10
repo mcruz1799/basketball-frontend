@@ -14,6 +14,9 @@ class ViewModel: ObservableObject {
   @Published var user: User?
   @Published var players: [Player] = [Player]()
   @Published var favorites: [Favorite] = [Favorite]()
+	
+	//Map Functionality
+	@Published var userLocation = Location()
   
   init () {}
   
