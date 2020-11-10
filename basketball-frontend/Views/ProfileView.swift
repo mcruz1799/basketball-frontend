@@ -11,10 +11,20 @@ import SwiftUI
 struct ProfileView: View {
   @Binding var user: User?
   @Binding var favorites: [Favorite]
+  @ObservedObject var viewModel: ViewModel
   
   var body: some View {
     VStack {
-      Text("username")
+      Image("default-profile")
+        .resizable()
+        .scaledToFit()
+        .clipShape(Circle())
+        .overlay(
+          Circle()
+            .stroke(Color.white, lineWidth: 4)
+            .shadow(radius: 10)
+        )
+      Text(user?.username ?? "N/A")
         .padding()
       
       HStack {
@@ -22,11 +32,11 @@ struct ProfileView: View {
           .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
           .padding(.leading)
         Spacer()
-        Text("Jeff Xu")
+        Text(user?.displayName() ?? "N/A")
       }.padding()
       List {
         ForEach(favorites) { favorite in
-          FavoriteRow(favorite: favorite)
+					FavoriteRow(favorite: favorite, viewModel: self.viewModel)
         }
       }
     }

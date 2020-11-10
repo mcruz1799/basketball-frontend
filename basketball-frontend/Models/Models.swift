@@ -96,6 +96,10 @@ struct User: Decodable {
     case players
     case favorites
   }
+  
+  func displayName() -> String {
+    return self.firstName + " " + self.lastName
+  }
 }
 
 struct Game: Decodable {
