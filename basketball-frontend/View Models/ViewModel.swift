@@ -219,7 +219,7 @@ class ViewModel: ObservableObject {
     let params = [
       "status": player.status,
       "user_id": String(player.userId),
-      "game_id": String(player.gameId)
+      "game_id": String(player.game.data.id)
     ]
     
     AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
