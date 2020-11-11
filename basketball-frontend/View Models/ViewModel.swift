@@ -240,8 +240,22 @@ class ViewModel: ObservableObject {
   }
   
   func updateStatus(player_id: Int, status: String) {
+    var s = ""
+    
+    if (status == "I'm Going") {
+      s = "going"
+    } else if (status == "I'm Invited") {
+      s = "invited"
+    } else if (status == "I'm Maybe") {
+      s = "maybe"
+    } else if (status == "I'm Not Going") {
+      s = "not_going"
+    } else {
+      s = status
+    }
+    
     let params = [
-      "status": status,
+      "status": s,
     ]
 
     AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player_id), method: .patch, parameters: params).responseDecodable {
