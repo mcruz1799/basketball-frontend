@@ -15,7 +15,7 @@ struct GameDetailsView: View {
   @State var showingUsers = false
   @State var users: [Users] = [Users]()
   @State private var selectedStatus = 0
-  var statuses = ["I'm Invited", "I'm Going", "I'm Maybe"]
+  var statuses = ["I'm Invited", "I'm Going", "I'm Maybe", "I'm Not Going"]
   
   var body: some View {
 //    let selectedIndex = Binding<Int>(get: {
@@ -65,6 +65,31 @@ struct GameDetailsView: View {
         }.pickerStyle(SegmentedPickerStyle())
         .padding()
         
+        HStack {
+          Text("Name:")
+            .padding(.leading)
+          Spacer()
+          Text(game.name)
+            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        }.padding()
+        
+        HStack {
+          Text("Date:")
+            .padding(.leading)
+          Spacer()
+          Text(game.date)
+            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        }.padding()
+        
+        HStack {
+          Text("Time:")
+            .padding(.leading)
+          Spacer()
+//          Text(game.displayTime())
+          Text(game.time)
+            .fontWeight(.bold)
+        }.padding()
+        
         Button(action: {
         }) {
           Text("Invite Friends")
@@ -88,6 +113,7 @@ struct GameDetailsView: View {
     self.users = users
     self.showingUsers = true
   }
+  
   func statusChange(selectedStatus: Int) {
     viewModel.updateStatus(player_id: self.player.id, status: self.statuses[self.selectedStatus])
   }

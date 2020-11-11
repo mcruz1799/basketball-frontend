@@ -129,8 +129,14 @@ struct Game: Decodable {
     case maybe
     case going
   }
+  
   func onTime() -> String {
     return Helper.onTime(time: self.time)
+  }
+  
+  func displayTime() -> String {
+    let splitTime = self.time.split(separator: "T")
+    return String(splitTime[1].prefix(5))
   }
 }
 
