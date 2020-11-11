@@ -23,13 +23,15 @@ struct CreateMapView: UIViewRepresentable {
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
       print(mapView.centerCoordinate)
     }
-    //used to change what the annotation view looks like
-    //can build a custom view
-    //    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    //        let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
-    //        view.canShowCallout = true
-    //        return view
-    //    }
+    
+    func mapView(_ mapView: MKMapView, didAdd: [MKAnnotationView]) {
+      
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView: MKAnnotationView, didChange: MKAnnotationView.DragState, fromOldState: MKAnnotationView.DragState) {
+      
+    }
+
   }
   
   func makeCoordinator() -> CreateMapView.Coordinator {
@@ -39,9 +41,10 @@ struct CreateMapView: UIViewRepresentable {
   func makeUIView(context: Context) -> MKMapView {
     let mapView = MKMapView()
     mapView.delegate = context.coordinator
-    var uilgr = UILongPressGestureRecognizer(target: self, action: "addAnnotation:")
-    uilgr.minimumPressDuration = 2.0
-    mapView.addGestureRecognizer(uilgr)
+//    var uilgr = UILongPressGestureRecognizer(target: self, action: "addAnnotation:")
+//    let gestureRecognizer = UITapGestureRecognizer(target: self, action:"triggerTouchAction:")
+//    gestureRecognizer.minimumPressDuration = 2.0
+//    mapView.addGestureRecognizer(gestureRecognizer)
     return mapView
     
   }
@@ -72,9 +75,9 @@ struct CreateMapView: UIViewRepresentable {
 //      mapView.addAnnotation(droppedPin)
 //    }
 //  }
-  func triggerTouchAction(gestureReconizer: UITapGestureRecognizer) {
-    print("GESTURE")
-  }
+//  func triggerTouchAction(gestureReconizer: UITapGestureRecognizer) {
+//    print("GESTURE")
+//  }
 }
 
 struct CreateMapView_Previews: PreviewProvider {
