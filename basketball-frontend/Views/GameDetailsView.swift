@@ -85,7 +85,8 @@ struct GameDetailsView: View {
           Text("Time:")
             .padding(.leading)
           Spacer()
-          Text(game.displayTime())
+//          Text(game.displayTime())
+          Text(game.time)
             .fontWeight(.bold)
         }.padding()
         
