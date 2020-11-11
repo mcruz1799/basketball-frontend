@@ -11,11 +11,13 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
     @ObservedObject var viewModel: ViewModel
+		@Binding var games: [Games]
 //    var body: some View {
 	
 //    }
 	class Coordinator: NSObject, MKMapViewDelegate {
 		var parent: MapView
+		static var gamePinsRendered = false
 		
 		init (_ parent: MapView) {
 			self.parent = parent
@@ -27,11 +29,11 @@ struct MapView: UIViewRepresentable {
 		}
 		//used to change what the annotation view looks like
 		//can build a custom view
-//		func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//				let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
-//				view.canShowCallout = true
-//				return view
-//		}
+		func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+				let view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
+				view.canShowCallout = true
+				return view
+		}
 	}
 	
 	func makeCoordinator() -> MapView.Coordinator {
@@ -41,51 +43,52 @@ struct MapView: UIViewRepresentable {
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
 		mapView.delegate = context.coordinator
-		
 //		let annotation = MKPointAnnotation()
-//		annotation.title = "London"
-//    annotation.subtitle = "Capital of England"
-//    annotation.coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: 0.13)
+//		annotation.title = "New York City"
+//    annotation.subtitle = "The City that Never Sleeps"
+//    annotation.coordinate = CLLocationCoordinate2D(latitude: 40, longitude: -74)
 //    mapView.addAnnotation(annotation)
-		
-		makeGamePins(mapView: mapView)
 
     return mapView
 		
 	}
 	func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-			let userLocation = viewModel.userLocation
-			userLocation.getCurrentLocation()
-			userLocation.loadLocation()
-			let coordinate = CLLocationCoordinate2D(
-				latitude: userLocation.latitude,
-				longitude: userLocation.longitude
-			)
-			let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-			let region = MKCoordinateRegion(center: coordinate, span: span)
-			uiView.setRegion(region, animated: true)
-			uiView.showsUserLocation = true
+		let userLocation = viewModel.userLocation
+		userLocation.getCurrentLocation()
+		userLocation.loadLocation()
+		let coordinate = CLLocationCoordinate2D(
+			latitude: userLocation.latitude,
+			longitude: userLocation.longitude
+		)
+		let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+		let region = MKCoordinateRegion(center: coordinate, span: span)
+		uiView.setRegion(region, animated: true)
+		uiView.showsUserLocation = true
+		if (Coordinator.gamePinsRendered == false) {makeGamePins(mapView: uiView)}
+
 	}
 
 	func makeGamePins(mapView: MKMapView) {
-		let games: [Games] = viewModel.games
+		print("--------------------------------GAMES-------------------------------------------")
+		print(games)
 		for game in games {
-			let droppedPin = MKPointAnnotation()
-			droppedPin.coordinate = CLLocationCoordinate2D(
+			let gameAnnotation = MKPointAnnotation()
+
+			gameAnnotation.coordinate = CLLocationCoordinate2D(
 					latitude: game.latitude,
 					longitude: game.longitude
 			)
-			print("MADE GAME", game.latitude)
+			print("MADE GAME ---------------------------------------------------/n", game.name, game.time)
 
-			droppedPin.title = game.name
-			droppedPin.subtitle = game.time
-			mapView.addAnnotation(droppedPin)
+			gameAnnotation.title = game.name
+			gameAnnotation.subtitle = game.time
+			mapView.addAnnotation(gameAnnotation)
 		}
 	}
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView(viewModel: ViewModel())
-    }
-}
+//struct MapView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapView(viewModel: ViewModel())
+//    }
+//}
