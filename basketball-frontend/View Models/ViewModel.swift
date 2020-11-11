@@ -239,6 +239,33 @@ class ViewModel: ObservableObject {
     }
   }
   
+  func updateStatus(player_id: Int, status: String) {
+    var s = ""
+    
+    if (status == "I'm Going") {
+      s = "going"
+    } else if (status == "I'm Invited") {
+      s = "invited"
+    } else if (status == "I'm Maybe") {
+      s = "maybe"
+    } else if (status == "I'm Not Going") {
+      s = "not_going"
+    } else {
+      s = status
+    }
+    
+    let params = [
+      "status": s,
+    ]
+
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player_id), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>> ) in
+      if let value: APIData<Player> = response.value {
+        print(value)
+      }
+    }
+  }
+  
 //  change the status of a player (can be used to edit player as well)
 //  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited". "not_going")
 //  :return none
