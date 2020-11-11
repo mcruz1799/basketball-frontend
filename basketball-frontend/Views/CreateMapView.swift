@@ -50,8 +50,8 @@ struct CreateMapView: UIViewRepresentable {
   }
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<CreateMapView>) {
     let userLocation = viewModel.userLocation  
-    userLocation.getCurrentLocation()
-    userLocation.loadLocation()
+    viewModel.userLocation.getCurrentLocation()
+//    userLocation.loadLocation()
     let coordinate = CLLocationCoordinate2D(
       latitude: userLocation.latitude,
       longitude: userLocation.longitude
