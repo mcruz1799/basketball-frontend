@@ -104,7 +104,7 @@ struct GameDetailsView: View {
       }.navigationBarTitle("Game Details")
       .onAppear { self.viewModel.getGame(id: game.id) }
       .sheet(isPresented: $showingUsers) {
-        UsersListView(users: $users)
+        UsersListView(users: $users, viewModel: viewModel)
       }
     }
   }
