@@ -358,6 +358,7 @@ class ViewModel: ObservableObject {
         }
       }
       getUser(id: "4")
+      fetchData()
     }
     
     //  change the status of a player (can be used to edit player as well)
