@@ -44,17 +44,74 @@ class ViewModel: ObservableObject {
   //  :param favorite (Favorite) - a Favorite object
   //  :return none
   func favorite(favorite: Favorite) {
+//  favorite another user and refresh the user info but with IDs
+//  :param favoriterId (Int) - user ID of the favoriter
+//  :param favoriteeId (Int) - user ID of the favoritee
+//  :return (Favorite?) the result Favorite object if successful, nil otherwise
+  func favoriteWithIds(favoriterId: Int, favoriteeId: Int) -> Favorite? {
+    let params = [
+      "favoriter_id": favoriterId,
+      "favoritee_id": favoriteeId
+    ]
+    
+    var favorite: Favorite? = nil
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Favorite>> ) in
+      if let value: APIData<Favorite> = response.value {
+        self.getUser(id: String(self.user!.id))
+        favorite = value.data
+      }
+    }
+    return favorite
+  }
+  
+//  favorite another user and refresh the user info
+//  :param favorite (Favorite) - a Favorite object
+//  :return (Favorite?) the result Favorite object if successful, nil otherwise
+  func favorite(favorite: Favorite) -> Favorite? {
     let params = [
       "favoriter_id": favorite.favoriter_id,
       "favoritee_id": favorite.favoritee_id
     ]
+    
+    var favorite: Favorite? = nil
+    
     AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
       if let value: APIData<Favorite> = response.value {
-        print(value.data)
+        self.getUser(id: String(self.user!.id))
+        favorite = value.data
       }
     }
     getUser(id: String(self.user!.id))
+    return favorite
+  }
+  
+  
+//  check if a user is favorited by the current user
+//  :param userId (Int) - a user ID of the potential favoritee
+//  :return (Bool) true if userId is a favorite of the current user, false otherwise
+  func isFavorite(userId: Int) -> Bool {
+    for favorite in self.favorites {
+      if (favorite.favoritee_id == userId) {
+        return true
+      }
+    }
+    return false
+  }
+  
+//  find a favorite object in self.favorites given favoriter and favoritee
+//  :param favoriterId (Int) - user ID of the favoriter
+//  :param favoriteeId (Int) - user ID of the favoritee
+//  :return (Favorite?) a Favorite object if a match is found, nil otherwise
+  func findFavorite(favoriterId: Int, favoriteeId: Int) -> Favorite? {
+    for favorite in self.favorites {
+      if (favorite.favoriter_id == favoriterId && favorite.favoritee_id == favoriteeId) {
+        return favorite
+      }
+    }
+    return nil
   }
   
   func favoriteUser(favoriter_id: Int, favoritee_id: Int) {

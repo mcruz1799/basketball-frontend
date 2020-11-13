@@ -124,6 +124,7 @@ struct GameDetailsView: View {
           .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
           .cancel()
         ])
+//         UsersListView(users: $users, viewModel: viewModel)
       }
       Spacer()
     }
