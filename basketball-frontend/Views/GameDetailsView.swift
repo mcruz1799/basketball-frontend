@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct GameDetailsView: View {
-  let game: Games
+  let game: Game
   
     var body: some View {
       Text(game.name)

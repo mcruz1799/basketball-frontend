@@ -12,9 +12,9 @@ import MapKit
 struct MapView: UIViewRepresentable {
     @ObservedObject var viewModel: ViewModel
 		@Binding var games: [Games]
-//    var body: some View {
-	
-//    }
+		@Binding var selectedEvent: Games?
+		@Binding var showDetails: Bool
+
 	class Coordinator: NSObject, MKMapViewDelegate {
 		var parent: MapView
 		static var gamePinsRendered = false
@@ -25,7 +25,7 @@ struct MapView: UIViewRepresentable {
 		//runs every time user interacts and moves map some way
 		//can possibly be used to make pins disappear at certain distance?
 		func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-				print(mapView.centerCoordinate)
+			print(mapView.centerCoordinate)
 		}
 		//used to change what the annotation view looks like
 		//can build a custom view
@@ -34,6 +34,25 @@ struct MapView: UIViewRepresentable {
 				view.canShowCallout = true
 				return view
 		}
+		
+		func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
+			var game:Games
+			for game in parent.games{
+//				if (let unwrappedView = view){
+//					
+//				}
+				if (view.annotation.title == game.name &&
+					view.annotation.subtitle == game.time){
+					parent.selectedEvent = game
+				}
+			}
+			parent.selectedEvent = view.annotation as? Game
+			parent.showDetails = true
+		}
+	func mapView(_: MKMapView, didDeselect view: MKAnnotationView) {
+		parent.selectedEvent = nil
+		parent.showDetails = false
+	}
 	}
 	
 	func makeCoordinator() -> MapView.Coordinator {
@@ -43,11 +62,7 @@ struct MapView: UIViewRepresentable {
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
 		mapView.delegate = context.coordinator
-//		let annotation = MKPointAnnotation()
-//		annotation.title = "New York City"
-//    annotation.subtitle = "The City that Never Sleeps"
-//    annotation.coordinate = CLLocationCoordinate2D(latitude: 40, longitude: -74)
-//    mapView.addAnnotation(annotation)
+		
 
     return mapView
 		
