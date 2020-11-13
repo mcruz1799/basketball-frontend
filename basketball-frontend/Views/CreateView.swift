@@ -10,9 +10,10 @@ import SwiftUI
 
 struct CreateView: View {
   @ObservedObject var viewModel: ViewModel
+  @State var creatingGame: Bool = true
 
   var body: some View {
-    CreateMapView(viewModel: viewModel)
+    CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)
   }
 }
 

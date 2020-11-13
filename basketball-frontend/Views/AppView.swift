@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AppView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
+  @State var creatingGame: Bool = false
   
   init() {
     UITabBar.appearance().backgroundColor = UIColor.orange
@@ -30,6 +31,9 @@ struct AppView: View {
             .font(.system(size: 36))
             .imageScale(.large)
           Text("Create Game")
+//            .onTapGesture {
+//              self.creatingGame = true
+//            }
         }
       ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
         .tabItem{
@@ -38,7 +42,10 @@ struct AppView: View {
             .imageScale(.large)
           Text("Profile")
         }
-		}.onAppear { self.viewModel.fetchData() }  
+    }.onAppear { self.viewModel.fetchData() }
+//    .sheet(isPresented: $creatingGame) {
+//      CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)  
+//    }
   }
 }
 
