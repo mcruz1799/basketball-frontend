@@ -25,7 +25,7 @@ class basketball_frontendTests: XCTestCase {
     
     let time = game.onTime()
     
-    XCTAssertEqual(time, "1:16 AM")
+    XCTAssertEqual(time, "8:16 PM")
   }
 
   func testUserModel() {
@@ -41,6 +41,6 @@ class basketball_frontendTests: XCTestCase {
     
     let time = games.onTime()
     
-    XCTAssertEqual(time, "1:16 AM")
+    XCTAssertEqual(time, "8:16 PM")
   }
 }
