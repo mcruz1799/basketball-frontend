@@ -19,11 +19,33 @@ class ViewModel: ObservableObject {
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
+	
+	@Published var gameAnnotations: [GameAnnotation] = [GameAnnotation]()
+	@Published var gameAnnotationsLoaded: Bool = false
   
   @Published var userLocation = Location()  
 
   
-  init () {}
+	init () {}
+	
+	func getGameAnnotations(){
+		DispatchQueue.main.async {
+			print("GETTTING GAME ANNOTATIONS -----------------------------------------------------")
+			self.getGames()
+			for game in self.games {
+				print(game.latitude, "   ", game.longitude)
+				let id = game.id
+				let time = game.time
+				let name = game.name
+				let latitude = game.latitude
+				let longitude = game.longitude
+				self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
+			}
+			self.gameAnnotationsLoaded = true
+			print("ANNOTATIONS", self.gameAnnotations.count, "-----------------------------------------------------")
+		}
+
+	}
   
 //  unfavorite a user given a favorite id
 //  :param id (Int) - favorite id
@@ -102,6 +124,9 @@ class ViewModel: ObservableObject {
         self.games = value.data
       }
     }
+		print("GAMES")
+		print(self.games.count)
+		print()
   }
   
   func getGame(id: Int) {

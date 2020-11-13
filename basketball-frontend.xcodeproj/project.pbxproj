@@ -24,6 +24,7 @@
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
 		D37D9DE1255E2AE400B0BE5B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D9DE0255E2AE300B0BE5B /* MapView.swift */; };
+		D37D9DE3255E314E00B0BE5B /* GameAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */; };
 		D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A922555D7F2004B09D2 /* AppView.swift */; };
 		D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A942555D7FC004B09D2 /* ProfileView.swift */; };
 		D3A46A972555D80A004B09D2 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A962555D80A004B09D2 /* CreateView.swift */; };
@@ -80,6 +81,7 @@
 		CE2B849F504731F6FF9D13D2 /* Pods-basketball-frontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend/Pods-basketball-frontend.release.xcconfig"; sourceTree = "<group>"; };
 		CFED0C95F3B92AFEC6EB8354 /* Pods-basketball-frontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.debug.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D37D9DE0255E2AE300B0BE5B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapView.swift; path = "/Users/matthewcruz/Documents/_Fall2020/443_Mobile_App_Dev/basketball-frontend/basketball-frontend/Views/MapView.swift"; sourceTree = "<absolute>"; };
+		D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAnnotation.swift; sourceTree = "<group>"; };
 		D3A46A922555D7F2004B09D2 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		D3A46A942555D7FC004B09D2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D3A46A962555D80A004B09D2 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				7EC3670C255258180022DAE0 /* Models.swift */,
 				7EB468CE255B49AD0044B4D2 /* Location.swift */,
+				D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3A46A992555D816004B09D2 /* HomeView.swift in Sources */,
+				D37D9DE3255E314E00B0BE5B /* GameAnnotation.swift in Sources */,
 				7EB468AE2559CCEC0044B4D2 /* GameDetailsView.swift in Sources */,
 				7EB468B32559F73B0044B4D2 /* Helper.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,

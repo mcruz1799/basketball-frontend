@@ -19,7 +19,7 @@ struct GamesTableView: View {
     NavigationView {
       List {
         ForEach(players) { player in
-          NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player)) {
+					NavigationLink(destination: GameDetailsView(viewModel: self.viewModel, game: self.$viewModel.game)) {
             GameRow(player: player)}
         }
       }.navigationBarTitle("") // Title must be set to use hidden property

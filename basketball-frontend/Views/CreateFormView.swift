@@ -24,7 +24,7 @@ struct CreateFormView: View {
         TextField("Description", text: $game.description)
         Section {
           Button(action: {
-            viewModel.createGame(game: game, date: date)
+						self.viewModel.createGame(game: self.game, date: self.date)
           }) {
             Text("Create Game")
           }
