@@ -14,13 +14,24 @@ struct HomeView: View {
   
   var body: some View {
     GeometryReader { geometry in
-      //      MapView()
-      // Content is passed as a closure to the bottom view
+			MapView(viewModel: self.viewModel, games: self.$viewModel.games, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails)
+//			GameDetailsView(game: self.selectedEvent)
+			// Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
         GamesTableView(viewModel: viewModel, user: self.$viewModel.user, players: self.$viewModel.players)
       }
     }.edgesIgnoringSafeArea(.all)
   }
+}
+var body: some View {
+	GeometryReader { geometry in
+		MapView(viewModel: self.viewModel, games: self.$viewModel.games, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails)
+		GameDetailsView(game: self.selectedEvent!)
+		// Content is passed as a closure to the bottom view
+		BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
+			GamesTableView(user: self.$viewModel.user, players: self.$viewModel.players)
+		}
+	}.edgesIgnoringSafeArea(.all)
 }
 
 //struct HomeView_Previews: PreviewProvider {
