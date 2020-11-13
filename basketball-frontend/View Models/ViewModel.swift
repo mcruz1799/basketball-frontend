@@ -357,6 +357,7 @@ class ViewModel: ObservableObject {
           self.getGame(id: self.game!.id)
         }
       }
+      getUser(id: "4")
     }
     
     //  change the status of a player (can be used to edit player as well)
