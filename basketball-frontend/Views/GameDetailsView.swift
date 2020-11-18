@@ -138,7 +138,7 @@ struct GameDetailsView: View {
   
   func statusChange(selectedStatus: String) {
     print(selectedStatus)
-    viewModel.updateStatus(player_id: self.player.id, status: selectedStatus)
+    viewModel.editPlayerStatus(playerId: self.player.id, status: selectedStatus)
     self.status = selectedStatus
   }
 }
