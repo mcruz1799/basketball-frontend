@@ -36,11 +36,11 @@ struct FavoriteRow: View {
   
   func favoriteActions() {
     isFavorited = true
-    viewModel.favorite(favorite: favorite)
+    viewModel.favorite(favoriterId: favorite.favoriter_id, favoriteeId: favorite.favoritee_id)
   }
   
   func unfavoriteActions() {
     isFavorited = false
-    viewModel.unfavorite(id: favorite.id)
+    viewModel.unfavorite(favoriteeId: favorite.favoritee_id)
   }
 }

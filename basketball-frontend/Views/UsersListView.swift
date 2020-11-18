@@ -51,12 +51,12 @@ struct UsersListRowView: View {
   }
   func favoriteActions() {
     isFavorited = true
-    viewModel.favoriteUser(favoriter_id: viewModel.user!.id, favoritee_id: user.id)
+    viewModel.favorite(favoriterId: viewModel.user!.id, favoriteeId: user.id)
   }
   
   func unfavoriteActions() {
     isFavorited = false
-    viewModel.unfavoriteUser(favoriter_id: viewModel.user!.id, favoritee_id: user.id)
+    viewModel.unfavorite(favoriteeId: user.id)
   }
 }
 
