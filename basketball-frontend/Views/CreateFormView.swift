@@ -66,7 +66,7 @@ struct CreateFormView: View {
   }
   
   func createGame() {
-    viewModel.createGame(game: game, date: date, latitude: self.latitude, longitude: self.longitude)
+    viewModel.createGame(name: game.name, date: date, description: game.description, priv: game.priv, latitude: self.latitude, longitude: self.longitude)
     self.creatingGame = false
   }
 }
