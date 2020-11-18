@@ -63,17 +63,28 @@ struct MapView: UIViewRepresentable {
 		Coordinator(self)
 	}
 	
+	func makeGameAnnotations(_ mapView: MKMapView){
+		var loaded = false
+		DispatchQueue.main.async {
+			while(!loaded){
+
+				self.viewModel.getGameAnnotations()
+				if (self.viewModel.gameAnnotations.count > 0){
+					loaded = true
+				}
+				print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
+				mapView.addAnnotations(self.viewModel.gameAnnotations)
+			}
+		}
+
+	}
+	
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
 		mapView.delegate = context.coordinator
-		DispatchQueue.main.async {
-
-			self.viewModel.getGameAnnotations()
-			print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
-			mapView.addAnnotations(self.viewModel.gameAnnotations)
-
-		}
+		makeGameAnnotations(mapView)
 		return mapView
+		
 		
 	}
 	func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
@@ -97,13 +108,6 @@ struct MapView: UIViewRepresentable {
 
 	}
 
-//	func makeGamePins(mapView: MKMapView) {
-//		mapView.addAnnotations(self.viewModel.gameAnnotations)
-////
-////			gameAnnotation.title = game.name
-////			gameAnnotation.subtitle = game.time
-////			mapView.addAnnotation(gameAnnotation)
-//		}
 		
 	}
 
