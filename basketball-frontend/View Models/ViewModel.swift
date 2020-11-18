@@ -162,28 +162,37 @@ class ViewModel: ObservableObject {
   }
   
   //  create a new user
-  //  :param user (User) - a User object
-  //  :param password (String) - user password
+  //  :param firstName (String) - user's first name
+  //  :param lastName (String) - user's last name
+  //  :param username (String) - user's username
+  //  :param email (String) - user's email, must be a valid email address
+  //  :param dob (String) - user's date of birth, in dd-mm-yyyy format
+  //  :param phone (String) - user's phone number, must be a valid phone number
+  //  :param password (String) - user password, at least 6 characters
   //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
-  //  :return none
-  func createUser(user: User, password: String, passwordConfirmation: String) {
+  //  :return (User?) - a user object if the user is successfully created, nil otherwise
+  func createUser(firstName: String, lastName: String, username: String, email: String, dob: String, phone: String, password: String, passwordConfirmation: String) -> User? {
     let params = [
-      "firstname": user.firstName,
-      "lastname": user.lastName,
-      "username": user.username,
-      "email": user.email,
-      "dob": user.dob,
-      "phone": user.phone,
+      "firstname": firstName,
+      "lastname": lastName,
+      "username": username,
+      "email": email,
+      "dob": dob + " 00:00:00",
+      "phone": phone,
       "password": password,
       "password_confirmation": passwordConfirmation
     ]
     
+    var user: User? = nil
+    
     AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
-        self.user = value.data
+        user = value.data
       }
     }
+    
+    return user
   }
   
   // TODO: use actual private value
