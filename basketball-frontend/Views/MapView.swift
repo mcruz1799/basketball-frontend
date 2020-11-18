@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @ObservedObject var viewModel: ViewModel
+		@ObservedObject var viewModel: ViewModel
 		@Binding var gameAnnotations: [GameAnnotation]
 		@Binding var selectedEvent: Game?
 		@Binding var showDetails: Bool
@@ -41,10 +41,10 @@ struct MapView: UIViewRepresentable {
 		
 		
 		func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
+				if control == view.rightCalloutAccessoryView {
 					parent.showDetails = true
-        }
-    }
+				}
+		}
 		
 		
 		func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
@@ -66,9 +66,14 @@ struct MapView: UIViewRepresentable {
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
 		mapView.delegate = context.coordinator
-		self.viewModel.getGameAnnotations()
+		DispatchQueue.main.async {
 
-    return mapView
+			self.viewModel.getGameAnnotations()
+			print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
+			mapView.addAnnotations(self.viewModel.gameAnnotations)
+
+		}
+		return mapView
 		
 	}
 	func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
@@ -84,11 +89,11 @@ struct MapView: UIViewRepresentable {
 		uiView.setRegion(region, animated: true)
 		uiView.showsUserLocation = true
 		//if the pins haven't been rendered yet add them
-		if (self.viewModel.gameAnnotationsLoaded)
-		{
-			print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
-			uiView.addAnnotations(self.viewModel.gameAnnotations)
-		}
+//		if (self.viewModel.gameAnnotationsLoaded)
+//		{
+//			print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
+//			uiView.addAnnotations(self.viewModel.gameAnnotations)
+//		}
 
 	}
 
