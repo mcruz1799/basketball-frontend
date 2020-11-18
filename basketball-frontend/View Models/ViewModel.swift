@@ -191,31 +191,36 @@ class ViewModel: ObservableObject {
         user = value.data
       }
     }
-    
     return user
   }
   
-  // TODO: use actual private value
+  //  TODO: instead of assigning game to self.game, use the return value instead
   //  create a new game
-  //  :param game (Game) - a Game object
-  //  :return none
-  func createGame(game: Games, date: Date, latitude: Double, longitude: Double) {
-    // TODO: use actual private value
+  //  :param name (String) - name of the game court
+  //  :date (Date) - date and time of the game
+  //  :description (String) - description of the game
+  //  :priv (Bool) - whether the game is private
+  //  :latitude (Double) - latitude of the game location
+  //  :longitude: (Double) - longitude of the game location
+  //  :return (Game
+  func createGame(name: String, date: Date, description: String, priv: Bool, latitude: Double, longitude: Double) -> Game? {
     let acceptableDate = Helper.toAcceptableDate(date: date)
     let params: Parameters = [
-      "name": game.name,
+      "name": name,
       "date": acceptableDate,
       "time": acceptableDate,
-      "description": game.description,
-      "private": game.priv,
+      "description": description,
+      "private": priv,
       "longitude": longitude,
       "latitude": latitude
-    ] as [String : Any]
+    ]
     
+    var game: Game? = nil
     AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
         self.game = value.data
+        game = value.data
         let gameParams: Parameters = [
           "status": "going",
           "user_id": self.user!.id,
@@ -225,19 +230,19 @@ class ViewModel: ObservableObject {
         AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: gameParams).responseDecodable {
           ( response: AFDataResponse<APIData<Player>>) in
           if let value: APIData<Player> = response.value {
-            print(value.data) // 4
             self.getGame(id: self.game!.id)
             self.players.insert(value.data, at: 0)
           }
         }
       }
     }
+    return game
   }
   
   //  edit a game
   //  :param game (Game) - a Game object
-  //  :return none
-  func editGame(game: Game) {
+  //  :return (Game) - the edited game object if successful, the previous game object otherwise
+  func editGame(game: Game) -> Game {
     let params = [
       "name": game.name,
       "date": game.date,
@@ -248,17 +253,19 @@ class ViewModel: ObservableObject {
       "latitude": game.latitude
     ] as [String : Any]
     
+    var game: Game = game
     let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
     
     AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
-        print(value.data)
+        game = value.data
       }
     }
+    return game
   }
   
-  // TODO: use authorization token in backend
+  //  TODO: use authorization token in backend
   //  edit a user
   //  :param firstName (String) - first name of the user
   //  :param lastName (String) - last name of the user
@@ -284,7 +291,6 @@ class ViewModel: ObservableObject {
         self.user = value.data
       }
     }
-    
     refreshCurrentUser()
   }
   
