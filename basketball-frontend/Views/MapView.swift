@@ -64,20 +64,16 @@ struct MapView: UIViewRepresentable {
 	}
 	
 	func makeGameAnnotations(_ mapView: MKMapView){
-		var loaded = false
 		DispatchQueue.main.async {
-			while(!loaded){
 
 				self.viewModel.getGameAnnotations()
-				if (self.viewModel.gameAnnotations.count > 0){
-					loaded = true
-				}
+
 				print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
 				mapView.addAnnotations(self.viewModel.gameAnnotations)
 			}
 		}
 
-	}
+//	}
 	
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
@@ -114,6 +110,6 @@ struct MapView: UIViewRepresentable {
 
 //struct MapView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        MapView(viewModel: ViewModel())
+//			MapView(viewModel: ViewModel(), gameAnnotations: viewModel.gameAnnotations)
 //    }
 //}
