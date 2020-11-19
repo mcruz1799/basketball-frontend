@@ -22,7 +22,7 @@ class ViewModel: ObservableObject {
   @Published var going: [Users] = [Users]()
 	
 	@Published var gameAnnotations: [GameAnnotation] = [GameAnnotation]()
-	@Published var gameAnnotationsLoaded: Bool = false
+	@Published var gameAnnotationsFlag: Bool = false
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()  
@@ -32,11 +32,16 @@ class ViewModel: ObservableObject {
 	
 	//calls getGames and creates a game annotation object for each game
 	//called in mapView
+	func gameAnnotationsLoaded() -> Bool{
+		print("GAMEANNOTATIONSLOADED? ", self.gameAnnotations.count > 0)
+		return self.gameAnnotations.count > 0
+	}
+	
 	func getGameAnnotations(){
 		print("GETTTING GAME ANNOTATIONS -----------------------------------------------------")
 		self.getGames()
 		for game in self.games {
-			print(game.latitude, "   ", game.longitude)
+			print("GAME( ", game.latitude, ", ", game.longitude, ") --------------------------------------")
 			let id = game.id
 			let time = game.time
 			let name = game.name
@@ -44,8 +49,8 @@ class ViewModel: ObservableObject {
 			let longitude = game.longitude
 			self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
 		}
-		self.gameAnnotationsLoaded = true
-		print("ANNOTATIONS", self.gameAnnotations.count, "-----------------------------------------------------")
+//		self.gameAnnotationsLoaded = true
+		print("ANNOTATIONS AFTER GETGAMEANNOTATIONS: ", self.gameAnnotations.count, "-----------------------------------------------------")
 
 	}
   
@@ -166,9 +171,10 @@ class ViewModel: ObservableObject {
     }
     
     func fetchData() {
-      print("Fetch Data")
-      getUser(id: "4")
-      getGames()
+			print("Fetch Data")
+			self.getUser(id: "4")
+			self.getGames()
+
     }
     
     //  get a user by id
@@ -192,11 +198,13 @@ class ViewModel: ObservableObject {
     //  :param none
     //  :return none
     func getGames() {
+			print("GETTING GAMES")
       AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
         if let value: ListData<Games> = response.value {
           self.games = value.data
         }
       }
+			print("GAMES AFTER GET GAMES: ", self.games.count)
     }
     
     func getGame(id: Int) {

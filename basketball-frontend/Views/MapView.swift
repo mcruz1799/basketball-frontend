@@ -64,13 +64,16 @@ struct MapView: UIViewRepresentable {
 	}
 	
 	func makeGameAnnotations(_ mapView: MKMapView){
-		DispatchQueue.main.async {
+//		DispatchQueue.main.sync {
+			self.viewModel.getGameAnnotations()
 
-				self.viewModel.getGameAnnotations()
-
-				print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
-				mapView.addAnnotations(self.viewModel.gameAnnotations)
-			}
+		
+			print("GAMES IN MAKEGAMEANNOTATIONS: ", self.viewModel.games.count, "---------------------------------")
+			print("ANNOTATIONS IN MAKEGAMEANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
+			mapView.addAnnotations(self.viewModel.gameAnnotations)
+			self.viewModel.gameAnnotationsFlag = true
+			print("FLAGGED")
+//			}
 		}
 
 //	}
@@ -78,12 +81,12 @@ struct MapView: UIViewRepresentable {
 	func makeUIView(context: Context) -> MKMapView {
 		let mapView = MKMapView()
 		mapView.delegate = context.coordinator
-		makeGameAnnotations(mapView)
 		return mapView
-		
-		
+
 	}
+	
 	func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
+		print("Calling updateUIView")
 		let userLocation = viewModel.userLocation
 		userLocation.getCurrentLocation()
 		userLocation.loadLocation()
@@ -95,12 +98,16 @@ struct MapView: UIViewRepresentable {
 		let region = MKCoordinateRegion(center: coordinate, span: span)
 		uiView.setRegion(region, animated: true)
 		uiView.showsUserLocation = true
-		//if the pins haven't been rendered yet add them
-//		if (self.viewModel.gameAnnotationsLoaded)
-//		{
-//			print("ANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
-//			uiView.addAnnotations(self.viewModel.gameAnnotations)
-//		}
+		DispatchQueue.global(qos: .userInteractive).async {
+			print("GAMEANNOTATIONSFLAG: ", self.viewModel.gameAnnotationsFlag)
+			while(self.viewModel.gameAnnotationsLoaded() == false){
+				if (self.viewModel.gameAnnotationsLoaded() && self.viewModel.gameAnnotationsFlag == false){
+					print("MAKEGAMEANNOTATIONS")
+					makeGameAnnotations(uiView)
+				}
+			}
+		}
+
 
 	}
 
