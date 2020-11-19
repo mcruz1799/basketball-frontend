@@ -34,42 +34,42 @@ struct EditProfileForm: View {
         Text("Username:")
           .fontWeight(.bold)
           .padding(.leading)
-        TextField("Username", text: $username)
+				TextField("Username", text: self.$username)
           .padding(.trailing)
       }.padding()
-      
+
       HStack {
         Text("First Name:")
           .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
           .padding(.leading)
-        TextField("First Name", text: $firstName)
+				TextField("First Name", text: self.$firstName)
           .padding(.trailing)
       }.padding()
-      
+
       HStack {
         Text("Last Name:")
           .fontWeight(.bold)
           .padding(.leading)
-        TextField("Last Name", text: $lastName)
+				TextField("Last Name", text: self.$lastName)
           .padding(.trailing)
       }.padding()
-      
+
       HStack {
         Text("Email:")
           .fontWeight(.bold)
           .padding(.leading)
-        TextField("Email", text: $email)
+				TextField("Email", text: self.$email)
           .padding(.trailing)
       }.padding()
-      
+
       HStack {
         Text("Phone:")
           .fontWeight(.bold)
           .padding(.leading)
-        TextField("Phone", text: $phone)
+				TextField("Phone", text: self.$phone)
           .padding(.trailing)
       }.padding()
-      
+
       Button(action: {
         self.viewModel.editUser(firstName: self.firstName, lastName: self.lastName, username: self.username, email: self.email, phone: self.phone)
       }) {
