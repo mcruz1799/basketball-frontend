@@ -142,15 +142,7 @@ struct GameDetailsView: View {
     viewModel.updateStatus(player_id: self.player.id, status: selectedStatus)
     self.status = selectedStatus
   }
-//
-//  func assignUsers(users: [Users]) {
-//    self.users = users
-//    self.showingUsers = true
-//  }
-//
-//  func statusChange(selectedStatus: Int) {
-//    viewModel.updateStatus(player_id: self.player.id, status: self.statuses[self.selectedStatus])
-//  }
+
 }
 
 

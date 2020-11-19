@@ -30,6 +30,8 @@ class ViewModel: ObservableObject {
   
 	init () {}
 	
+	//calls getGames and creates a game annotation object for each game
+	//called in mapView
 	func getGameAnnotations(){
 		print("GETTTING GAME ANNOTATIONS -----------------------------------------------------")
 		self.getGames()
