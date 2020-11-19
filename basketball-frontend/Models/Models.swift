@@ -49,6 +49,9 @@ struct Games: Decodable, Encodable, Identifiable {
   func onTime() -> String {
     return Helper.onTime(time: self.time)
   }
+  func onDate() -> String {
+    return Helper.onDate(date: self.date)
+  }
 }
 
 struct Player: Decodable, Identifiable {
@@ -129,9 +132,11 @@ struct Game: Decodable {
     case maybe
     case going
   }
-  
   func onTime() -> String {
     return Helper.onTime(time: self.time)
+  }
+  func onDate() -> String {
+    return Helper.onDate(date: self.date)
   }
 }
 

@@ -13,7 +13,6 @@ class Helper {
   static func onTime(time: String) -> String {
     let timeFormatter = DateFormatter()
     timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-    timeFormatter.timeZone = TimeZone(abbreviation: "UTC")
     timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
     let formattedTime = timeFormatter.date(from: time)
     if let time: Date = formattedTime {
@@ -27,7 +26,6 @@ class Helper {
   static func onDate(date: String) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
     dateFormatter.dateFormat = "yyyy-MM-dd"
     let formattedDate = dateFormatter.date(from: date)
     if let date: Date = formattedDate {

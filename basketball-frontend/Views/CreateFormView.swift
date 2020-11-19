@@ -7,16 +7,29 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct CreateFormView: View {
   let viewModel: ViewModel
   @State var game: Games = Games(id: 4, name: "", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0)
   @State var date: Date = Date()
+  @State var locationSearch: String = ""
+  @State var latitude: Double = 40
+  @State var longitude: Double = 40
+  @Binding var creatingGame: Bool
   
   var body: some View {
     NavigationView {
       Form {
+        Section {
         TextField("Court Name", text: $game.name)
+        TextField("Location", text: $locationSearch)
+          Button(action: {
+            getAddress()
+          }) {
+            Text("Search Address")
+          }
+        }
         Toggle(isOn: $game.priv) {
           Text("Private Game")
         }
@@ -24,13 +37,37 @@ struct CreateFormView: View {
         TextField("Description", text: $game.description)
         Section {
           Button(action: {
-						self.viewModel.createGame(game: self.game, date: self.date)
+            createGame()
           }) {
             Text("Create Game")
           }
         }
-      }.navigationBarTitle("Set Game Details")
+      }.navigationBarTitle("Create A Game")
     }
+  }
+  
+  func getAddress() {
+    let searchRequest = MKLocalSearch.Request()
+    searchRequest.naturalLanguageQuery = self.locationSearch
+//    searchRequest.region = yourMapView.region
+    let search = MKLocalSearch(request: searchRequest)
+    search.start { response, error in
+        guard let response = response else {
+            print("Error: \(error?.localizedDescription ?? "Unknown error").")
+            return
+        }
+
+        for item in response.mapItems {
+          self.latitude = item.placemark.location!.coordinate.latitude
+          self.longitude = item.placemark.location!.coordinate.longitude
+          self.locationSearch = item.name!
+        }
+    }
+  }
+  
+  func createGame() {
+//    viewModel.createGame(game: game, date: date, latitude: self.latitude, longitude: self.longitude)
+    self.creatingGame = false
   }
 }
 

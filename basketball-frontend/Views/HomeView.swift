@@ -20,7 +20,9 @@ struct HomeView: View {
 			MapView(viewModel: self.viewModel, gameAnnotations: self.$viewModel.gameAnnotations, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails)
 			
 				.sheet(isPresented: self.$showDetails){
-					GameDetailsView(viewModel: self.viewModel, game: self.$selectedEvent)
+//					GameDetailsView(viewModel: self.viewModel, game: self.$selectedEvent, player: viewModel.players[0])
+					GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
+
 				}
 			
 			// Content is passed as a closure to the bottom view
