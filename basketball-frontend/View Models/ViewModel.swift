@@ -344,20 +344,21 @@ class ViewModel: ObservableObject {
   // MISC. FUNCTIONS
   //
   
-  func isInvited(favorite: Favorite) -> Bool {
-    return true
-  }
-  
   func fetchData() {
     print("Fetch Data")
     refreshCurrentUser()
     getGames()
   }
   
+  // map a boolean to a list of users representing if they are favorited or not
+  // :param users ([Users]) - list of the users
+  // :return ([(User, Bool)]) - list of users with a tag for if they are favorited or not
   func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
     return users.map({ (user: $0, favorited: self.favoritesSet.contains($0.id)) })
   }
   
+  // map a boolean to the list of favorites representing if they are invited or not
+  // :return ([(Favorite, Bool)]) - list of users with a tag for if they are invited or not
   func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
     return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
   }
