@@ -71,7 +71,7 @@ struct EditProfileForm: View {
       }.padding()
 
       Button(action: {
-        self.viewModel.editUser(firstName: self.firstName, lastName: self.lastName, username: self.username, email: self.email, phone: self.phone)
+        self.viewModel.editCurrentUser(firstName: self.firstName, lastName: self.lastName, username: self.username, email: self.email, phone: self.phone)
       }) {
         Text("Save")
       }

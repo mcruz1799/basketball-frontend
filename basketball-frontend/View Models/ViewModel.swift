@@ -15,6 +15,7 @@ class ViewModel: ObservableObject {
   @Published var players: [Player] = [Player]()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
+  @Published var userId: Int = 4
   
   @Published var game: Game?
   @Published var invited: [Users] = [Users]()
@@ -25,397 +26,364 @@ class ViewModel: ObservableObject {
 	@Published var gameAnnotationsFlag: Bool = false
   @Published var gamePlayers: Set<Int> = Set()
   
-  @Published var userLocation = Location()  
-  
+  @Published var userLocation = Location()
   
 	init () {}
-	
-	//calls getGames and creates a game annotation object for each game
-	//called in mapView
-	func gameAnnotationsLoaded() -> Bool{
-//		print("GAMEANNOTATIONSLOADED? ", self.gameAnnotations.count > 0)
-		return self.gameAnnotations.count > 0
-	}
-	
-	func getGameAnnotations(){
-		print("GETTTING GAME ANNOTATIONS -----------------------------------------------------")
-		self.getGames()
-		for game in self.games {
-			print("GAME( ", game.latitude, ", ", game.longitude, ") --------------------------------------")
-			let id = game.id
-			let time = game.time
-			let name = game.name
-			let latitude = game.latitude
-			let longitude = game.longitude
-			self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
-		}
-//		self.gameAnnotationsLoaded = true
-		print("ANNOTATIONS AFTER GETGAMEANNOTATIONS: ", self.gameAnnotations.count, "-----------------------------------------------------")
-
-	}
   
-  //  unfavorite a user given a favorite id
-  //  :param id (Int) - favorite id
+  //
+  // USER FUNCTIONS
+  //
+  
+  //  refresh the current user by updating self.user
+  //  :param none
   //  :return none
-  func unfavorite(id: Int) {
+  func refreshCurrentUser() {
+    let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(self.userId)
+    AF.request(request).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        self.user = value.data
+        self.players = value.data.players.map { $0.data }
+        self.favorites = value.data.favorites.map { $0.data }
+        self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
+      }
+    }
+  }
+  
+  //  get a user by id
+  //  :param id (Int) - a user ID
+  //  :return (User?) - a User object if one is found, nil otherwise
+  func getUser(id: Int) -> User? {
+    let request  = "http://secure-hollows-77457.herokuapp.com/users/" + String(id)
+    var user: User? = nil
+    AF.request(request).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        user = value.data
+      }
+    }
+    return user
+  }
+  
+  //  create a new user
+  //  :param firstName (String) - user's first name
+  //  :param lastName (String) - user's last name
+  //  :param username (String) - user's username
+  //  :param email (String) - user's email, must be a valid email address
+  //  :param dob (String) - user's date of birth, in dd-mm-yyyy format
+  //  :param phone (String) - user's phone number, must be a valid phone number
+  //  :param password (String) - user password, at least 6 characters
+  //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
+  //  :return (User?) - a user object if the user is successfully created, nil otherwise
+  func createUser(firstName: String, lastName: String, username: String, email: String, dob: String, phone: String, password: String, passwordConfirmation: String) -> User? {
+    let params = [
+      "firstname": firstName,
+      "lastname": lastName,
+      "username": username,
+      "email": email,
+      "dob": dob + " 00:00:00",
+      "phone": phone,
+      "password": password,
+      "password_confirmation": passwordConfirmation
+    ]
+    
+    var user: User? = nil
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        user = value.data
+      }
+    }
+    return user
+  }
+  
+  //  TODO: use authorization token in backend
+  //  edit the current user
+  //  :param firstName (String) - first name of the user
+  //  :param lastName (String) - last name of the user
+  //  :param username (String) - username of the user, must be unique
+  //  :param email (String) - email of the user, must be correctly formatted
+  //  :param phone (String) - phone number of the user, must be correctly formatted
+  //  :return none
+  func editCurrentUser(firstName: String, lastName: String, username: String, email: String, phone: String) {
+    let params = [
+      "firstname": firstName,
+      "lastname": lastName,
+      "username": username,
+      "email": email,
+      "dob": self.user?.dob,
+      "phone": phone,
+      "password": "secret",
+      "password_confirmation": "secret"
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<User>> ) in
+      if let value: APIData<User> = response.value {
+        self.user = value.data
+      }
+    }
+    refreshCurrentUser()
+  }
+  
+  //
+  // GAME FUNCTIONS
+  //
+  
+  //  get all games
+  //  :param none
+  //  :return none
+  func getGames() {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+      if let value: ListData<Games> = response.value {
+        self.games = value.data
+      }
+    }
+  }
+  
+  func getGame(id: Int) {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        self.game = value.data
+        self.invited = value.data.invited.map { $0.data }
+        self.maybe = value.data.maybe.map { $0.data }
+        self.going = value.data.going.map { $0.data }
+        let arr = self.invited + self.maybe + self.going
+        self.gamePlayers = Set(arr.map { $0.id })
+      }
+    }
+  }
+  
+  //  TODO: instead of assigning game to self.game, use the return value instead
+  //  create a new game
+  //  :param name (String) - name of the game court
+  //  :date (Date) - date and time of the game
+  //  :description (String) - description of the game
+  //  :priv (Bool) - whether the game is private
+  //  :latitude (Double) - latitude of the game location
+  //  :longitude: (Double) - longitude of the game location
+  //  :return (Game?) - the game object if created successfully, nil otherwise
+  func createGame(name: String, date: Date, description: String, priv: Bool, latitude: Double, longitude: Double) -> Game? {
+    let acceptableDate = Helper.toAcceptableDate(date: date)
+    let params: Parameters = [
+      "name": name,
+      "date": acceptableDate,
+      "time": acceptableDate,
+      "description": description,
+      "private": priv,
+      "longitude": longitude,
+      "latitude": latitude
+    ]
+    
+    var game: Game? = nil
+    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        self.game = value.data
+        game = value.data
+        
+        let player: Player? = self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
+        
+        if (player != nil) {
+          self.getGame(id: self.game!.id)
+          self.players.insert(player!, at: 0)
+        }
+      }
+    }
+    return game
+  }
+  
+  //  edit a game
+  //  :param game (Game) - a Game object
+  //  :return (Game) - the edited game object if successful, the previous game object otherwise
+  func editGame(game: Game) -> Game {
+    let params = [
+      "name": game.name,
+      "date": game.date,
+      "time": game.time,
+      "description": game.description,
+      "private": "false",
+      "longitude": game.longitude,
+      "latitude": game.latitude
+    ] as [String : Any]
+    
+    var game: Game = game
+    let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
+    
+    AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Game>> ) in
+      if let value: APIData<Game> = response.value {
+        game = value.data
+      }
+    }
+    return game
+  }
+  
+  //  calls getGames and creates a game annotation object for each game
+  //  :param none
+  //  :return (Bool) - true if self.gameAnnotations has been loaded, false otherwise
+  func gameAnnotationsLoaded() -> Bool {
+    return self.gameAnnotations.count > 0
+  }
+  
+  //  convert games data to format accepted by mapView
+  //  :param none
+  //  :return none
+  func getGameAnnotations(){
+    self.getGames()
+    for game in self.games {
+      let id = game.id
+      let time = game.time
+      let name = game.name
+      let latitude = game.latitude
+      let longitude = game.longitude
+      self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
+    }
+  }
+  
+  //
+  // FAVORITE FUNCTIONS
+  //
+  
+  //  favorite another user and refresh the user info
+  //  :param favoriterId (Int) - user ID of the favoriter
+  //  :param favoriteeId (Int) - user ID of the favoritee
+  //  :return (Favorite?) the result Favorite object if successful, nil otherwise
+  func favorite(favoriterId: Int, favoriteeId: Int) -> Favorite? {
+    let params = [
+      "favoriter_id": favoriterId,
+      "favoritee_id": favoriteeId
+    ]
+    
+    var favorite: Favorite? = nil
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Favorite>> ) in
+      if let value: APIData<Favorite> = response.value {
+        self.refreshCurrentUser()
+        favorite = value.data
+      }
+    }
+    return favorite
+  }
+  
+  //  check if a user is favorited by the current user
+  //  :param userId (Int) - a user ID of the potential favoritee
+  //  :return (Bool) true if userId is a favorite of the current user, false otherwise
+  func isFavorite(userId: Int) -> Bool {
+    for favorite in self.favorites {
+      if (favorite.favoritee_id == userId) {
+        return true
+      }
+    }
+    return false
+  }
+  
+  //  find a favorite object in self.favorites given favoriter and favoritee
+  //  :param favoriterId (Int) - user ID of the favoriter
+  //  :param favoriteeId (Int) - user ID of the favoritee
+  //  :return (Favorite?) a Favorite object if a match is found, nil otherwise
+  func findFavorite(favoriterId: Int, favoriteeId: Int) -> Favorite? {
+    for favorite in self.favorites {
+      if (favorite.favoriter_id == favoriterId && favorite.favoritee_id == favoriteeId) {
+        return favorite
+      }
+    }
+    return nil
+  }
+  
+  // unfavorite another user
+  // :param favoriteeId (Int) - user ID of the user being unfavorited
+  // :return none
+  func unfavorite(favoriteeId: Int) {
+    let id = self.favorites.filter({ $0.favoritee_id == favoriteeId })[0].id
     AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil).responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
       if let value: APIData<Favorite> = response.value {
         print(value.data)
       }
     }
-    self.getUser(id: String(self.user!.id))
+    refreshCurrentUser()
   }
   
-  //  favorite another user and refresh the user info
-  //  :param favorite (Favorite) - a Favorite object
-  //  :return none
-//  func favorite(favorite: Favorite) {
-    //  favorite another user and refresh the user info but with IDs
-    //  :param favoriterId (Int) - user ID of the favoriter
-    //  :param favoriteeId (Int) - user ID of the favoritee
-    //  :return (Favorite?) the result Favorite object if successful, nil otherwise
-    func favoriteWithIds(favoriterId: Int, favoriteeId: Int) -> Favorite? {
-      let params = [
-        "favoriter_id": favoriterId,
-        "favoritee_id": favoriteeId
-      ]
-      
-      var favorite: Favorite? = nil
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Favorite>> ) in
-        if let value: APIData<Favorite> = response.value {
-          self.getUser(id: String(self.user!.id))
-          favorite = value.data
-        }
-      }
-      return favorite
-    }
+  //
+  // PLAYER FUNCTIONS
+  //
+  
+  //  create a player
+  //  :param status (String) - status of the player, can be "going", "maybe", "invited", or "not_going"
+  //  :param userId (String) - user ID of the player
+  //  :param gameId (String) - game ID of the player
+  func createPlayer(status: String, userId: Int, gameId: Int) -> Player? {
+    let params = [
+      "status": status,
+      "user_id": String(userId),
+      "game_id": String(gameId)
+    ]
     
-    //  favorite another user and refresh the user info
-    //  :param favorite (Favorite) - a Favorite object
-    //  :return (Favorite?) the result Favorite object if successful, nil otherwise
-    func favorite(favorite: Favorite) -> Favorite? {
-      let params = [
-        "favoriter_id": favorite.favoriter_id,
-        "favoritee_id": favorite.favoritee_id
-      ]
-      
-      var favorite: Favorite? = nil
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Favorite>> ) in
-        if let value: APIData<Favorite> = response.value {
-          self.getUser(id: String(self.user!.id))
-          favorite = value.data
-        }
-      }
-      getUser(id: String(self.user!.id))
-      return favorite
-    }
+    var player: Player? = nil
     
-    
-    //  check if a user is favorited by the current user
-    //  :param userId (Int) - a user ID of the potential favoritee
-    //  :return (Bool) true if userId is a favorite of the current user, false otherwise
-    func isFavorite(userId: Int) -> Bool {
-      for favorite in self.favorites {
-        if (favorite.favoritee_id == userId) {
-          return true
-        }
-      }
-      return false
-    }
-    
-    //  find a favorite object in self.favorites given favoriter and favoritee
-    //  :param favoriterId (Int) - user ID of the favoriter
-    //  :param favoriteeId (Int) - user ID of the favoritee
-    //  :return (Favorite?) a Favorite object if a match is found, nil otherwise
-    func findFavorite(favoriterId: Int, favoriteeId: Int) -> Favorite? {
-      for favorite in self.favorites {
-        if (favorite.favoriter_id == favoriterId && favorite.favoritee_id == favoriteeId) {
-          return favorite
-        }
-      }
-      return nil
-    }
-    
-    func favoriteUser(favoriter_id: Int, favoritee_id: Int) {
-      let params = [
-        "favoriter_id": favoriter_id,
-        "favoritee_id": favoritee_id
-      ]
-      AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Favorite>> ) in
-        if let value: APIData<Favorite> = response.value {
-          print(value.data)
-        }
-      }
-      getUser(id: String(self.user!.id))
-    }
-    
-    func unfavoriteUser(favoriter_id: Int, favoritee_id: Int) {
-      let id = self.favorites.filter({ $0.favoritee_id == favoritee_id })[0].id
-      AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil).responseDecodable {
-        ( response: AFDataResponse<APIData<Favorite>> ) in
-        if let value: APIData<Favorite> = response.value {
-          print(value.data)
-        }
-      }
-      getUser(id: String(self.user!.id))
-    }
-    
-    func isInvited(favorite: Favorite) -> Bool {
-      return true
-    }
-    
-    func fetchData() {
-			print("Fetch Data")
-			self.getUser(id: "4")
-			self.getGames()
-
-    }
-    
-    //  get a user by id
-    //  :param id (Int) - user id
-    //  :return none
-    func getUser(id: String) {
-      AF.request("http://secure-hollows-77457.herokuapp.com/users/4").responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
-        print(response)
-        if let value: APIData<User> = response.value {
-          self.user = value.data
-          print(self.user as Any)
-          self.players = value.data.players.map { $0.data }
-          self.favorites = value.data.favorites.map { $0.data }
-          self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
-          print(self.favorites)
-        }
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>>) in
+      if let value: APIData<Player> = response.value {
+        self.getGame(id: self.game!.id)
+        player = value.data
       }
     }
-    
-    //  get all games
-    //  :param none
-    //  :return none
-    func getGames() {
-//			print("GETTING GAMES")
-      AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
-        if let value: ListData<Games> = response.value {
-          print("GETTING GAMES")
-          self.games = value.data
-          print(self.games)
-        }
-      }
-			print("GAMES AFTER GET GAMES: ", self.games.count)
-    }
-    
-    func getGame(id: Int) {
-      AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
-        if let value: APIData<Game> = response.value {
-          self.game = value.data
-          self.invited = value.data.invited.map { $0.data }
-          self.maybe = value.data.maybe.map { $0.data }
-          self.going = value.data.going.map { $0.data }
-          let arr = self.invited + self.maybe + self.going
-          self.gamePlayers = Set(arr.map { $0.id })
-        }
-      }
-    }
-    
-    //  create a new user
-    //  :param user (User) - a User object
-    //  :param password (String) - user password
-    //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
-    //  :return none
-    func createUser(user: User, password: String, passwordConfirmation: String) {
-      let params = [
-        "firstname": user.firstName,
-        "lastname": user.lastName,
-        "username": user.username,
-        "email": user.email,
-        "dob": user.dob,
-        "phone": user.phone,
-        "password": password,
-        "password_confirmation": passwordConfirmation
-      ]
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<User>> ) in
-        if let value: APIData<User> = response.value {
-          self.user = value.data
-        }
-      }
-    }
-    
-    // TODO: use actual private value
-    //  create a new game
-    //  :param game (Game) - a Game object
-    //  :return none
-    func createGame(game: Games, date: Date, latitude: Double, longitude: Double) {
-      // TODO: use actual private value
-      let acceptableDate = Helper.toAcceptableDate(date: date)
-      let params: Parameters = [
-        "name": game.name,
-        "date": acceptableDate,
-        "time": acceptableDate,
-        "description": game.description,
-        "private": game.priv,
-        "longitude": longitude,
-        "latitude": latitude
-      ] as [String : Any]
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Game>> ) in
-        if let value: APIData<Game> = response.value {
-          self.game = value.data
-          let gameParams: Parameters = [
-            "status": "going",
-            "user_id": self.user!.id,
-            "game_id": value.data.id
-          ]
-          
-          AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: gameParams).responseDecodable {
-            ( response: AFDataResponse<APIData<Player>>) in
-            if let value: APIData<Player> = response.value {
-              print(value.data) // 4
-              self.getGame(id: self.game!.id)
-              self.players.insert(value.data, at: 0)
-            }
-          }
-        }
-      }
-    }
-    
-    //  edit a game
-    //  :param game (Game) - a Game object
-    //  :return none
-    func editGame(game: Game) {
-      let params = [
-        "name": game.name,
-        "date": game.date,
-        "time": game.time,
-        "description": game.description,
-        "private": "false",
-        "longitude": game.longitude,
-        "latitude": game.latitude
-      ] as [String : Any]
-      
-      let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
-      
-      AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Game>> ) in
-        if let value: APIData<Game> = response.value {
-          print(value.data)
-        }
-      }
-    }
-    
-    // TODO: use authorization token in backend
-    //  edit a user
-    //  :param firstName (String) - first name of the user
-    //  :param lastName (String) - last name of the user
-    //  :param username (String) - username of the user, must be unique
-    //  :param email (String) - email of the user, must be correctly formatted
-    //  :param phone (String) - phone number of the user, must be correctly formatted
-    //  :return none
-    func editUser(firstName: String, lastName: String, username: String, email: String, phone: String) {
-      let params = [
-        "firstname": firstName,
-        "lastname": lastName,
-        "username": username,
-        "email": email,
-        "dob": self.user?.dob,
-        "phone": phone,
-        "password": "secret",
-        "password_confirmation": "secret"
-      ]
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<User>> ) in
-        if let value: APIData<User> = response.value {
-          self.user = value.data
-        }
-      }
-      
-      getUser(id: String(self.user!.id))
-    }
-    
-    
-    //  invite a user to a game
-    //  :param userID (Int) - a user ID
-    //  :param gameID (Int) - a game ID
-    //  :return none
-    func inviteToGame(userID: Int, gameID: Int) {
-      let params: Parameters = [
-        "status": "invited",
-        "user_id": userID,
-        "game_id": gameID
-      ]
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/players/", method: .post, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Player>>) in
-        if let value: APIData<Player> = response.value {
-          print(value.data)
-          self.getGame(id: self.game!.id)
-        }
-      }
-    }
-    
-    func updateStatus(player_id: Int, status: String) {
-      var s = ""
-      
-      if (status == "I'm Going") {
-        s = "going"
-      } else if (status == "I'm Invited") {
-        s = "invited"
-      } else if (status == "I'm Maybe") {
-        s = "maybe"
-      } else if (status == "I'm Not Going") {
-        s = "not_going"
-      } else {
-        s = status
-      }
-      
-      let params: Parameters = [
-        "status": s
-      ]
-      
-      print(player_id)
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player_id), method: .patch, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Player>> ) in
-        if let value: APIData<Player> = response.value {
-          print(value)
-          self.getGame(id: self.game!.id)
-        }
-      }
-      getUser(id: "4")
-      fetchData()
-    }
-    
-    //  change the status of a player (can be used to edit player as well)
-    //  :param player (Player) - a Player object with the updated status ("going", "maybe", "invited". "not_going")
-    //  :return none
-    func changePlayerStatus(player: Player) {
-      let params = [
-        "status": player.status,
-        "user_id": String(player.userId),
-        "game_id": String(player.game.data.id)
-      ]
-      
-      AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
-        ( response: AFDataResponse<APIData<Player>>) in
-        if let value: APIData<Player> = response.value {
-          print(value.data)
-        }
-      }
-    }
-    
-    func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
-      return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
-    }
-    
-    func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
-      return users.map({ (user: $0, favorited: self.favoritesSet.contains($0.id)) })
-    }
+    return player
   }
+  
+  // edit the status of a player belonging to the current user
+  // :param playerId (Int) - ID of the player
+  // :param status (String) - status of the player, can be "going", "maybe", "invited", "not_going", "I'm going", "I'm Invited", "I'm Maybe", or "I'm Not Going"
+  // :return none
+  func editPlayerStatus(playerId: Int, status: String) {
+    var s = ""
+    
+    if (status == "I'm Going") {
+      s = "going"
+    } else if (status == "I'm Invited") {
+      s = "invited"
+    } else if (status == "I'm Maybe") {
+      s = "maybe"
+    } else if (status == "I'm Not Going") {
+      s = "not_going"
+    } else {
+      s = status
+    }
+    
+    let params: Parameters = [
+      "status": s
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params).responseDecodable {
+      ( response: AFDataResponse<APIData<Player>> ) in
+      if let _: APIData<Player> = response.value {
+        self.getGame(id: self.game!.id)
+      }
+    }
+    refreshCurrentUser()
+    fetchData()
+  }
+  
+  //
+  // MISC. FUNCTIONS
+  //
+  
+  func isInvited(favorite: Favorite) -> Bool {
+    return true
+  }
+  
+  func fetchData() {
+    print("Fetch Data")
+    refreshCurrentUser()
+    getGames()
+  }
+  
+  func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
+    return users.map({ (user: $0, favorited: self.favoritesSet.contains($0.id)) })
+  }
+  
+  func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
+    return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
+  }
+}
