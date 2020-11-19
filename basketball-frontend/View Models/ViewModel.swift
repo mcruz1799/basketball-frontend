@@ -21,11 +21,14 @@ class ViewModel: ObservableObject {
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
+	
+	@Published var gameAnnotations: [GameAnnotation] = [GameAnnotation]()
+	@Published var gameAnnotationsFlag: Bool = false
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
   
-  init () {}
+	init () {}
   
   //
   // USER FUNCTIONS
@@ -213,6 +216,28 @@ class ViewModel: ObservableObject {
       }
     }
     return game
+  }
+  
+  //  calls getGames and creates a game annotation object for each game
+  //  :param none
+  //  :return (Bool) - true if self.gameAnnotations has been loaded, false otherwise
+  func gameAnnotationsLoaded() -> Bool {
+    return self.gameAnnotations.count > 0
+  }
+  
+  //  convert games data to format accepted by mapView
+  //  :param none
+  //  :return none
+  func getGameAnnotations(){
+    self.getGames()
+    for game in self.games {
+      let id = game.id
+      let time = game.time
+      let name = game.name
+      let latitude = game.latitude
+      let longitude = game.longitude
+      self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
+    }
   }
   
   //

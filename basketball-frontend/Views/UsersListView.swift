@@ -49,9 +49,11 @@ struct UsersListRowView: View {
       }
     }
   }
+  
   func favoriteActions() {
     isFavorited = true
     viewModel.favorite(favoriterId: viewModel.user!.id, favoriteeId: user.id)
+    viewModel.refreshCurrentUser()
   }
   
   func unfavoriteActions() {
