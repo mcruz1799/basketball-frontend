@@ -33,7 +33,7 @@ class ViewModel: ObservableObject {
 	//calls getGames and creates a game annotation object for each game
 	//called in mapView
 	func gameAnnotationsLoaded() -> Bool{
-		print("GAMEANNOTATIONSLOADED? ", self.gameAnnotations.count > 0)
+//		print("GAMEANNOTATIONSLOADED? ", self.gameAnnotations.count > 0)
 		return self.gameAnnotations.count > 0
 	}
 	
@@ -198,10 +198,12 @@ class ViewModel: ObservableObject {
     //  :param none
     //  :return none
     func getGames() {
-			print("GETTING GAMES")
+//			print("GETTING GAMES")
       AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
         if let value: ListData<Games> = response.value {
+          print("GETTING GAMES")
           self.games = value.data
+          print(self.games)
         }
       }
 			print("GAMES AFTER GET GAMES: ", self.games.count)
