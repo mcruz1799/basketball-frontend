@@ -47,7 +47,7 @@ struct InvitingUsersRowView: View {
   
   
   func inviteFavorite() {
-    viewModel.inviteToGame(userID: favorite.user.data.id, gameID: viewModel.game!.id)
+    viewModel.createPlayer(status: "invited", userId: favorite.user.data.id, gameId: viewModel.game!.id)
     invited = true
   }
 }

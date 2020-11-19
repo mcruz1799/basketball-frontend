@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GameDetailsView: View {
   @ObservedObject var viewModel: ViewModel
+
   let player: Player
   //  @State var game: Game = Game(id: 4, name: "Schenley Park", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0, invited: [APIData<Users>](), maybe: [APIData<Users>](), going: [APIData<Users>]())
   @State var showingUsers = false
@@ -138,17 +139,12 @@ struct GameDetailsView: View {
   
   func statusChange(selectedStatus: String) {
     print(selectedStatus)
-    viewModel.updateStatus(player_id: self.player.id, status: selectedStatus)
+    viewModel.editPlayerStatus(playerId: self.player.id, status: selectedStatus)
     self.status = selectedStatus
   }
+
 }
 
-//struct GameDetailsView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    GameDetailsView()
-//    
-//  }
-//}
 
 extension Binding {
   func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
