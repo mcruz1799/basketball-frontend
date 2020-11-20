@@ -24,6 +24,7 @@ class ViewModel: ObservableObject {
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
+  @Published var searchResults: [Users] = [Users]()
   
   init () {}
   
@@ -361,5 +362,17 @@ class ViewModel: ObservableObject {
   // :return ([(Favorite, Bool)]) - list of users with a tag for if they are invited or not
   func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
     return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
+  }
+  
+  // search the database for users
+  // :param query (String) - query to send to the database
+  // :return none
+  func searchUsers(query: String) {
+    let request  = "http://secure-hollows-77457.herokuapp.com/users/" + String(id)
+    AF.request(request).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in
+      if let value: ListData<Users> = response.value {
+        self.searchResults = value.data
+      }
+    }
   }
 }

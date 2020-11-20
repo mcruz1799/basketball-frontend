@@ -13,6 +13,8 @@
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
 		7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E533EB9255CE057002EB837 /* InvitingUsersView.swift */; };
 		7E63E8792566F1BA00C06881 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8782566F1BA00C06881 /* LocationSearchView.swift */; };
+		7E63E8C3256859E100C06881 /* UsersSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8C2256859E100C06881 /* UsersSearchView.swift */; };
+		7E63E8C825685A8A00C06881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8C725685A8A00C06881 /* SearchBarView.swift */; };
 		7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689425590F3B0044B4D2 /* SelectLocation.swift */; };
 		7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */; };
 		7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468A52559A6DC0044B4D2 /* BottomView.swift */; };
@@ -64,6 +66,8 @@
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E533EB9255CE057002EB837 /* InvitingUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitingUsersView.swift; sourceTree = "<group>"; };
 		7E63E8782566F1BA00C06881 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
+		7E63E8C2256859E100C06881 /* UsersSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersSearchView.swift; sourceTree = "<group>"; };
+		7E63E8C725685A8A00C06881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		7E8B20152555E70F00842AF9 /* APIPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = APIPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EB4689425590F3B0044B4D2 /* SelectLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocation.swift; sourceTree = "<group>"; };
 		7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTableView.swift; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 				7EB468C3255AE88F0044B4D2 /* UsersListView.swift */,
 				7E533EB9255CE057002EB837 /* InvitingUsersView.swift */,
 				7E63E8782566F1BA00C06881 /* LocationSearchView.swift */,
+				7E63E8C2256859E100C06881 /* UsersSearchView.swift */,
+				7E63E8C725685A8A00C06881 /* SearchBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				7EB468CF255B49AD0044B4D2 /* Location.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
+				7E63E8C825685A8A00C06881 /* SearchBarView.swift in Sources */,
 				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
 				7E63E8792566F1BA00C06881 /* LocationSearchView.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
@@ -512,6 +519,7 @@
 				7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
 				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,
+				7E63E8C3256859E100C06881 /* UsersSearchView.swift in Sources */,
 				7EB468CA255B48970044B4D2 /* CreateMapView.swift in Sources */,
 				7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */,
 				D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */,
