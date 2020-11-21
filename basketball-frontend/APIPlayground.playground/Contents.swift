@@ -118,6 +118,17 @@ struct Game: Decodable {
   }
 }
 
+struct UserLogin: Decodable {
+  let id: Int
+  let username: String
+  let api_key: String
+  enum CodingKeys: String, CodingKey {
+    case id
+    case username
+    case api_key
+  }
+}
+
 struct ListData<T>: Decodable where T: Decodable {
   let data: [T]
   enum CodingKeys: String, CodingKey {
@@ -162,45 +173,46 @@ struct APIData<T>: Decodable where T: Decodable {
   }
 }
 
-//var time = "2000-01-01T13:16:43.000Z"
-//var date = "2020-10-29"
-//
-//let isoDate = "2016-04-14T10:44:00+0000"
-//
-//let timeFormatter = DateFormatter()
-//let dateFormatter = DateFormatter()
-//dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-//timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-//dateFormatter.dateFormat = "yyyy-MM-dd"
-//timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-//if let formatted: Date = dateFormatter.date(from:date)
-//{
-//  print(formatted)
-//} else {
-//  print("Not Format")
-//}
-//if let formattedTime: Date = timeFormatter.date(from:time)
-//{
-//  print(formattedTime)
-//} else {
-//  print("Not Format")
-//}
+func login(username: String, password: String) -> String? {
+  let credentials: String = username + ":" + password
+  let encodedCredentials: String = Data(credentials.utf8).base64EncodedString()
 
-let p = Player(id: 9, userId: 6, status: "going", gameId: 3)
-
-func changePlayerStatus(player: Player) {
-  let params = [
-    "status": player.status,
-    "user_id": String(player.userId),
-    "game_id": String(player.gameId)
+  let headers: HTTPHeaders = [
+    "Authorization": "Basic " + encodedCredentials
   ]
   
-  AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(player.id), method: .patch, parameters: params).responseDecodable {
-    ( response: AFDataResponse<APIData<Player>>) in
-    if let value: APIData<Player> = response.value {
+  var auth: String?
+  AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers).responseDecodable {
+    ( response: AFDataResponse<UserLogin> ) in
+    if let value: UserLogin = response.value {
+      debugPrint("success")
+      print(value.api_key)
+      auth = value.api_key
+    }
+  }
+  print(auth)
+  return auth
+}
+
+let headers: HTTPHeaders = [
+  "Authorization": "Token " + "37935062f0b281fe9e36a08727680363"
+]
+
+//  refresh the current user by updating self.user
+//  :param none
+//  :return none
+func refreshCurrentUser() {
+  let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(1)
+  AF.request(request, headers: headers).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+    if let value: APIData<User> = response.value {
       print(value.data)
     }
   }
+  
+  // this proves that the request is returning successfully
+  AF.request(request, headers: headers).response{ response in
+    debugPrint(response)
+  }
 }
 
-print(changePlayerStatus(player: p))
+print(refreshCurrentUser())

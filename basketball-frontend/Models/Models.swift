@@ -140,6 +140,17 @@ struct Game: Decodable {
   }
 }
 
+struct UserLogin: Decodable {
+  let id: Int
+  let username: String
+  let api_key: String
+  enum CodingKeys: String, CodingKey {
+    case id
+    case username
+    case api_key
+  }
+}
+
 struct ListData<T>: Decodable where T: Decodable {
   let data: [T]
   enum CodingKeys: String, CodingKey {
