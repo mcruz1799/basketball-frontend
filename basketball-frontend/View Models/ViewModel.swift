@@ -33,7 +33,6 @@ class ViewModel: ObservableObject {
   // USER FUNCTIONS
   //
   
-  
   //  perform login for a user
   //  :param username (String) - username of the user
   //  :param password (String) - password of the user in plain text
@@ -51,9 +50,7 @@ class ViewModel: ObservableObject {
       if let value: UserLogin = response.value {
         let token = value.api_key
         self.createAuthHeader(token: token)
-        print(self.headers)
         self.refreshCurrentUser()
-        print(self.user)
         self.getGames()
       }
     }
@@ -112,7 +109,7 @@ class ViewModel: ObservableObject {
     
     var user: User? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         user = value.data
