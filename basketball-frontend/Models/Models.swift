@@ -56,13 +56,13 @@ struct Games: Decodable, Encodable, Identifiable {
 
 struct Player: Decodable, Identifiable {
   let id: Int
-  let userId: Int
+//  let userId: Int
   let status: String
   let game: APIData<Games>
   enum CodingKeys: String, CodingKey {
     case id
     case status
-    case userId = "user_id"
+//    case userId = "user_id"
     case game
   }
 }

@@ -44,13 +44,13 @@ struct Games: Decodable, Encodable, Identifiable {
 
 struct Player: Decodable, Identifiable {
   let id: Int
-  let userId: Int
+//  let userId: Int
   let status: String
   let game: APIData<Games>
   enum CodingKeys: String, CodingKey {
     case id
     case status
-    case userId = "user_id"
+//    case userId = "user_id"
     case game
   }
 }
@@ -209,10 +209,16 @@ func refreshCurrentUser() {
     }
   }
   
-  // this proves that the request is returning successfully
-  AF.request(request, headers: headers).response{ response in
-    debugPrint(response)
-  }
+//  AF.request("http://secure-hollows-77457.herokuapp.com/games", headers: headers).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+//    if let value: ListData<Games> = response.value {
+//      print(value.data)
+//    }
+//  }
+  
+//   this proves that the request is returning successfully
+//  AF.request(request, headers: headers).response{ response in
+//    debugPrint(response)
+//  }
 }
 
 print(refreshCurrentUser())
