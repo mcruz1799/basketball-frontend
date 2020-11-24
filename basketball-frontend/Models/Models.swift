@@ -56,13 +56,11 @@ struct Games: Decodable, Encodable, Identifiable {
 
 struct Player: Decodable, Identifiable {
   let id: Int
-  let userId: Int
   let status: String
   let game: APIData<Games>
   enum CodingKeys: String, CodingKey {
     case id
     case status
-    case userId = "user_id"
     case game
   }
 }
@@ -137,6 +135,17 @@ struct Game: Decodable {
   }
   func onDate() -> String {
     return Helper.onDate(date: self.date)
+  }
+}
+
+struct UserLogin: Decodable {
+  let id: Int
+  let username: String
+  let api_key: String
+  enum CodingKeys: String, CodingKey {
+    case id
+    case username
+    case api_key
   }
 }
 
