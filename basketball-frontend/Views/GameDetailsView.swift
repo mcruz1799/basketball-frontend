@@ -26,6 +26,7 @@ struct GameDetailsView: View {
     VStack {
       VStack {
         HStack {
+					//Button to view invited players
           Button(action: {
             assignUsers(users: viewModel.invited, status: "Invited")
           }) {
@@ -36,6 +37,7 @@ struct GameDetailsView: View {
               .cornerRadius(40)
               .padding([.trailing, .leading])
           }
+					//Button to view going players
           Button(action: {
             assignUsers(users: viewModel.going, status: "Going")
           }) {
@@ -46,6 +48,7 @@ struct GameDetailsView: View {
               .cornerRadius(40)
               .padding([.trailing, .leading])
           }
+					//Button to view maybe players
           Button(action: {
             assignUsers(users: viewModel.maybe, status: "Maybe")
           }) {
@@ -57,6 +60,7 @@ struct GameDetailsView: View {
               .padding([.trailing, .leading])
           }
         }
+				//Button to change status
         Button(action: {
           showingActionSheet = true
         }) {
@@ -68,6 +72,7 @@ struct GameDetailsView: View {
             .cornerRadius(40)
             .padding([.trailing, .leading])
         }
+				//Invite users button
         NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
           Text("Invite Friends")
             .padding()
@@ -77,7 +82,6 @@ struct GameDetailsView: View {
             .cornerRadius(40)
             .padding([.trailing, .leading])
         }
-        
         HStack {
           Text("Name:")
             .padding(.leading)
