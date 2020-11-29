@@ -26,6 +26,7 @@ class ViewModel: ObservableObject {
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
+  @Published var isLoaded: Bool = false
   
 	init () {}
   
@@ -52,6 +53,7 @@ class ViewModel: ObservableObject {
         self.createAuthHeader(token: token)
         self.refreshCurrentUser()
         self.getGames()
+        self.isLoaded = true
       }
     }
   }
