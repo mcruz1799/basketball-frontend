@@ -43,9 +43,10 @@ struct AppView: View {
               .imageScale(.large)
             Text("Profile")
           }
-      }.onAppear { self.viewModel.fetchData() }
+      }
     } else {
       SplashView()
+        .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
   }
 }

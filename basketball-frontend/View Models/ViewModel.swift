@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
-  
+  @Published var isLoaded: Bool = false
   
 	init () {}
   
@@ -39,6 +39,7 @@ class ViewModel: ObservableObject {
   //  :param password (String) - password of the user in plain text
   //  :return none
   func login(username: String, password: String) {
+    print("log in")
     let credentials: String = username + ":" + password
     let encodedCredentials: String = Data(credentials.utf8).base64EncodedString()
 
@@ -49,11 +50,13 @@ class ViewModel: ObservableObject {
     AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers).responseDecodable {
       ( response: AFDataResponse<UserLogin> ) in
       if let value: UserLogin = response.value {
+        print("here")
         let token = value.api_key
         self.createAuthHeader(token: token)
         self.refreshCurrentUser()
         self.getGames()
         self.isLoaded = true
+        print("loaded")
       }
     }
   }
