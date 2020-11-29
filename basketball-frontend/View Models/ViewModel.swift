@@ -27,6 +27,7 @@ class ViewModel: ObservableObject {
   
   @Published var userLocation = Location()
   
+  
 	init () {}
   
   //
@@ -52,6 +53,7 @@ class ViewModel: ObservableObject {
         self.createAuthHeader(token: token)
         self.refreshCurrentUser()
         self.getGames()
+        self.isLoaded = true
       }
     }
   }
