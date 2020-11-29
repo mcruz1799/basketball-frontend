@@ -16,6 +16,13 @@ struct AppView: View {
     UITabBar.appearance().backgroundColor = UIColor.orange
   }
   var body: some View {
+//    let logged = Binding(
+//      get: { self.viewModel.isLoaded },
+//      set: {
+//        self.locationSearch = $0;
+//        search()
+//      }
+//    )
     
     if viewModel.isLoaded {
       TabView{
@@ -45,7 +52,10 @@ struct AppView: View {
           }
       }.onAppear { self.viewModel.fetchData() }
     } else {
-      SplashView()
+//      SplashView()
+      Button("Logging In") {
+        viewModel.log()
+      }
     }
   }
 }

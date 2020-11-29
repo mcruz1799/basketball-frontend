@@ -27,8 +27,15 @@ class ViewModel: ObservableObject {
   
   @Published var userLocation = Location()
   
+  @Published var isLoaded: Bool = false
+
+  
   
 	init () {}
+  
+  func log() {
+    self.isLoaded = true
+  }
   
   //
   // USER FUNCTIONS

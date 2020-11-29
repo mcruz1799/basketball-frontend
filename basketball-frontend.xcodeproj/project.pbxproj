@@ -23,6 +23,7 @@
 		7EB468D4255B4B530044B4D2 /* CreateFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468D3255B4B530044B4D2 /* CreateFormView.swift */; };
 		7EC3670D255258180022DAE0 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3670C255258180022DAE0 /* Models.swift */; };
 		7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC3671125525A470022DAE0 /* ViewModel.swift */; };
+		7EC92AEB2574141400BDC984 /* AppView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC92AEA2574141400BDC984 /* AppView2.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
 		D301FB4B2564F11D008447BD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D301FB4A2564F11D008447BD /* MapView.swift */; };
 		D37D9DE3255E314E00B0BE5B /* GameAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */; };
@@ -77,6 +78,7 @@
 		7EB468D3255B4B530044B4D2 /* CreateFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFormView.swift; sourceTree = "<group>"; };
 		7EC3670C255258180022DAE0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		7EC92AEA2574141400BDC984 /* AppView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView2.swift; sourceTree = "<group>"; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend_basketball_frontendUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontendTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				D3A46A922555D7F2004B09D2 /* AppView.swift */,
+				7EC92AEA2574141400BDC984 /* AppView2.swift */,
 				D3A46A942555D7FC004B09D2 /* ProfileView.swift */,
 				D3A46A962555D80A004B09D2 /* CreateView.swift */,
 				7EB468C9255B48960044B4D2 /* CreateMapView.swift */,
@@ -506,6 +509,7 @@
 				D301FB4B2564F11D008447BD /* MapView.swift in Sources */,
 				7EB468B32559F73B0044B4D2 /* Helper.swift in Sources */,
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
+				7EC92AEB2574141400BDC984 /* AppView2.swift in Sources */,
 				7EB468CF255B49AD0044B4D2 /* Location.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
 				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
