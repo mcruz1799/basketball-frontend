@@ -368,10 +368,14 @@ class ViewModel: ObservableObject {
   // :param query (String) - query to send to the database
   // :return none
   func searchUsers(query: String) {
-    let request  = "http://secure-hollows-77457.herokuapp.com/users/" + String(id)
-    AF.request(request).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in
+    let params = [
+      "query": query.lowercased()
+    ]
+    let request  = "http://secure-hollows-77457.herokuapp.com/search"
+    AF.request(request, method: .get, parameters: params).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in  
       if let value: ListData<Users> = response.value {
         self.searchResults = value.data
+        print(value.data)
       }
     }
   }

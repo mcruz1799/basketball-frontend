@@ -45,7 +45,7 @@ struct ProfileView: View {
       .navigationBarItems(trailing:
                             NavigationLink(destination: EditProfileForm(
                                             viewModel: viewModel,
-                                            username: viewModel.user!.username,
+                                            username: viewModel.user?.username ?? "n/a",
                                             firstName: viewModel.user?.firstName ?? "n/a",
                                             lastName: viewModel.user?.lastName ?? "n/a",
                                             email: viewModel.user?.email ?? "n/a",

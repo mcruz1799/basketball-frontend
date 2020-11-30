@@ -114,7 +114,7 @@ struct GameDetailsView: View {
       .navigationBarTitle("Game Details")
       .onAppear { self.viewModel.getGame(id: player.game.data.id) }
       .sheet(isPresented: $showingUsers) {
-        UsersListView(viewModel: viewModel, users: $users, status: statusList)
+        UsersListView(viewModel: viewModel, users: $users)
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a new color"), buttons: [

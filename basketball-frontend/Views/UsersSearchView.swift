@@ -9,14 +9,15 @@
 import SwiftUI
 
 struct UsersSearchView: View {
-  @State var userSearch: String = ""
-  @State var searchResults: [Users] = [Users]()
   let viewModel: ViewModel
+  @State var userSearch: String = ""
+  @Binding var searchResults: [Users] 
   @State private var isEditing = false
   
   var body: some View {
     let usSearch = Binding(
-      get: { self.userSearch },
+      get: {
+        self.userSearch },
       set: {
         self.userSearch = $0;
         search()
@@ -25,25 +26,18 @@ struct UsersSearchView: View {
     NavigationView {
       VStack {
         SearchBarView<Users>(searchText: usSearch, searchResults: $searchResults)
-        List {
-          ForEach(searchResults) { result in
-            VStack(alignment: .leading) {
-              Text(result.username).bold()
-//              Text(parseAddress(selectedItem: result.placemark))
-            }
-          }
-        }
+        UsersListView(viewModel: viewModel, users: $searchResults)
       }.navigationBarTitle("Search Users")
-    }
+    }.onAppear { search() }
   }
   
   func search() {
-    viewModel.searchUsers(query: userSearch)
+    viewModel.searchUsers(query: self.userSearch)
   }
 }
 
 struct UsersSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    UsersSearchView(viewModel: ViewModel())
+    UsersSearchView(viewModel: ViewModel(), searchResults: .constant([Users]()))
   }
 }

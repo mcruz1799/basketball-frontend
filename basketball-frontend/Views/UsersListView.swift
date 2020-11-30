@@ -11,16 +11,16 @@ import SwiftUI
 struct UsersListView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var users: [Users]
-  let status: String
+//  let status: String
   
   var body: some View {
-    VStack {
-      Text(status + " Users")
+//    VStack {
+//      Text(status + " Users")
       List {
         ForEach(viewModel.forStatus(users: users), id: \.user.id) { arg in
           UsersListRowView(viewModel: viewModel, user: arg.user, isFavorited: arg.favorited)
         }
-      }
+//      }
     }
   }
 }

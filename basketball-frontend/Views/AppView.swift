@@ -16,6 +16,7 @@ struct AppView: View {
     UITabBar.appearance().backgroundColor = UIColor.orange
   }
   var body: some View {
+    //    UsersSearchView(viewModel: viewModel, searchResults:   $viewModel.searchResults)
     
     TabView{
       HomeView(viewModel: viewModel)
@@ -31,9 +32,9 @@ struct AppView: View {
             .font(.system(size: 36))
             .imageScale(.large)
           Text("Create Game")
-//            .onTapGesture {
-//              self.creatingGame = true
-//            }
+          //            .onTapGesture {
+          //              self.creatingGame = true
+          //            }
         }
       ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
         .tabItem{
@@ -43,9 +44,9 @@ struct AppView: View {
           Text("Profile")
         }
     }.onAppear { self.viewModel.fetchData() }
-//    .sheet(isPresented: $creatingGame) {
-//      CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)  
-//    }
+    //    .sheet(isPresented: $creatingGame) {
+    //      CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)  
+    //    }
   }
 }
 
