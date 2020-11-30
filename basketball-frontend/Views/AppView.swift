@@ -17,36 +17,38 @@ struct AppView: View {
   }
   var body: some View {
     //    UsersSearchView(viewModel: viewModel, searchResults:   $viewModel.searchResults)
-    
-    TabView{
-      HomeView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "house.fill")
-            .font(.system(size: 25))
-            .imageScale(.large)
-          Text("Home")
-        }
-      CreateView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "plus.circle.fill")
-            .font(.system(size: 36))
-            .imageScale(.large)
-          Text("Create Game")
-          //            .onTapGesture {
-          //              self.creatingGame = true
-          //            }
-        }
-      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "person.circle")
-            .font(.system(size: 25))
-            .imageScale(.large)
-          Text("Profile")
-        }
-    }.onAppear { self.viewModel.fetchData() }
-    //    .sheet(isPresented: $creatingGame) {
-    //      CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)  
-    //    }
+  
+    if viewModel.isLoaded {
+      TabView{
+        HomeView(viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "house.fill")
+              .font(.system(size: 25))
+              .imageScale(.large)
+            Text("Home")
+          }
+        CreateView(viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "plus.circle.fill")
+              .font(.system(size: 36))
+              .imageScale(.large)
+            Text("Create Game")
+  //            .onTapGesture {
+  //              self.creatingGame = true
+  //            }
+          }
+        ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "person.circle")
+              .font(.system(size: 25))
+              .imageScale(.large)
+            Text("Profile")
+          }
+      }
+    } else {
+      SplashView()
+        .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
+    }
   }
 }
 
