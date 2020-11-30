@@ -46,7 +46,7 @@ struct AppView: View {
           }
       }
     } else {
-      SplashView()
+      SplashView()  
         .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
   }
