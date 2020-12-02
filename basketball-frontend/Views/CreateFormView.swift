@@ -22,13 +22,13 @@ struct CreateFormView: View {
     NavigationView {
       Form {
         Section {
-        TextField("Court Name", text: $game.name)
-        TextField("Location", text: $locationSearch)
-          Button(action: {
-            getAddress()
-          }) {
-            Text("Search Address")
-          }
+          TextField("Court Name", text: $game.name)
+          TextField("Location", text: $locationSearch)
+            Button(action: {
+              getAddress()
+            }) {
+              Text("Search Address")
+            }
         }
         Toggle(isOn: $game.priv) {
           Text("Private Game")
