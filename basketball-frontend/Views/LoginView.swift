@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct LoginView: View {
-  var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   
   @State var username: String = ""
   @State var password: String = ""
@@ -33,7 +33,7 @@ struct LoginView: View {
           Text("Login")
         }
         
-      }.navigationBarTitle("Welcome to Basketball App")
+      }.navigationBarTitle("Login")
     }
   }
   

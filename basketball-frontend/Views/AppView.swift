@@ -51,8 +51,7 @@ struct AppView: View {
     } else if viewModel.currentScreen == "login" {
       LoginView(viewModel: self.viewModel)
     } else if viewModel.currentScreen == "landing" {
-      LandingView()
-        .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
+      LandingView(viewModel: self.viewModel)
     }
   }
 }

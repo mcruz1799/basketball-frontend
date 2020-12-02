@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
-  @Published var currentScreen: String = "login"
+  @Published var currentScreen: String = "landing"
   
 	init () {}
   
