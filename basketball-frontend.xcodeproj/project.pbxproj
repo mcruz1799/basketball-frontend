@@ -12,6 +12,7 @@
 		461306EF257760D9006A0998 /* CreateUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461306EE257760D9006A0998 /* CreateUserView.swift */; };
 		461306F4257760F7006A0998 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461306F3257760F7006A0998 /* SplashView.swift */; };
 		461306F92577610C006A0998 /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461306F82577610C006A0998 /* LandingView.swift */; };
+		4613070A257763A9006A0998 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46130709257763A9006A0998 /* LoginView.swift */; };
 		4626385C2555DF7E0052CEB6 /* EditProfileForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */; };
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
 		7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E533EB9255CE057002EB837 /* InvitingUsersView.swift */; };
@@ -66,6 +67,7 @@
 		461306EE257760D9006A0998 /* CreateUserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateUserView.swift; path = ../../../CreateUserView.swift; sourceTree = "<group>"; };
 		461306F3257760F7006A0998 /* SplashView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		461306F82577610C006A0998 /* LandingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
+		46130709257763A9006A0998 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileForm.swift; sourceTree = "<group>"; };
 		46D660CE255366670020F38F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +191,7 @@
 				461306F3257760F7006A0998 /* SplashView.swift */,
 				461306EE257760D9006A0998 /* CreateUserView.swift */,
 				461306F82577610C006A0998 /* LandingView.swift */,
+				46130709257763A9006A0998 /* LoginView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -519,6 +522,7 @@
 				7EC3670D255258180022DAE0 /* Models.swift in Sources */,
 				7EB468CF255B49AD0044B4D2 /* Location.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
+				4613070A257763A9006A0998 /* LoginView.swift in Sources */,
 				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
 				7EB468C4255AE88F0044B4D2 /* UsersListView.swift in Sources */,

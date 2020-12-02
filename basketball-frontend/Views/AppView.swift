@@ -48,6 +48,8 @@ struct AppView: View {
       SplashView()
     } else if viewModel.currentScreen == "create-user" {
       CreateUserView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "login" {
+      LoginView(viewModel: self.viewModel)
     } else if viewModel.currentScreen == "landing" {
       LandingView()
         .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
