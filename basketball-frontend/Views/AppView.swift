@@ -17,7 +17,7 @@ struct AppView: View {
   }
   var body: some View {
     
-    if viewModel.isLoaded {
+    if viewModel.currentScreen == "app" {
       TabView{
         HomeView(viewModel: viewModel)
           .tabItem{
@@ -44,8 +44,12 @@ struct AppView: View {
             Text("Profile")
           }
       }
-    } else {
+    } else if viewModel.currentScreen == "login-splash" {
       SplashView()
+    } else if viewModel.currentScreen == "create-user" {
+      CreateUserView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "landing" {
+      LandingView()
         .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
   }
