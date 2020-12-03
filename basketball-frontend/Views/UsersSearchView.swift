@@ -23,12 +23,11 @@ struct UsersSearchView: View {
         search()
       }
     )
-    NavigationView {
-      VStack {
-        SearchBarView<Users>(searchText: usSearch, searchResults: $searchResults)
-        UsersListView(viewModel: viewModel, users: $searchResults)
-      }.navigationBarTitle("Search Users")
-    }.onAppear { search() }
+    VStack {
+      SearchBarView<Users>(searchText: usSearch, searchResults: $searchResults)
+      UsersListView(viewModel: viewModel, users: $searchResults)
+    }.navigationBarTitle("Search Users")
+    .onAppear { search() }
   }
   
   func search() {

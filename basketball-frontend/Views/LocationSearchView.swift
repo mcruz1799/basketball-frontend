@@ -28,10 +28,10 @@ struct LocationSearchView: View {
         SearchBarView<MKMapItem>(searchText: locSearch, searchResults: $searchResults)
         List {
           ForEach(searchResults, id: \.name) { result in
-            NavigationLink(destination: CreateFormView(viewModel: viewModel,   creatingGame: $creatingGame)) {
+            NavigationLink(destination: CreateFormView(viewModel: viewModel,   location: result, creatingGame: $creatingGame)) {
               VStack(alignment: .leading) {
-                Text(result.name!).bold()
-                Text(parseAddress(selectedItem: result.placemark))
+                Text(result.name ?? "").bold()
+                Text(Helper.parseAddress(selectedItem: result.placemark))
               }
             }
           }
@@ -52,31 +52,6 @@ struct LocationSearchView: View {
       }
       self.searchResults = response.mapItems
     }
-  }
-  
-  // Credit to Robert Chen, thorntech.com
-  func parseAddress(selectedItem: MKPlacemark) -> String {
-    // put a space between "4" and "Melrose Place"
-    let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
-    // put a comma between street and city/state
-    let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : ""
-    // put a space between "Washington" and "DC"
-    let secondSpace = (selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) ? " " : ""
-    let addressLine = String(
-      format:"%@%@%@%@%@%@%@",
-      // street number
-      selectedItem.subThoroughfare ?? "",
-      firstSpace,
-      // street name
-      selectedItem.thoroughfare ?? "",
-      comma,
-      // city
-      selectedItem.locality ?? "",
-      secondSpace,
-      // state
-      selectedItem.administrativeArea ?? ""
-    )
-    return addressLine
   }
 }
 

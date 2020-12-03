@@ -16,34 +16,40 @@ struct AppView: View {
     UITabBar.appearance().backgroundColor = UIColor.orange
   }
   var body: some View {
-    //    UsersSearchView(viewModel: viewModel, searchResults:   $viewModel.searchResults)
-  
+    
     if viewModel.isLoaded {
-      TabView{
-        HomeView(viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "house.fill")
-              .font(.system(size: 25))
-              .imageScale(.large)
-            Text("Home")
+      GeometryReader { geometry in
+        ZStack {
+          TabView{
+            HomeView(viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "house.fill")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Home")
+              }
+            ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "person.circle")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Profile")
+              }
           }
-        CreateView(viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "plus.circle.fill")
-              .font(.system(size: 36))
-              .imageScale(.large)
-            Text("Create Game")
-  //            .onTapGesture {
-  //              self.creatingGame = true
-  //            }
-          }
-        ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "person.circle")
-              .font(.system(size: 25))
-              .imageScale(.large)
-            Text("Profile")
-          }
+          ZStack {
+            Button(action: {
+                    self.creatingGame = true }) {
+              VStack {
+                Image(systemName: "plus.circle.fill")
+                  .font(.system(size: 36))
+                  .imageScale(.large)
+//                Text("Create Game")
+              }
+            }
+          }.offset(y: geometry.size.height/2 - 20)
+        }
+      }.sheet(isPresented: $creatingGame) {
+        CreateView(viewModel: viewModel, creatingGame: $creatingGame)
       }
     } else {
       SplashView()  

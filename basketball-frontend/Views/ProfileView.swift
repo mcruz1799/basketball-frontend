@@ -42,17 +42,31 @@ struct ProfileView: View {
           }
         }
       }
-      .navigationBarItems(trailing:
-                            NavigationLink(destination: EditProfileForm(
-                                            viewModel: viewModel,
-                                            username: viewModel.user?.username ?? "n/a",
-                                            firstName: viewModel.user?.firstName ?? "n/a",
-                                            lastName: viewModel.user?.lastName ?? "n/a",
-                                            email: viewModel.user?.email ?? "n/a",
-                                            phone: viewModel.user?.phone ?? "n/a"))
+      .navigationBarItems(leading:
+                            NavigationLink(destination: UsersSearchView(viewModel: viewModel, searchResults: $viewModel.searchResults))
                             {
-                              Image(systemName: "pencil")
-                            })
+                              HStack {
+                                Text("Search Users")
+                                Image(systemName: "magnifyingglass")
+                              }
+                            }, trailing:
+                              NavigationLink(destination: EditProfileForm(
+                                              viewModel: viewModel,
+                                              username: viewModel.user?.username ?? "n/a",
+                                              firstName: viewModel.user?.firstName ?? "n/a",
+                                              lastName: viewModel.user?.lastName ?? "n/a",
+                                              email: viewModel.user?.email ?? "n/a",
+                                              phone: viewModel.user?.phone ?? "n/a"))
+                              {
+                                Image(systemName: "pencil")
+                              }
+      )
     }
+  }
+}
+
+struct ProfileView_Previews: PreviewProvider {
+  static var previews: some View {
+    ProfileView(user: .constant(nil), favorites: .constant([Favorite]()), viewModel: ViewModel())
   }
 }

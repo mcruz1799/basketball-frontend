@@ -13,6 +13,7 @@ class ViewModel: ObservableObject {
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
+  @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
   @Published var userId: Int = 1
@@ -68,6 +69,7 @@ class ViewModel: ObservableObject {
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
+        self.playersSet = Set(self.players.map { $0.game.data.id })
         self.favorites = value.data.favorites.map { $0.data }
         self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
       }
