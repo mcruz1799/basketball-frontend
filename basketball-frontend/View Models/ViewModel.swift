@@ -13,6 +13,7 @@ class ViewModel: ObservableObject {
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
+  @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
   @Published var userId: Int?
@@ -27,6 +28,8 @@ class ViewModel: ObservableObject {
   
   @Published var userLocation = Location()
   @Published var currentScreen: String = "landing"
+  @Published var searchResults: [Users] = [Users]()
+  @Published var isLoaded: Bool = false
   
 	init () {}
   
@@ -69,6 +72,7 @@ class ViewModel: ObservableObject {
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
+        self.playersSet = Set(self.players.map { $0.game.data.id })
         self.favorites = value.data.favorites.map { $0.data }
         self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
       }
@@ -385,22 +389,39 @@ class ViewModel: ObservableObject {
   // MISC. FUNCTIONS
   //
   
-  func isInvited(favorite: Favorite) -> Bool {
-    return true
-  }
-  
   func fetchData() {
     login(username: "jxu", password: "secret")
   }
   
+  // map a boolean to a list of users representing if they are favorited or not
+  // :param users ([Users]) - list of the users
+  // :return ([(User, Bool)]) - list of users with a tag for if they are favorited or not
   func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
     return users.map({ (user: $0, favorited: self.favoritesSet.contains($0.id)) })
   }
   
+  // map a boolean to the list of favorites representing if they are invited or not
+  // :return ([(Favorite, Bool)]) - list of users with a tag for if they are invited or not
   func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
     return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
   }
   
+  // search the database for users
+  // :param query (String) - query to send to the database
+  // :return none
+  func searchUsers(query: String) {
+    let params = [
+      "query": query.lowercased()
+    ]
+    let request  = "http://secure-hollows-77457.herokuapp.com/search"
+    AF.request(request, method: .get, parameters: params).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in  
+      if let value: ListData<Users> = response.value {
+        self.searchResults = value.data
+        print(value.data)
+      }
+    }
+  }
+
   func createAuthHeader(token: String) {
     self.headers = [
       "Authorization": "Token " + token
