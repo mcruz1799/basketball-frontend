@@ -18,31 +18,39 @@ struct AppView: View {
   var body: some View {
     
     if viewModel.currentScreen == "app" {
-      TabView{
-        HomeView(viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "house.fill")
-              .font(.system(size: 25))
-              .imageScale(.large)
-            Text("Home")
+      if viewModel.isLoaded {
+      GeometryReader { geometry in
+        ZStack {
+          TabView{
+            HomeView(viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "house.fill")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Home")
+              }
+            ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "person.circle")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Profile")
+              }
           }
-        CreateView(viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "plus.circle.fill")
-              .font(.system(size: 36))
-              .imageScale(.large)
-            Text("Create Game")
-  //            .onTapGesture {
-  //              self.creatingGame = true
-  //            }
-          }
-        ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-          .tabItem{
-            Image(systemName: "person.circle")
-              .font(.system(size: 25))
-              .imageScale(.large)
-            Text("Profile")
-          }
+          ZStack {
+            Button(action: {
+                    self.creatingGame = true }) {
+              VStack {
+                Image(systemName: "plus.circle.fill")
+                  .font(.system(size: 36))
+                  .imageScale(.large)
+//                Text("Create Game")
+              }
+            }
+          }.offset(y: geometry.size.height/2 - 20)
+        }
+      }.sheet(isPresented: $creatingGame) {
+        CreateView(viewModel: viewModel, creatingGame: $creatingGame)
       }
     } else if viewModel.currentScreen == "login-splash" {
       SplashView()
@@ -52,6 +60,9 @@ struct AppView: View {
       LoginView(viewModel: self.viewModel)
     } else if viewModel.currentScreen == "landing" {
       LandingView(viewModel: self.viewModel)
+    } else {
+      SplashView()  
+        .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
   }
 }

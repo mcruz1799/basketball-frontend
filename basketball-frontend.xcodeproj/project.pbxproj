@@ -14,7 +14,11 @@
 		4613070A257763A9006A0998 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46130709257763A9006A0998 /* LoginView.swift */; };
 		4626385C2555DF7E0052CEB6 /* EditProfileForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */; };
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
+		7E360EBF2575640D00A5F8C4 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E360EBE2575640D00A5F8C4 /* SplashView.swift */; };
 		7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E533EB9255CE057002EB837 /* InvitingUsersView.swift */; };
+		7E63E8792566F1BA00C06881 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8782566F1BA00C06881 /* LocationSearchView.swift */; };
+		7E63E8C3256859E100C06881 /* UsersSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8C2256859E100C06881 /* UsersSearchView.swift */; };
+		7E63E8C825685A8A00C06881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E63E8C725685A8A00C06881 /* SearchBarView.swift */; };
 		7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689425590F3B0044B4D2 /* SelectLocation.swift */; };
 		7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */; };
 		7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB468A52559A6DC0044B4D2 /* BottomView.swift */; };
@@ -70,7 +74,11 @@
 		4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileForm.swift; sourceTree = "<group>"; };
 		46D660CE255366670020F38F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E360EBE2575640D00A5F8C4 /* SplashView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		7E533EB9255CE057002EB837 /* InvitingUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitingUsersView.swift; sourceTree = "<group>"; };
+		7E63E8782566F1BA00C06881 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
+		7E63E8C2256859E100C06881 /* UsersSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersSearchView.swift; sourceTree = "<group>"; };
+		7E63E8C725685A8A00C06881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		7E8B20152555E70F00842AF9 /* APIPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = APIPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EB4689425590F3B0044B4D2 /* SelectLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocation.swift; sourceTree = "<group>"; };
 		7EB4689C2559A2A90044B4D2 /* GamesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTableView.swift; sourceTree = "<group>"; };
@@ -176,8 +184,9 @@
 				D3A46A922555D7F2004B09D2 /* AppView.swift */,
 				D3A46A942555D7FC004B09D2 /* ProfileView.swift */,
 				D3A46A962555D80A004B09D2 /* CreateView.swift */,
-				7EB468C9255B48960044B4D2 /* CreateMapView.swift */,
+				7E63E8782566F1BA00C06881 /* LocationSearchView.swift */,
 				7EB468D3255B4B530044B4D2 /* CreateFormView.swift */,
+				7EB468C9255B48960044B4D2 /* CreateMapView.swift */,
 				D3A46A982555D816004B09D2 /* HomeView.swift */,
 				46D660CE255366670020F38F /* FavoriteRow.swift */,
 				4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */,
@@ -192,6 +201,8 @@
 				461306F3257760F7006A0998 /* SplashView.swift */,
 				461306F82577610C006A0998 /* LandingView.swift */,
 				46130709257763A9006A0998 /* LoginView.swift */,
+				7E63E8C2256859E100C06881 /* UsersSearchView.swift */,
+				7E63E8C725685A8A00C06881 /* SearchBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -523,7 +534,9 @@
 				7EB468CF255B49AD0044B4D2 /* Location.swift in Sources */,
 				D3E18A452550C46B00AEB104 /* AppDelegate.swift in Sources */,
 				4613070A257763A9006A0998 /* LoginView.swift in Sources */,
+				7E63E8C825685A8A00C06881 /* SearchBarView.swift in Sources */,
 				7EB4689D2559A2A90044B4D2 /* GamesTableView.swift in Sources */,
+				7E63E8792566F1BA00C06881 /* LocationSearchView.swift in Sources */,
 				46D660CF255366670020F38F /* FavoriteRow.swift in Sources */,
 				7EB468C4255AE88F0044B4D2 /* UsersListView.swift in Sources */,
 				7EB468A62559A6DC0044B4D2 /* BottomView.swift in Sources */,
@@ -532,8 +545,10 @@
 				7EB4689525590F3B0044B4D2 /* SelectLocation.swift in Sources */,
 				D3E18A472550C46B00AEB104 /* SceneDelegate.swift in Sources */,
 				7EC3671225525A470022DAE0 /* ViewModel.swift in Sources */,
+				7E63E8C3256859E100C06881 /* UsersSearchView.swift in Sources */,
 				7EB468CA255B48970044B4D2 /* CreateMapView.swift in Sources */,
 				7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */,
+				7E360EBF2575640D00A5F8C4 /* SplashView.swift in Sources */,
 				D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */,
 				D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */,
 				D3A46A972555D80A004B09D2 /* CreateView.swift in Sources */,
