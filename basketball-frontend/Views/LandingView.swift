@@ -10,7 +10,27 @@ import Foundation
 import SwiftUI
 
 struct LandingView: View {
+  @ObservedObject var viewModel: ViewModel
+  
   var body: some View {
-    Text("This is a placeholder landing page").font(.largeTitle).bold()
+    VStack {
+      Button(action: {
+        self.viewModel.currentScreen = "login"
+      }) {
+        Text("Login")
+      }
+      
+      Button(action: {
+        self.viewModel.currentScreen = "create-user"
+      }) {
+        Text("Create User")
+      }
+      
+      Button(action: {
+        self.viewModel.login(username: "jxu", password: "secret")
+      }) {
+        Text("Testing")
+      }
+    }
   }
 }
