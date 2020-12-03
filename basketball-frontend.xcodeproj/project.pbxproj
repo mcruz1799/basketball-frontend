@@ -548,7 +548,6 @@
 				7E63E8C3256859E100C06881 /* UsersSearchView.swift in Sources */,
 				7EB468CA255B48970044B4D2 /* CreateMapView.swift in Sources */,
 				7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */,
-				7E360EBF2575640D00A5F8C4 /* SplashView.swift in Sources */,
 				D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */,
 				D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */,
 				D3A46A972555D80A004B09D2 /* CreateView.swift in Sources */,

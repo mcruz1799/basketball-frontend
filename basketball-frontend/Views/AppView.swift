@@ -18,7 +18,6 @@ struct AppView: View {
   var body: some View {
     
     if viewModel.currentScreen == "app" {
-      if viewModel.isLoaded {
       GeometryReader { geometry in
         ZStack {
           TabView{
@@ -44,7 +43,7 @@ struct AppView: View {
                 Image(systemName: "plus.circle.fill")
                   .font(.system(size: 36))
                   .imageScale(.large)
-//                Text("Create Game")
+                //                Text("Create Game")
               }
             }
           }.offset(y: geometry.size.height/2 - 20)
@@ -61,11 +60,12 @@ struct AppView: View {
     } else if viewModel.currentScreen == "landing" {
       LandingView(viewModel: self.viewModel)
     } else {
-      SplashView()  
+      SplashView()
         .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
   }
 }
+
 
 //
 //extension UIColor {
