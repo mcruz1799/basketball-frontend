@@ -11,7 +11,6 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
   @ObservedObject var viewModel: ViewModel
-  @Binding var gameAnnotations: [GameAnnotation]
   @Binding var selectedEvent: Game?
   @Binding var showDetails: Bool
   let games: [Games]
@@ -50,10 +49,9 @@ struct MapView: UIViewRepresentable {
     
     func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
       let currAnnotation = view.annotation as? GameAnnotation
-//      parent.viewModel.getGame(id: Int(currAnnotation!.id)!)
       parent.selectedEvent = parent.viewModel.game
-      //			parent.showDetails = true
     }
+		
     func mapView(_: MKMapView, didDeselect view: MKAnnotationView) {
       parent.selectedEvent = nil
       parent.showDetails = false
@@ -63,21 +61,8 @@ struct MapView: UIViewRepresentable {
   func makeCoordinator() -> MapView.Coordinator {
     Coordinator(self)
   }
+
   
-  func makeGameAnnotations(_ mapView: MKMapView){
-    //		DispatchQueue.main.sync {
-    self.viewModel.getGameAnnotations()
-    
-    
-    //			print("GAMES IN MAKEGAMEANNOTATIONS: ", self.viewModel.games.count, "---------------------------------")
-    //			print("ANNOTATIONS IN MAKEGAMEANNOTATIONS: ", self.viewModel.gameAnnotations.count, "---------------------------------")
-    mapView.addAnnotations(self.viewModel.gameAnnotations)
-    self.viewModel.gameAnnotationsFlag = true
-    //			print("FLAGGED")
-    //			}
-  }
-  
-  //	}
   
   func makeUIView(context: Context) -> MKMapView {
     let mapView = MKMapView()
@@ -87,7 +72,6 @@ struct MapView: UIViewRepresentable {
   }
   
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-//    print("Calling updateUIView")
     let userLocation = viewModel.userLocation
     userLocation.getCurrentLocation()
     userLocation.loadLocation()
@@ -99,15 +83,7 @@ struct MapView: UIViewRepresentable {
     let region = MKCoordinateRegion(center: coordinate, span: span)
     uiView.setRegion(region, animated: true)
     uiView.showsUserLocation = true
-    //    DispatchQueue.global(qos: .userInteractive).async {
-    //      print("GAMEANNOTATIONSFLAG: ", self.viewModel.gameAnnotationsFlag)
-    //      while(self.viewModel.gameAnnotationsLoaded() == false){
-    //        if (self.viewModel.gameAnnotationsLoaded() && self.viewModel.gameAnnotationsFlag == false){
-    //          print("MAKEGAMEANNOTATIONS")
-    //          makeGameAnnotations(uiView)
-    //        }
-    //      }
-    //    }
+
     let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude)})
     uiView.addAnnotations(annotations)
     

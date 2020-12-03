@@ -15,18 +15,18 @@ class ViewModel: ObservableObject {
   @Published var players: [Player] = [Player]()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
-  @Published var userId: Int = 4
+  @Published var userId: Int?
+  var headers: HTTPHeaders?
   
   @Published var game: Game?
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
 	
-	@Published var gameAnnotations: [GameAnnotation] = [GameAnnotation]()
-	@Published var gameAnnotationsFlag: Bool = false
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
+  @Published var currentScreen: String = "landing"
   
 	init () {}
   
@@ -34,12 +34,38 @@ class ViewModel: ObservableObject {
   // USER FUNCTIONS
   //
   
+  //  perform login for a user
+  //  :param username (String) - username of the user
+  //  :param password (String) - password of the user in plain text
+  //  :return none
+  func login(username: String, password: String) {
+    self.currentScreen = "login-splash"
+    let credentials: String = username + ":" + password
+    let encodedCredentials: String = Data(credentials.utf8).base64EncodedString()
+
+    let headers: HTTPHeaders = [
+      "Authorization": "Basic " + encodedCredentials
+    ]
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers).responseDecodable {
+      ( response: AFDataResponse<UserLogin> ) in
+      if let value: UserLogin = response.value {
+        let token = value.api_key
+        self.userId = value.id
+        self.createAuthHeader(token: token)
+        self.refreshCurrentUser()
+        self.getGames()
+        self.currentScreen = "app"
+      }
+    }
+  }
+  
   //  refresh the current user by updating self.user
   //  :param none
   //  :return none
   func refreshCurrentUser() {
-    let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(self.userId)
-    AF.request(request).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+    let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(self.userId!)
+    AF.request(request, headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
@@ -55,7 +81,7 @@ class ViewModel: ObservableObject {
   func getUser(id: Int) -> User? {
     let request  = "http://secure-hollows-77457.herokuapp.com/users/" + String(id)
     var user: User? = nil
-    AF.request(request).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+    AF.request(request, headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         user = value.data
       }
@@ -68,18 +94,19 @@ class ViewModel: ObservableObject {
   //  :param lastName (String) - user's last name
   //  :param username (String) - user's username
   //  :param email (String) - user's email, must be a valid email address
-  //  :param dob (String) - user's date of birth, in dd-mm-yyyy format
+  //  :param dob (Date) - user's date of birth
   //  :param phone (String) - user's phone number, must be a valid phone number
   //  :param password (String) - user password, at least 6 characters
   //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
   //  :return (User?) - a user object if the user is successfully created, nil otherwise
-  func createUser(firstName: String, lastName: String, username: String, email: String, dob: String, phone: String, password: String, passwordConfirmation: String) -> User? {
+  func createUser(firstName: String, lastName: String, username: String, email: String, dob: Date, phone: String, password: String, passwordConfirmation: String) -> User? {
+    let acceptableDate = Helper.toAcceptableDate(date: dob)
     let params = [
       "firstname": firstName,
       "lastname": lastName,
       "username": username,
       "email": email,
-      "dob": dob + " 00:00:00",
+      "dob": acceptableDate,
       "phone": phone,
       "password": password,
       "password_confirmation": passwordConfirmation
@@ -87,10 +114,11 @@ class ViewModel: ObservableObject {
     
     var user: User? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/", method: .post, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         user = value.data
+        self.login(username: username, password: password)
       }
     }
     return user
@@ -116,7 +144,7 @@ class ViewModel: ObservableObject {
       "password_confirmation": "secret"
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
@@ -133,7 +161,7 @@ class ViewModel: ObservableObject {
   //  :param none
   //  :return none
   func getGames() {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games").responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+    AF.request("http://secure-hollows-77457.herokuapp.com/games", headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
       }
@@ -141,7 +169,7 @@ class ViewModel: ObservableObject {
   }
   
   func getGame(id: Int) {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id)).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
         self.game = value.data
         self.invited = value.data.invited.map { $0.data }
@@ -175,7 +203,7 @@ class ViewModel: ObservableObject {
     ]
     
     var game: Game? = nil
-    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
         self.game = value.data
@@ -209,7 +237,7 @@ class ViewModel: ObservableObject {
     var game: Game = game
     let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
     
-    AF.request(requestUrl, method: .patch, parameters: params).responseDecodable {
+    AF.request(requestUrl, method: .patch, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       if let value: APIData<Game> = response.value {
         game = value.data
@@ -221,24 +249,12 @@ class ViewModel: ObservableObject {
   //  calls getGames and creates a game annotation object for each game
   //  :param none
   //  :return (Bool) - true if self.gameAnnotations has been loaded, false otherwise
-  func gameAnnotationsLoaded() -> Bool {
-    return self.gameAnnotations.count > 0
-  }
+
   
   //  convert games data to format accepted by mapView
   //  :param none
   //  :return none
-  func getGameAnnotations(){
-    self.getGames()
-    for game in self.games {
-      let id = game.id
-      let time = game.time
-      let name = game.name
-      let latitude = game.latitude
-      let longitude = game.longitude
-      self.gameAnnotations.append(GameAnnotation(id: id, subtitle: time, title: name, latitude: latitude, longitude: longitude))
-    }
-  }
+
   
   //
   // FAVORITE FUNCTIONS
@@ -256,7 +272,7 @@ class ViewModel: ObservableObject {
     
     var favorite: Favorite? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
       if let value: APIData<Favorite> = response.value {
         self.refreshCurrentUser()
@@ -296,7 +312,7 @@ class ViewModel: ObservableObject {
   // :return none
   func unfavorite(favoriteeId: Int) {
     let id = self.favorites.filter({ $0.favoritee_id == favoriteeId })[0].id
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
       if let value: APIData<Favorite> = response.value {
         print(value.data)
@@ -322,7 +338,7 @@ class ViewModel: ObservableObject {
     
     var player: Player? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Player>>) in
       if let value: APIData<Player> = response.value {
         self.getGame(id: self.game!.id)
@@ -355,7 +371,7 @@ class ViewModel: ObservableObject {
       "status": s
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Player>> ) in
       if let _: APIData<Player> = response.value {
         self.getGame(id: self.game!.id)
@@ -374,9 +390,7 @@ class ViewModel: ObservableObject {
   }
   
   func fetchData() {
-    print("Fetch Data")
-    refreshCurrentUser()
-    getGames()
+    login(username: "jxu", password: "secret")
   }
   
   func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
@@ -385,5 +399,11 @@ class ViewModel: ObservableObject {
   
   func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
     return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
+  }
+  
+  func createAuthHeader(token: String) {
+    self.headers = [
+      "Authorization": "Token " + token
+    ]
   }
 }

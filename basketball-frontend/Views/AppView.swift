@@ -17,35 +17,42 @@ struct AppView: View {
   }
   var body: some View {
     
-    TabView{
-      HomeView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "house.fill")
-            .font(.system(size: 25))
-            .imageScale(.large)
-          Text("Home")
-        }
-      CreateView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "plus.circle.fill")
-            .font(.system(size: 36))
-            .imageScale(.large)
-          Text("Create Game")
-//            .onTapGesture {
-//              self.creatingGame = true
-//            }
-        }
-      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "person.circle")
-            .font(.system(size: 25))
-            .imageScale(.large)
-          Text("Profile")
-        }
-    }.onAppear { self.viewModel.fetchData() }
-//    .sheet(isPresented: $creatingGame) {
-//      CreateFormView(viewModel: viewModel, creatingGame: $creatingGame)  
-//    }
+    if viewModel.currentScreen == "app" {
+      TabView{
+        HomeView(viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "house.fill")
+              .font(.system(size: 25))
+              .imageScale(.large)
+            Text("Home")
+          }
+        CreateView(viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "plus.circle.fill")
+              .font(.system(size: 36))
+              .imageScale(.large)
+            Text("Create Game")
+  //            .onTapGesture {
+  //              self.creatingGame = true
+  //            }
+          }
+        ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+          .tabItem{
+            Image(systemName: "person.circle")
+              .font(.system(size: 25))
+              .imageScale(.large)
+            Text("Profile")
+          }
+      }
+    } else if viewModel.currentScreen == "login-splash" {
+      SplashView()
+    } else if viewModel.currentScreen == "create-user" {
+      CreateUserView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "login" {
+      LoginView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "landing" {
+      LandingView(viewModel: self.viewModel)
+    }
   }
 }
 

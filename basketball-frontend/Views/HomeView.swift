@@ -17,7 +17,7 @@ struct HomeView: View {
   var body: some View {
     GeometryReader { geometry in
 			
-      MapView(viewModel: self.viewModel, gameAnnotations: self.$viewModel.gameAnnotations, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
+      MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
 			
 				.sheet(isPresented: self.$showDetails){
 //					GameDetailsView(viewModel: self.viewModel, game: self.$selectedEvent, player: viewModel.players[0])
