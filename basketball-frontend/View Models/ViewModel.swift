@@ -7,6 +7,7 @@
 //
 import Foundation
 import Alamofire
+import SwiftUI
 
 class ViewModel: ObservableObject {
   
@@ -30,6 +31,8 @@ class ViewModel: ObservableObject {
   @Published var currentScreen: String = "landing"
   @Published var searchResults: [Users] = [Users]()
   @Published var isLoaded: Bool = false
+  @Published var alert: Alert?
+  @Published var showAlert: Bool = false
   
 	init () {}
   
@@ -50,16 +53,27 @@ class ViewModel: ObservableObject {
       "Authorization": "Basic " + encodedCredentials
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<UserLogin> ) in
-      if let value: UserLogin = response.value {
-        let token = value.api_key
-        self.userId = value.id
-        self.createAuthHeader(token: token)
-        self.refreshCurrentUser()
-        self.getGames()
-        self.currentScreen = "app"
-      }
+        switch response.result {
+          case .success:
+            if let value: UserLogin = response.value {
+              let token = value.api_key
+              self.userId = value.id
+              self.createAuthHeader(token: token)
+              self.refreshCurrentUser()
+              self.getGames()
+              self.currentScreen = "app"
+            }
+          case .failure:
+            self.currentScreen = "login"
+            self.alert = self.createAlert(title: "Invalid Login",
+                                          message: "The username or password you entered was invalid",
+                                          button: "Got it")
+            self.showAlert = true
+        }
     }
   }
   
@@ -421,10 +435,29 @@ class ViewModel: ObservableObject {
       }
     }
   }
-
+  
+  //  create an authorization header used in API requests
+  //  :param token (String) - auth token of the current user
+  //  :return none
   func createAuthHeader(token: String) {
     self.headers = [
       "Authorization": "Token " + token
     ]
+  }
+  
+  //  create a alert with closing the alert as the dismissButton action
+  //  :param title (String) - title of the alert
+  //  :param message (String) - body message of the alert
+  //  :param button (String) - text for the dismiss button
+  func createAlert(title: String, message: String, button: String) -> Alert {
+    return Alert(title: Text(title),
+          message: Text(message),
+          dismissButton: .default(
+            Text(button),
+            action: {
+            self.alert = nil
+            }
+      )
+    )
   }
 }
