@@ -132,17 +132,26 @@ class ViewModel: ObservableObject {
     
     var user: User? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
-      if let value: APIData<User> = response.value {
-        user = value.data
-        self.login(username: username, password: password)
-      }
+        switch response.result {
+          case .success:
+            if let value: APIData<User> = response.value {
+              user = value.data
+              self.login(username: username, password: password)
+            }
+          case .failure:
+            self.alert = self.createAlert(title: "Invalid Profile Information",
+                                          message: "The profile information you entered was invalid, please check your inputs and try again",
+                                          button: "Got it")
+            self.showAlert = true
+        }
     }
     return user
   }
   
-  //  TODO: use authorization token in backend
   //  edit the current user
   //  :param firstName (String) - first name of the user
   //  :param lastName (String) - last name of the user
@@ -162,13 +171,23 @@ class ViewModel: ObservableObject {
       "password_confirmation": "secret"
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<User>> ) in
-      if let value: APIData<User> = response.value {
-        self.user = value.data
-      }
+        switch response.result {
+          case .success:
+            if let value: APIData<User> = response.value {
+              self.user = value.data
+              self.refreshCurrentUser()
+            }
+          case .failure:
+            self.alert = self.createAlert(title: "Invalid Profile Information",
+                                          message: "The edited profile information you entered was invalid, please check your inputs and try again",
+                                          button: "Try again")
+            self.showAlert = true
+        }
     }
-    refreshCurrentUser()
   }
   
   //
