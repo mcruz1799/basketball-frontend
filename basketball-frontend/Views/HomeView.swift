@@ -17,13 +17,12 @@ struct HomeView: View {
   var body: some View {
     GeometryReader { geometry in
 			
-      MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
-			
-				.sheet(isPresented: self.$showDetails){
-//					GameDetailsView(viewModel: self.viewModel, game: self.$selectedEvent, player: viewModel.players[0])
-					GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
-
-				}
+				MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
+				
+					.sheet(isPresented: self.$showDetails){
+							GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
+						
+					}
 			
 			// Content is passed as a closure to the bottom view
 			BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
