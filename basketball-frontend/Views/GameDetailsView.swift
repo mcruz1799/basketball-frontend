@@ -105,19 +105,21 @@ struct GameDetailsView: View {
 				}
 				.padding()
 				.frame(maxWidth: .infinity)
-				.background(Color.red)
+				.background(Color("secondaryButtonColor"))
 				.foregroundColor(.black)
 				.cornerRadius(CR)
 				.padding([.trailing, .leading])
 				
 
 			}
+			
+			
 			//MARK: - Invite Users
 			NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
 				Text("Invite Friends")
 					.padding()
 					.frame(maxWidth: .infinity)
-					.background(Color.red)
+					.background(Color("secondaryButtonColor"))
 					.foregroundColor(.black)
 					.cornerRadius(CR)
 					.padding([.trailing, .leading])
@@ -129,7 +131,7 @@ struct GameDetailsView: View {
 		
 		}
 		.padding()
-		.background(Color.yellow)
+		.background(Color("backgroundColor"))
 		
 		.onAppear { self.viewModel.getGame(id: player.game.data.id) }
 		.sheet(isPresented: $showingUsers) {
@@ -169,7 +171,7 @@ struct GameDetailsView: View {
 				}
 				//Vstack modifiers
 					.padding(10)
-					.background(Color("statusListButtonColor"))
+					.background(Color("primaryButtonColor"))
 					.foregroundColor(.black)
 					.cornerRadius(CR)
 			}
