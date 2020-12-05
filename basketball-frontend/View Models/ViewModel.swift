@@ -7,6 +7,7 @@
 //
 import Foundation
 import Alamofire
+import SwiftUI
 
 class ViewModel: ObservableObject {
   
@@ -23,15 +24,17 @@ class ViewModel: ObservableObject {
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
-	
+  
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
   @Published var currentScreen: String = "landing"
   @Published var searchResults: [Users] = [Users]()
   @Published var isLoaded: Bool = false
+  @Published var alert: Alert?
+  @Published var showAlert: Bool = false
   
-	init () {}
+  init () {}
   
   //
   // USER FUNCTIONS
@@ -45,22 +48,33 @@ class ViewModel: ObservableObject {
     self.currentScreen = "login-splash"
     let credentials: String = username + ":" + password
     let encodedCredentials: String = Data(credentials.utf8).base64EncodedString()
-
+    
     let headers: HTTPHeaders = [
       "Authorization": "Basic " + encodedCredentials
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers).responseDecodable {
-      ( response: AFDataResponse<UserLogin> ) in
-      if let value: UserLogin = response.value {
-        let token = value.api_key
-        self.userId = value.id
-        self.createAuthHeader(token: token)
-        self.refreshCurrentUser()
-        self.getGames()
-        self.currentScreen = "app"
+    AF.request("http://secure-hollows-77457.herokuapp.com/token/", headers: headers)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<UserLogin> ) in
+        switch response.result {
+        case .success:
+          if let value: UserLogin = response.value {
+            let token = value.api_key
+            self.userId = value.id
+            self.createAuthHeader(token: token)
+            self.refreshCurrentUser()
+            self.getGames()
+            self.currentScreen = "app"
+          }
+        case .failure:
+          self.currentScreen = "login"
+          self.alert = self.createAlert(title: "Invalid Login",
+                                        message: "The username or password you entered was invalid",
+                                        button: "Got it")
+          self.showAlert = true
+        }
       }
-    }
   }
   
   //  refresh the current user by updating self.user
@@ -118,17 +132,26 @@ class ViewModel: ObservableObject {
     
     var user: User? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params).responseDecodable {
-      ( response: AFDataResponse<APIData<User>> ) in
-      if let value: APIData<User> = response.value {
-        user = value.data
-        self.login(username: username, password: password)
+    AF.request("http://secure-hollows-77457.herokuapp.com/create_user/", method: .post, parameters: params)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<User>> ) in
+        switch response.result {
+        case .success:
+          if let value: APIData<User> = response.value {
+            user = value.data
+            self.login(username: username, password: password)
+          }
+        case .failure:
+          self.alert = self.createAlert(title: "Invalid Profile Information",
+                                        message: "The profile information you entered was invalid, please check your inputs and try again",
+                                        button: "Got it")
+          self.showAlert = true
+        }
       }
-    }
     return user
   }
   
-  //  TODO: use authorization token in backend
   //  edit the current user
   //  :param firstName (String) - first name of the user
   //  :param lastName (String) - last name of the user
@@ -148,13 +171,23 @@ class ViewModel: ObservableObject {
       "password_confirmation": "secret"
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<User>> ) in
-      if let value: APIData<User> = response.value {
-        self.user = value.data
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(self.user!.id), method: .patch, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<User>> ) in
+        switch response.result {
+        case .success:
+          if let value: APIData<User> = response.value {
+            self.user = value.data
+            self.refreshCurrentUser()
+          }
+        case .failure:
+          self.alert = self.createAlert(title: "Invalid Profile Information",
+                                        message: "The edited profile information you entered was invalid, please check your inputs and try again",
+                                        button: "Try again")
+          self.showAlert = true
+        }
       }
-    }
-    refreshCurrentUser()
   }
   
   //
@@ -185,7 +218,6 @@ class ViewModel: ObservableObject {
     }
   }
   
-  //  TODO: instead of assigning game to self.game, use the return value instead
   //  create a new game
   //  :param name (String) - name of the game court
   //  :date (Date) - date and time of the game
@@ -250,16 +282,6 @@ class ViewModel: ObservableObject {
     return game
   }
   
-  //  calls getGames and creates a game annotation object for each game
-  //  :param none
-  //  :return (Bool) - true if self.gameAnnotations has been loaded, false otherwise
-
-  
-  //  convert games data to format accepted by mapView
-  //  :param none
-  //  :return none
-
-  
   //
   // FAVORITE FUNCTIONS
   //
@@ -276,13 +298,37 @@ class ViewModel: ObservableObject {
     
     var favorite: Favorite? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Favorite>> ) in
-      if let value: APIData<Favorite> = response.value {
-        self.refreshCurrentUser()
-        favorite = value.data
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params, headers: self.headers!)
+      .validate(statusCode: 200..<300)
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Favorite>> ) in
+        switch response.result {
+        case .success:
+          if let value: APIData<Favorite> = response.value {
+            self.refreshCurrentUser()
+            favorite = value.data
+          }
+        case .failure:
+          print(response.result)
+          self.alert = Alert(title: Text("Favorite Failed"),
+                             message: Text("Failed to favorite this user, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.favorite(favoriterId: favoriterId, favoriteeId: favoriteeId)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
       }
-    }
     return favorite
   }
   
@@ -316,13 +362,35 @@ class ViewModel: ObservableObject {
   // :return none
   func unfavorite(favoriteeId: Int) {
     let id = self.favorites.filter({ $0.favoritee_id == favoriteeId })[0].id
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Favorite>> ) in
-      if let value: APIData<Favorite> = response.value {
-        print(value.data)
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Favorite>> ) in
+        switch response.result {
+        case .success:
+          if let _: APIData<Favorite> = response.value {
+            self.refreshCurrentUser()
+          }
+        case .failure:
+          self.alert = Alert(title: Text("Unfavorite Failed"),
+                             message: Text("Failed to unfavorite this user, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.unfavorite(favoriteeId: favoriteeId)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
       }
-    }
-    refreshCurrentUser()
   }
   
   //
@@ -342,13 +410,36 @@ class ViewModel: ObservableObject {
     
     var player: Player? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Player>>) in
-      if let value: APIData<Player> = response.value {
-        self.getGame(id: self.game!.id)
-        player = value.data
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Player>>) in
+        switch response.result {
+        case .success:
+          if let value: APIData<Player> = response.value {
+            self.getGame(id: self.game!.id)
+            player = value.data
+          }
+        case .failure:
+          self.alert = Alert(title: Text("Create Player Failed"),
+                             message: Text("Failed to add this user to this game, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.createPlayer(status: status, userId: userId, gameId: gameId)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
       }
-    }
     return player
   }
   
@@ -375,14 +466,36 @@ class ViewModel: ObservableObject {
       "status": s
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Player>> ) in
-      if let _: APIData<Player> = response.value {
-        self.getGame(id: self.game!.id)
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Player>> ) in
+        switch response.result {
+        case .success:
+          if let _: APIData<Player> = response.value {
+            self.getGame(id: self.game!.id)
+            self.refreshCurrentUser()
+          }
+        case .failure:
+          self.alert = Alert(title: Text("Edit Player Status Failed"),
+                             message: Text("Failed to edit the status of this player, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.editPlayerStatus(playerId: playerId, status: status)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
       }
-    }
-    refreshCurrentUser()
-    fetchData()
   }
   
   //
@@ -417,14 +530,32 @@ class ViewModel: ObservableObject {
     AF.request(request, method: .get, parameters: params).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in  
       if let value: ListData<Users> = response.value {
         self.searchResults = value.data
-        print(value.data)
       }
     }
   }
-
+  
+  //  create an authorization header used in API requests
+  //  :param token (String) - auth token of the current user
+  //  :return none
   func createAuthHeader(token: String) {
     self.headers = [
       "Authorization": "Token " + token
     ]
+  }
+  
+  //  create a alert with closing the alert as the dismissButton action
+  //  :param title (String) - title of the alert
+  //  :param message (String) - body message of the alert
+  //  :param button (String) - text for the dismiss button
+  func createAlert(title: String, message: String, button: String) -> Alert {
+    return Alert(title: Text(title),
+                 message: Text(message),
+                 dismissButton: .default(
+                  Text(button),
+                  action: {
+                    self.alert = nil
+                  }
+                 )
+    )
   }
 }

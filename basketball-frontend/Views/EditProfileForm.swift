@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct EditProfileForm: View {
-  var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   
   @State var username: String = ""
   @State var firstName: String = ""
@@ -36,6 +36,7 @@ struct EditProfileForm: View {
           .padding(.leading)
 				TextField("Username", text: self.$username)
           .padding(.trailing)
+          .autocapitalization(.none)
       }.padding()
 
       HStack {
@@ -60,6 +61,7 @@ struct EditProfileForm: View {
           .padding(.leading)
 				TextField("Email", text: self.$email)
           .padding(.trailing)
+          .autocapitalization(.none)
       }.padding()
 
       HStack {
@@ -74,6 +76,8 @@ struct EditProfileForm: View {
         self.viewModel.editCurrentUser(firstName: self.firstName, lastName: self.lastName, username: self.username, email: self.email, phone: self.phone)
       }) {
         Text("Save")
+      }.alert(isPresented: $viewModel.showAlert) {
+        viewModel.alert!
       }
     }
   }
