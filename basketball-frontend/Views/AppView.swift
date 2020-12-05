@@ -11,35 +11,85 @@ import SwiftUI
 struct AppView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   @State var creatingGame: Bool = false
+	@ObservedObject var tabController = TabController()
   
-  init() {
-//		UITabBar.appearance().isTranslucent = false
-		UITabBar.appearance().barTintColor = UIColor(named: "tabBarColor")
-		UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tabBarIconColor")
-	
-  }
+
   var body: some View {
-    
-    TabView{
-      HomeView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "house.fill")
-//						.font(.system(size: 50))
-
-        }
-      CreateView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "plus.circle.fill")
+		GeometryReader {geometry in
+			VStack{
+				
+				if self.tabController.currentView == "home" {
+					HomeView(viewModel: viewModel)
+				}
+				else if tabController.currentView == "create" {
+					CreateView(viewModel: viewModel)
+				}
+				else if tabController.currentView == "profile" {
+					ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
 					
-        }
-      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "person.circle")
-//						.font(.system(size: 2000))
+				}
+				HStack{
+					Image(systemName: "house")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+//						.foregroundColor(self.tabBarController.currentView == "home" ? .white: Color("tabBarColor"))
+						.padding(20)
+						.frame(width: geometry.size.width/3, height: 75)
+						.foregroundColor(Color("tabBarIconColor"))
+						.onTapGesture {
+							self.tabController.currentView = "home"
+						}
+					ZStack{
+						Circle()
+							.foregroundColor(Color("tabBarColor"))
+							.frame(width:75, height:75)
+							.offset(y: -geometry.size.height/10/2)
 
-
-        }
-		}.accentColor(.gray)
+						Image(systemName: "plus.circle.fill")
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.frame(width: 75, height: 75)
+							.foregroundColor(Color("tabBarIconColor"))
+							.offset(y: -geometry.size.height/10/2)
+							.onTapGesture {
+								self.tabController.currentView = "create"
+							}
+					}
+					Image(systemName: "person")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color("tabBarIconColor"))
+						.padding(20)
+						.frame(width: geometry.size.width/3, height: 75)
+						.onTapGesture{
+							self.tabController.currentView = "profile"
+						}
+				}
+				.frame(width: geometry.size.width, height: geometry.size.height/10)
+				.background(Color("tabBarColor").shadow(radius: 2))
+			}
+		}.edgesIgnoringSafeArea(.bottom)
+		
+//    TabView{
+//      HomeView(viewModel: viewModel)
+//        .tabItem{
+//          Image(systemName: "house.fill")
+////						.font(.system(size: 50))
+//
+//        }
+//      CreateView(viewModel: viewModel)
+//        .tabItem{
+//          Image(systemName: "plus.circle.fill")
+//
+//        }
+//      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+//        .tabItem{
+//          Image(systemName: "person.circle")
+////						.font(.system(size: 2000))
+//
+//
+//        }
+//		}.accentColor(.gray)
 		.onAppear { self.viewModel.fetchData() }
   }
 }
