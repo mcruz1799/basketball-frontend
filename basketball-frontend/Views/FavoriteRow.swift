@@ -31,6 +31,8 @@ struct FavoriteRow: View {
           Image("star-deselected")
         }
       }
+    }.alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
     }
   }
   

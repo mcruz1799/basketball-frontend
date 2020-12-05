@@ -218,7 +218,6 @@ class ViewModel: ObservableObject {
     }
   }
   
-  //  TODO: instead of assigning game to self.game, use the return value instead
   //  create a new game
   //  :param name (String) - name of the game court
   //  :date (Date) - date and time of the game
@@ -283,16 +282,6 @@ class ViewModel: ObservableObject {
     return game
   }
   
-  //  calls getGames and creates a game annotation object for each game
-  //  :param none
-  //  :return (Bool) - true if self.gameAnnotations has been loaded, false otherwise
-
-  
-  //  convert games data to format accepted by mapView
-  //  :param none
-  //  :return none
-
-  
   //
   // FAVORITE FUNCTIONS
   //
@@ -309,13 +298,37 @@ class ViewModel: ObservableObject {
     
     var favorite: Favorite? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites", method: .post, parameters: params, headers: self.headers!)
+      .validate(statusCode: 200..<300)
+      .responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
-      if let value: APIData<Favorite> = response.value {
-        self.refreshCurrentUser()
-        favorite = value.data
-      }
-    }
+        switch response.result {
+          case .success:
+            if let value: APIData<Favorite> = response.value {
+              self.refreshCurrentUser()
+              favorite = value.data
+            }
+          case .failure:
+            print(response.result)
+            self.alert = Alert(title: Text("Favorite Failed"),
+                               message: Text("Failed to favorite this user, please try again"),
+                               primaryButton: .default(
+                                 Text("Try Again"),
+                               action: {
+                                 self.favorite(favoriterId: favoriterId, favoriteeId: favoriteeId)
+                               }
+                               ),
+                               secondaryButton: .default(
+                                 Text("Close"),
+                                 action: {
+                                   self.showAlert = false
+                                   self.alert = nil
+                                 }
+                           )
+                         )
+            self.showAlert = true
+          }
+        }
     return favorite
   }
   
@@ -349,13 +362,35 @@ class ViewModel: ObservableObject {
   // :return none
   func unfavorite(favoriteeId: Int) {
     let id = self.favorites.filter({ $0.favoritee_id == favoriteeId })[0].id
-    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<Favorite>> ) in
-      if let value: APIData<Favorite> = response.value {
-        print(value.data)
-      }
+        switch response.result {
+          case .success:
+            if let _: APIData<Favorite> = response.value {
+              self.refreshCurrentUser()
+            }
+          case .failure:
+            self.alert = Alert(title: Text("Unfavorite Failed"),
+                               message: Text("Failed to unfavorite this user, please try again"),
+                               primaryButton: .default(
+                                 Text("Try Again"),
+                               action: {
+                                 self.unfavorite(favoriteeId: favoriteeId)
+                               }
+                               ),
+                               secondaryButton: .default(
+                                 Text("Close"),
+                                 action: {
+                                   self.showAlert = false
+                                   self.alert = nil
+                                 }
+                           )
+                         )
+            self.showAlert = true
+        }
     }
-    refreshCurrentUser()
   }
   
   //
@@ -375,12 +410,35 @@ class ViewModel: ObservableObject {
     
     var player: Player? = nil
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<Player>>) in
-      if let value: APIData<Player> = response.value {
-        self.getGame(id: self.game!.id)
-        player = value.data
-      }
+        switch response.result {
+          case .success:
+            if let value: APIData<Player> = response.value {
+              self.getGame(id: self.game!.id)
+              player = value.data
+            }
+          case .failure:
+            self.alert = Alert(title: Text("Create Player Failed"),
+                               message: Text("Failed to add this user to this game, please try again"),
+                               primaryButton: .default(
+                                 Text("Try Again"),
+                               action: {
+                                 self.createPlayer(status: status, userId: userId, gameId: gameId)
+                               }
+                               ),
+                               secondaryButton: .default(
+                                 Text("Close"),
+                                 action: {
+                                   self.showAlert = false
+                                   self.alert = nil
+                                 }
+                           )
+                         )
+            self.showAlert = true
+        }
     }
     return player
   }
@@ -408,14 +466,36 @@ class ViewModel: ObservableObject {
       "status": s
     ]
     
-    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<Player>> ) in
-      if let _: APIData<Player> = response.value {
-        self.getGame(id: self.game!.id)
-      }
+        switch response.result {
+          case .success:
+            if let _: APIData<Player> = response.value {
+              self.getGame(id: self.game!.id)
+              self.refreshCurrentUser()
+            }
+          case .failure:
+            self.alert = Alert(title: Text("Edit Player Status Failed"),
+                               message: Text("Failed to edit the status of this player, please try again"),
+                               primaryButton: .default(
+                                 Text("Try Again"),
+                               action: {
+                                self.editPlayerStatus(playerId: playerId, status: status)
+                               }
+                               ),
+                               secondaryButton: .default(
+                                 Text("Close"),
+                                 action: {
+                                   self.showAlert = false
+                                   self.alert = nil
+                                 }
+                           )
+                         )
+            self.showAlert = true
+        }
     }
-    refreshCurrentUser()
-    fetchData()
   }
   
   //
@@ -450,7 +530,6 @@ class ViewModel: ObservableObject {
     AF.request(request, method: .get, parameters: params).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in  
       if let value: ListData<Users> = response.value {
         self.searchResults = value.data
-        print(value.data)
       }
     }
   }
@@ -474,7 +553,7 @@ class ViewModel: ObservableObject {
           dismissButton: .default(
             Text(button),
             action: {
-            self.alert = nil
+              self.alert = nil
             }
       )
     )
