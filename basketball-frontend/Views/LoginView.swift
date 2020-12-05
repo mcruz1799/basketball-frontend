@@ -34,6 +34,8 @@ struct LoginView: View {
         }
         
       }.navigationBarTitle("Login")
+    }.alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
     }
   }
   

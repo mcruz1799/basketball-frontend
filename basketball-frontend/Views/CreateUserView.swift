@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct CreateUserView: View {
-  var viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   
   @State var username: String = ""
   @State var firstname: String = ""
@@ -53,8 +53,9 @@ struct CreateUserView: View {
         }) {
           Text("Sign Up")
         }
-        
       }.navigationBarTitle("Create Your Profile")
+    }.alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
     }
   }
   

@@ -288,6 +288,18 @@ struct GameDetailsView: View {
           self.selectedStatusList = status
         }
       }
+      .actionSheet(isPresented: $showingActionSheet) {
+        ActionSheet(title: Text("Change Status"), message: Text("Select a new color"), buttons: [
+          .default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+          .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
+          .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
+          .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
+          .cancel()
+        ])
+      }
+      Spacer()
+    }.alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
       
       //MARK: - Helper Methods
       

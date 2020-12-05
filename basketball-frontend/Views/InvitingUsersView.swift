@@ -42,6 +42,8 @@ struct InvitingUsersRowView: View {
           .cornerRadius(40)
           .padding(.leading)
       }
+    }.alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
     }
   }
   
