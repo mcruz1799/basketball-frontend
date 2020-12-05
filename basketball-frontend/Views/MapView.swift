@@ -67,11 +67,6 @@ struct MapView: UIViewRepresentable {
   func makeUIView(context: Context) -> MKMapView {
     let mapView = MKMapView()
     mapView.delegate = context.coordinator
-    return mapView
-    
-  }
-  
-  func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
     let userLocation = viewModel.userLocation
     userLocation.getCurrentLocation()
     userLocation.loadLocation()
@@ -81,9 +76,26 @@ struct MapView: UIViewRepresentable {
     )
     let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     let region = MKCoordinateRegion(center: coordinate, span: span)
-    uiView.setRegion(region, animated: true)
-    uiView.showsUserLocation = true
-
+    mapView.setRegion(region, animated: true)
+    mapView.showsUserLocation = true
+//    let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude)})
+//    mapView.addAnnotations(annotations)
+    return mapView
+    
+  }
+  
+  func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
+//    let userLocation = viewModel.userLocation
+//    userLocation.getCurrentLocation()
+//    userLocation.loadLocation()
+//    let coordinate = CLLocationCoordinate2D(
+//      latitude: userLocation.latitude,
+//      longitude: userLocation.longitude
+//    )
+//    let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+//    let region = MKCoordinateRegion(center: coordinate, span: span)
+//    uiView.setRegion(region, animated: true)
+//    uiView.showsUserLocation = true
     let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude)})
     uiView.addAnnotations(annotations)
     

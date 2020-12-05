@@ -145,6 +145,109 @@ struct GameDetailsView: View {
 				.default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
 				.cancel()
 			])
+
+      VStack {
+      VStack {
+        HStack {
+          Button(action: {
+            assignUsers(users: viewModel.invited, status: "Invited")
+          }) {
+            Text("Invited")
+              .padding()
+              .background(Color.red)
+              .foregroundColor(.black)
+              .cornerRadius(40)
+              .padding([.trailing, .leading])
+          }
+          Button(action: {
+            assignUsers(users: viewModel.going, status: "Going")
+          }) {
+            Text("Going")
+              .padding()
+              .background(Color.red)
+              .foregroundColor(.black)
+              .cornerRadius(40)
+              .padding([.trailing, .leading])
+          }
+          Button(action: {
+            assignUsers(users: viewModel.maybe, status: "Maybe")
+          }) {
+            Text("Maybe")
+              .padding()
+              .background(Color.red)
+              .foregroundColor(.black)
+              .cornerRadius(40)
+              .padding([.trailing, .leading])
+          }
+        }
+        Button(action: {
+          showingActionSheet = true
+        }) {
+          Text("Change Status")
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.red)
+            .foregroundColor(.black)
+            .cornerRadius(40)
+            .padding([.trailing, .leading])
+        }
+        NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
+          Text("Invite Friends")
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.red)
+            .foregroundColor(.black)
+            .cornerRadius(40)
+            .padding([.trailing, .leading])
+        }
+        
+        HStack {
+          Text("Name:")
+            .padding(.leading)
+          Spacer()
+          Text(player.game.data.name)
+            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        }              .padding([.trailing, .leading])
+        
+        
+        HStack {
+          Text("Date:")
+            .padding(.leading)
+          Spacer()
+          Text(player.game.data.onDate())
+            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        }              .padding([.trailing, .leading])
+        
+        HStack {
+          Text("Time:")
+            .padding(.leading)
+          Spacer()
+          Text(player.game.data.onTime())
+            .fontWeight(.bold)
+        }              .padding([.trailing, .leading])
+        
+        HStack {
+          Text("Status:")
+            .padding(.leading)
+          Spacer()
+          Text(status)
+            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        }              .padding([.trailing, .leading])
+        
+      }
+      .navigationBarTitle("Game Details")
+      .onAppear { self.viewModel.getGame(id: player.game.data.id) }
+      .sheet(isPresented: $showingUsers) {
+        UsersListView(viewModel: viewModel, users: $users)
+      }
+      .actionSheet(isPresented: $showingActionSheet) {
+        ActionSheet(title: Text("Change Status"), message: Text("Select a new color"), buttons: [
+          .default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+          .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
+          .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
+          .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
+          .cancel()
+        ])
 //         UsersListView(users: $users, viewModel: viewModel)
 		}
 		Spacer()

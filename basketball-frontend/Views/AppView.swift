@@ -20,30 +20,54 @@ struct AppView: View {
   }
   var body: some View {
     
-    TabView{
-      HomeView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "house.fill")
-//						.font(.system(size: 50))
-
+    if viewModel.currentScreen == "app" {
+      GeometryReader { geometry in
+        ZStack {
+          TabView{
+            HomeView(viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "house.fill")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Home")
+              }
+            ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+              .tabItem{
+                Image(systemName: "person.circle")
+                  .font(.system(size: 25))
+                  .imageScale(.large)
+                Text("Profile")
+              }
+          }
+          ZStack {
+            Button(action: {
+                    self.creatingGame = true }) {
+              VStack {
+                Image(systemName: "plus.circle.fill")
+                  .font(.system(size: 36))
+                  .imageScale(.large)
+                //                Text("Create Game")
+              }
+            }
+          }.offset(y: geometry.size.height/2 - 20)
         }
-      CreateView(viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "plus.circle.fill")
-					
-        }
-      ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
-        .tabItem{
-          Image(systemName: "person.circle")
-//						.font(.system(size: 2000))
-
-
-        }
-		}.accentColor(.gray)
-		.onAppear { self.viewModel.fetchData() }
+      }.sheet(isPresented: $creatingGame) {
+        CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+      }
+    } else if viewModel.currentScreen == "login-splash" {
+      SplashView()
+    } else if viewModel.currentScreen == "create-user" {
+      CreateUserView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "login" {
+      LoginView(viewModel: self.viewModel)
+    } else if viewModel.currentScreen == "landing" {
+      LandingView(viewModel: self.viewModel)
+    } else {
+      SplashView()
+        .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
+    }
   }
 }
-
 
 struct AppView_Previews: PreviewProvider {
   static var previews: some View {

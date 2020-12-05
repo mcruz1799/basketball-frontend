@@ -13,9 +13,10 @@ class ViewModel: ObservableObject {
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
+  @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
-  @Published var userId: Int = 1
+  @Published var userId: Int?
   var headers: HTTPHeaders?
   
   @Published var game: Game?
@@ -26,6 +27,9 @@ class ViewModel: ObservableObject {
   @Published var gamePlayers: Set<Int> = Set()
   
   @Published var userLocation = Location()
+  @Published var currentScreen: String = "landing"
+  @Published var searchResults: [Users] = [Users]()
+  @Published var isLoaded: Bool = false
   
 	init () {}
   
@@ -38,6 +42,7 @@ class ViewModel: ObservableObject {
   //  :param password (String) - password of the user in plain text
   //  :return none
   func login(username: String, password: String) {
+    self.currentScreen = "login-splash"
     let credentials: String = username + ":" + password
     let encodedCredentials: String = Data(credentials.utf8).base64EncodedString()
 
@@ -49,9 +54,11 @@ class ViewModel: ObservableObject {
       ( response: AFDataResponse<UserLogin> ) in
       if let value: UserLogin = response.value {
         let token = value.api_key
+        self.userId = value.id
         self.createAuthHeader(token: token)
         self.refreshCurrentUser()
         self.getGames()
+        self.currentScreen = "app"
       }
     }
   }
@@ -60,11 +67,12 @@ class ViewModel: ObservableObject {
   //  :param none
   //  :return none
   func refreshCurrentUser() {
-    let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(self.userId)
+    let request = "http://secure-hollows-77457.herokuapp.com/users/" + String(self.userId!)
     AF.request(request, headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
+        self.playersSet = Set(self.players.map { $0.game.data.id })
         self.favorites = value.data.favorites.map { $0.data }
         self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
       }
@@ -90,18 +98,19 @@ class ViewModel: ObservableObject {
   //  :param lastName (String) - user's last name
   //  :param username (String) - user's username
   //  :param email (String) - user's email, must be a valid email address
-  //  :param dob (String) - user's date of birth, in dd-mm-yyyy format
+  //  :param dob (Date) - user's date of birth
   //  :param phone (String) - user's phone number, must be a valid phone number
   //  :param password (String) - user password, at least 6 characters
   //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
   //  :return (User?) - a user object if the user is successfully created, nil otherwise
-  func createUser(firstName: String, lastName: String, username: String, email: String, dob: String, phone: String, password: String, passwordConfirmation: String) -> User? {
+  func createUser(firstName: String, lastName: String, username: String, email: String, dob: Date, phone: String, password: String, passwordConfirmation: String) -> User? {
+    let acceptableDate = Helper.toAcceptableDate(date: dob)
     let params = [
       "firstname": firstName,
       "lastname": lastName,
       "username": username,
       "email": email,
-      "dob": dob + " 00:00:00",
+      "dob": acceptableDate,
       "phone": phone,
       "password": password,
       "password_confirmation": passwordConfirmation
@@ -113,6 +122,7 @@ class ViewModel: ObservableObject {
       ( response: AFDataResponse<APIData<User>> ) in
       if let value: APIData<User> = response.value {
         user = value.data
+        self.login(username: username, password: password)
       }
     }
     return user
@@ -379,22 +389,39 @@ class ViewModel: ObservableObject {
   // MISC. FUNCTIONS
   //
   
-  func isInvited(favorite: Favorite) -> Bool {
-    return true
-  }
-  
   func fetchData() {
     login(username: "jxu", password: "secret")
   }
   
+  // map a boolean to a list of users representing if they are favorited or not
+  // :param users ([Users]) - list of the users
+  // :return ([(User, Bool)]) - list of users with a tag for if they are favorited or not
   func forStatus(users: [Users]) -> [(user: Users, favorited: Bool)] {
     return users.map({ (user: $0, favorited: self.favoritesSet.contains($0.id)) })
   }
   
+  // map a boolean to the list of favorites representing if they are invited or not
+  // :return ([(Favorite, Bool)]) - list of users with a tag for if they are invited or not
   func favoritesNotInvited() -> [(favorite: Favorite, invited: Bool)] {
     return self.favorites.map({ (favorite: $0, invited: self.gamePlayers.contains($0.user.data.id)) })
   }
   
+  // search the database for users
+  // :param query (String) - query to send to the database
+  // :return none
+  func searchUsers(query: String) {
+    let params = [
+      "query": query.lowercased()
+    ]
+    let request  = "http://secure-hollows-77457.herokuapp.com/search"
+    AF.request(request, method: .get, parameters: params).responseDecodable { ( response: AFDataResponse<ListData<Users>> ) in  
+      if let value: ListData<Users> = response.value {
+        self.searchResults = value.data
+        print(value.data)
+      }
+    }
+  }
+
   func createAuthHeader(token: String) {
     self.headers = [
       "Authorization": "Token " + token
