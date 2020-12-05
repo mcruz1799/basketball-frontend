@@ -32,7 +32,13 @@ struct AppView: View {
 					Image(systemName: "house")
 						.resizable()
 						.aspectRatio(contentMode: .fit)
-//						.foregroundColor(self.tabBarController.currentView == "home" ? .white: Color("tabBarColor"))
+						.foregroundColor(Color("tabBarIconColor"))
+//					if self.tabBarController.currentView == "home" {
+//						.foregroundColor(.white)
+//					}
+//					else{
+//						.foregroundColor(Color("tabBarIconColor"))
+//					}
 						.padding(20)
 						.frame(width: geometry.size.width/3, height: 75)
 						.foregroundColor(Color("tabBarIconColor"))
