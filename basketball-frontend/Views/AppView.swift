@@ -13,7 +13,7 @@ struct AppView: View {
   @State var creatingGame: Bool = false
   
   init() {
-		UITabBar.appearance().isTranslucent = false
+//		UITabBar.appearance().isTranslucent = false
 		UITabBar.appearance().barTintColor = UIColor(named: "tabBarColor")
 		UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tabBarIconColor")
 	
@@ -24,7 +24,7 @@ struct AppView: View {
       HomeView(viewModel: viewModel)
         .tabItem{
           Image(systemName: "house.fill")
-						.font(.system(size: 50))
+//						.font(.system(size: 50))
 
         }
       CreateView(viewModel: viewModel)
@@ -35,11 +35,11 @@ struct AppView: View {
       ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
         .tabItem{
           Image(systemName: "person.circle")
-						.font(.system(size: 2000))
+//						.font(.system(size: 2000))
 
 
         }
-		}
+		}.accentColor(.gray)
 		.onAppear { self.viewModel.fetchData() }
   }
 }
