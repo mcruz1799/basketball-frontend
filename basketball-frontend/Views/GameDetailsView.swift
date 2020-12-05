@@ -21,9 +21,11 @@ struct GameDetailsView: View {
   @State var users: [Users] = [Users]()
   @State private var selectedStatus = 0
 	
+	var CR: CGFloat = 20
+	
   var body: some View {
 		
-		VStack(alignment: .leading) {
+		VStack {
 			
 			
 			//MARK: - Game Information
@@ -68,17 +70,25 @@ struct GameDetailsView: View {
 			
 			// MARK: - Player Lists by Status
 			
-			HStack {
+			HStack(alignment: .lastTextBaseline) {
 				
-
+				//Button to show list of Going players
 				PlayerListButton(selectedUsers: viewModel.going, status: "Going",
-												 image: "checkmark",
-												 users: $users, showingUsers: $showingUsers,
+												 image: "checkmark", users: $users,
+												 showingUsers: $showingUsers,
 												 selectedStatusList: $selectedStatusList)
 				
-				PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe", image: "questionmark.diamond", users: $users, showingUsers: $showingUsers, selectedStatusList: $selectedStatusList)
+				//Button to show list of Maybe players
+				PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
+												 image: "questionmark.diamond", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
 				
-				PlayerListButton(selectedUsers: viewModel.invited, status: "Invited", image: "envelope", users: $users, showingUsers: $showingUsers, selectedStatusList: $selectedStatusList)
+				//Button to show list of Invited players
+				PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
+												 image: "envelope", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
 
 			}
 			
@@ -97,7 +107,7 @@ struct GameDetailsView: View {
 				.frame(maxWidth: .infinity)
 				.background(Color.red)
 				.foregroundColor(.black)
-//				.cornerRadius(CR)
+				.cornerRadius(CR)
 				.padding([.trailing, .leading])
 				
 
@@ -109,7 +119,7 @@ struct GameDetailsView: View {
 					.frame(maxWidth: .infinity)
 					.background(Color.red)
 					.foregroundColor(.black)
-//					.cornerRadius(CR)
+					.cornerRadius(CR)
 					.padding([.trailing, .leading])
 			}
 			
@@ -149,19 +159,22 @@ struct GameDetailsView: View {
 		var CR: CGFloat = 20
 		var body: some View{
 			//Button to view going players
-			Button(action: {
-				assignUsers(users: selectedUsers, status: status)
-			}) {
+			Button(action: { assignUsers(users: selectedUsers, status: status)}){
 				VStack{
 					Image(systemName: image)
+						.font(.system(size: 20))
+						.frame(width:22, height: 20)
+						.padding(.bottom,2)
 					Text("\(selectedUsers.count) \(status)")
 				}
-					.padding()
-					.background(Color.red)
+				//Vstack modifiers
+					.padding(10)
+					.background(Color("statusListButtonColor"))
 					.foregroundColor(.black)
 					.cornerRadius(CR)
 			}
-			.padding(.leading)
+			//button modifiers
+			.padding(10)
 		}
 		
 		func assignUsers(users: [Users], status: String) {
