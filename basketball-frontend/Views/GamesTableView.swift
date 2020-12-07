@@ -25,6 +25,7 @@ struct GamesTableView: View {
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
       .navigationBarHidden(true)}
+//      .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

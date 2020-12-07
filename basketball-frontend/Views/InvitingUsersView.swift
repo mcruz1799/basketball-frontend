@@ -12,13 +12,18 @@ struct InvitingUsersView: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-    VStack {
-      List {
-        ForEach(viewModel.favoritesNotInvited(), id: \.favorite.id) { arg in
-          InvitingUsersRowView(viewModel: viewModel, favorite: arg.favorite, invited: arg.invited)
-        }
-      }.navigationBarTitle("Invite Favorites")
+    List {
+      ForEach(viewModel.favoritesNotInvited(), id: \.favorite.id) { arg in
+        InvitingUsersRowView(viewModel: viewModel, favorite: arg.favorite, invited: arg.invited)
+      }
     }
+    .navigationBarTitle("Invite Favorites")
+    .navigationBarItems(trailing:
+                          NavigationLink(destination: InvitingContactsView(
+                                          viewModel: viewModel, searchResults: $viewModel.contactsFiltered))
+                          {
+                            Text("Invite Contacts")
+                          })
   }
 }
 
@@ -46,14 +51,11 @@ struct InvitingUsersRowView: View {
       viewModel.alert!
     }
   }
-  
-  
   func inviteFavorite() {
     viewModel.createPlayer(status: "invited", userId: favorite.user.data.id, gameId: viewModel.game!.id)
     invited = true
   }
 }
-
 
 struct InvitingUsersView_Previews: PreviewProvider {
   static var previews: some View {
