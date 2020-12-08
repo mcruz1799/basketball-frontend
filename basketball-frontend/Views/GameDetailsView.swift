@@ -124,6 +124,7 @@ struct GameDetailsView: View {
           .cornerRadius(CR)
           .padding([.trailing, .leading])
       }
+
       
       
       

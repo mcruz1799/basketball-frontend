@@ -8,8 +8,13 @@
 import Foundation
 import Alamofire
 import SwiftUI
+import Photos
+import Contacts
+import MessageUI
 
 class ViewModel: ObservableObject {
+  
+  let appDelegate: AppDelegate = AppDelegate()
   
   @Published var games: [Games] = [Games]()
   @Published var user: User?
@@ -33,6 +38,9 @@ class ViewModel: ObservableObject {
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
+  
+  @Published var contacts: [Contact] = [Contact]()
+  @Published var contactsFiltered: [Contact] = [Contact]()
   
   init () {}
   
@@ -65,6 +73,7 @@ class ViewModel: ObservableObject {
             self.createAuthHeader(token: token)
             self.refreshCurrentUser()
             self.getGames()
+            self.fetchContacts()
             self.currentScreen = "app"
           }
         case .failure:
@@ -250,6 +259,10 @@ class ViewModel: ObservableObject {
         if (player != nil) {
           self.getGame(id: self.game!.id)
           self.players.insert(player!, at: 0)
+        }
+        if let newGame = self.game {
+          let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
+          self.games.append(newGame)
         }
       }
     }
@@ -557,5 +570,48 @@ class ViewModel: ObservableObject {
                   }
                  )
     )
+  }
+  
+  //  loads contacts
+  // :return none
+  func fetchContacts() {
+    let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactImageDataKey]
+    let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+    do {
+      try CNContactStore().enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+        let newContact = Contact()
+        newContact.firstName = contact.givenName
+        newContact.lastName = contact.familyName
+        newContact.phone = contact.phoneNumbers.first?.value
+        if let uiImageNSData: NSData = contact.imageData as NSData? {
+          newContact.picture = Image(uiImage: UIImage(data: uiImageNSData as Data, scale: 1.0)!)
+        }
+        self.contacts.append(newContact)
+      })
+      self.contacts.sort()
+    }
+    catch {
+      NSLog("[Contacts] ERROR: was unable to parse contacts")
+    }
+  }
+  
+  // invites a user from the user's contacts to the game
+  // :param contact (Contact) - the contact who is being invited
+  // :return none
+  func inviteContact(contact: Contact) {    
+    return
+  }
+  
+  // filters the contacts based on a query
+  // :param query (String) - the query to filter by
+  // :return none
+  func searchContacts(query: String) {
+    if query == "" {
+      self.contactsFiltered = self.contacts
+    } else {
+      let q = query.lowercased()
+      let c = self.contacts
+      self.contactsFiltered = c.filter({ $0.name().lowercased().contains(q) })
+    }
   }
 }

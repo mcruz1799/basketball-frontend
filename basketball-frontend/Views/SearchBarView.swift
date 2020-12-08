@@ -49,7 +49,6 @@ struct SearchBarView<T>: View {
         Button(action: {
           self.isEditing = false
           self.searchText = ""
-          self.searchResults = []
           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }) {
           Text("Cancel")

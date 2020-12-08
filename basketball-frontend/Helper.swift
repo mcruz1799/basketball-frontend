@@ -68,4 +68,18 @@ class Helper {
     )
     return addressLine
   }
+  
+  static func composeMessage(user: User?, game: Game?) -> String {
+    let message = String(format: "%@%@%@%@%@%@%@",
+                         user?.displayName() ?? "",
+                         " is inviting you to a pick-up basketball game, ",
+                         game?.name ?? "",
+                         ", on ",
+                         game?.onDate() ?? "",
+                         " at ",
+                         game?.onTime() ?? ""
+    )
+    return message
+  }
+  
 }
