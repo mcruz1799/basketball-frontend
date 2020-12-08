@@ -511,6 +511,20 @@ class ViewModel: ObservableObject {
       }
   }
   
+  //  get all players of a specific status
+  //  :param status (String) - status of a player, can be "going", "maybe", "invited", or "not_going"
+  //  :return ([Player]) - an array of Player objects with the specified status
+  func getPlayerWithStatus(status: String) -> [Player] {
+    var filteredResults: [Player] = [Player]()
+    
+    for player in self.players {
+      if (player.status == status) {
+        filteredResults.append(player)
+      }
+    }
+    return filteredResults
+  }
+  
   //
   // MISC. FUNCTIONS
   //
