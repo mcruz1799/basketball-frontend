@@ -86,6 +86,31 @@ class ViewModel: ObservableObject {
       }
   }
   
+  //  perform logout for a user by clearing all stored variables in ViewModel
+  //  :param none
+  //  :return none
+  func logout() {
+    self.games = [Games]()
+    self.user = nil
+    self.players = [Player]()
+    self.playersSet = Set()
+    self.favorites = [Favorite]()
+    self.favoritesSet = Set()
+    self.userId = nil
+    self.headers = nil
+    self.game = nil
+    self.invited = [Users]()
+    self.maybe = [Users]()
+    self.going = [Users]()
+    self.gamePlayers = Set()
+    self.userLocation = Location()
+    self.currentScreen = "landing"
+    self.searchResults = [Users]()
+    self.isLoaded = false
+    self.alert = nil
+    self.showAlert = false
+  }
+  
   //  refresh the current user by updating self.user
   //  :param none
   //  :return none
