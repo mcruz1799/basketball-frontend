@@ -25,6 +25,9 @@ struct Users: Decodable, Identifiable {
     case dob
     case phone
   }
+  func displayName() -> String {
+    return self.firstName + " " + self.lastName
+  }
 }
 
 struct Games: Decodable, Encodable, Identifiable {
@@ -99,7 +102,6 @@ struct User: Decodable {
     case players
     case favorites
   }
-  
   func displayName() -> String {
     return self.firstName + " " + self.lastName
   }

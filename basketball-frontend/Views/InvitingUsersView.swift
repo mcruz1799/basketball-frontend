@@ -34,8 +34,7 @@ struct InvitingUsersRowView: View {
   
   var body: some View {
     HStack {
-      Text(favorite.user.data.firstName)
-      Text(favorite.user.data.lastName)
+      Text(favorite.user.data.displayName())
       Spacer()
       Button(action: {
         inviteFavorite()

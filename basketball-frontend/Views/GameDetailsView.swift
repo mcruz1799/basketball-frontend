@@ -7,27 +7,27 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct GameDetailsView: View {
   @ObservedObject var viewModel: ViewModel
   
   let player: Player
-  //  @State var game: Game = Game(id: 4, name: "Schenley Park", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0, invited: [APIData<Users>](), maybe: [APIData<Users>](), going: [APIData<Users>]())
   @State var showingUsers = false
   @State var status: String
-  @State var selectedStatusList: String = "Invited"
+  @State var usersStatus: String = "Going"
+  @State var selectedStatusList: String = "Going"
   @State var invitingUsers = false
   @State var showingActionSheet = false
   @State var users: [Users] = [Users]()
   @State private var selectedStatus = 0
+  @State var address: String = ""
   
   var CR: CGFloat = 20
   
   var body: some View {
     
     VStack {
-      
-      
       //MARK: - Game Information
       VStack(alignment: .leading){
         HStack{
@@ -62,11 +62,7 @@ struct GameDetailsView: View {
       }
       .padding(.bottom)
       
-      
-      
-      
-      
-      
+      Text(address)
       
       // MARK: - Player Lists by Status
       
@@ -124,7 +120,7 @@ struct GameDetailsView: View {
           .cornerRadius(CR)
           .padding([.trailing, .leading])
       }
-
+      
       
       
       
@@ -142,7 +138,7 @@ struct GameDetailsView: View {
     .actionSheet(isPresented: $showingActionSheet) {
       ActionSheet(title: Text("Change Status"), message: Text("Select a new color"), buttons: [
         //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
-        .default(Text("Maybe")) { statusChange(selectedStatus: "I'm a Maybe") },
+        .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
         .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
         .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
         .cancel()
@@ -151,9 +147,9 @@ struct GameDetailsView: View {
     .alert(isPresented: $viewModel.showAlert) {
       viewModel.alert!
     }
+    .onAppear(perform: getAddress)
     Spacer()
   }
-  
   
   //MARK: - Helper Methods
   
@@ -167,6 +163,13 @@ struct GameDetailsView: View {
     self.users = users
     self.showingUsers = true
     self.selectedStatusList = status
+  }
+  
+  func getAddress() {
+    Helper.coordinatesToPlacemark(latitude: player.game.data.latitude, longitude: player.game.data.longitude) { placemark in
+      //      self.address = Helper.parseAddress(selectedItem: Helper.CLtoMK(placemark: placemark)!)
+      self.address = Helper.parseCL(placemark: placemark)
+    }
   }
 }
 

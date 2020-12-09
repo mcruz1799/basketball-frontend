@@ -11,6 +11,7 @@ import SwiftUI
 struct AppView: View {
   @ObservedObject var viewModel: ViewModel = ViewModel()
   @State var creatingGame: Bool = false
+  @State var isOpen: Bool = false
   
   init() {
 //		UITabBar.appearance().isTranslucent = false
@@ -24,7 +25,7 @@ struct AppView: View {
       GeometryReader { geometry in
         ZStack {
           TabView{
-            HomeView(viewModel: viewModel)
+            HomeView(viewModel: viewModel, isOpen: $isOpen)
               .tabItem{
                 Image(systemName: "house.fill")
                   .font(.system(size: 25))

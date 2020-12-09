@@ -19,6 +19,7 @@ class ViewModel: ObservableObject {
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
+  @Published var groupedPlayers: [Dictionary<String, [Player]>.Element] = [Dictionary<String, [Player]>.Element]()
   @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
@@ -95,6 +96,7 @@ class ViewModel: ObservableObject {
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
+        self.groupedPlayers = self.groupPlayers(players: self.players)
         self.playersSet = Set(self.players.map { $0.game.data.id })
         self.favorites = value.data.favorites.map { $0.data }
         self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
@@ -478,6 +480,7 @@ class ViewModel: ObservableObject {
     let params: Parameters = [
       "status": s
     ]
+    print(params)
     
     AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!)
       .validate()
@@ -485,11 +488,15 @@ class ViewModel: ObservableObject {
         ( response: AFDataResponse<APIData<Player>> ) in
         switch response.result {
         case .success:
+          print(response.result)
+          
           if let _: APIData<Player> = response.value {
             self.getGame(id: self.game!.id)
             self.refreshCurrentUser()
           }
         case .failure:
+          print(response.result)
+          
           self.alert = Alert(title: Text("Edit Player Status Failed"),
                              message: Text("Failed to edit the status of this player, please try again"),
                              primaryButton: .default(
@@ -613,5 +620,11 @@ class ViewModel: ObservableObject {
       let c = self.contacts
       self.contactsFiltered = c.filter({ $0.name().lowercased().contains(q) })
     }
+  }
+  
+  func groupPlayers(players: [Player]) -> [Dictionary<String, [Player]>.Element] {
+    let players = Dictionary(grouping: players, by: { $0.game.data.onDate() })
+    let keys = players.sorted(by: { Helper.toDate(date: $0.key) > Helper.toDate(date: $1.key) })
+    return keys
   }
 }
