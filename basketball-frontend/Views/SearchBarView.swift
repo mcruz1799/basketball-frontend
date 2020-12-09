@@ -34,9 +34,7 @@ struct SearchBarView<T>: View {
             if isEditing {
               Button(action: {
                 self.isEditing = false
-                self.searchText = ""
-                self.searchResults = []
-                
+                self.searchText = ""                
               }){
                 Image(systemName: "multiply.circle.fill")
                   .foregroundColor(.gray)

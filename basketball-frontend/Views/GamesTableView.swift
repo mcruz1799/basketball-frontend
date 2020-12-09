@@ -11,29 +11,46 @@ import SwiftUI
 struct GamesTableView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var user: User?
-  @Binding var players: [Player]
+  //  @Binding var players: [Player]
+  @Binding var groupedPlayers: [Dictionary<String, [Player]>.Element]
+  @Binding var isOpen: Bool
   //  let players = Bundle.main.decode([Player].self, from: "players.json")
   
   var body: some View {
     
     NavigationView {
-      List {
-        ForEach(players) { player in
-          NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, status: player.status)) {
-            GameRow(player: player)
+//      VStack {
+//        Text("GotNext")
+        List {
+          ForEach(groupedPlayers, id: \.key) { player in
+            DateRow(viewModel: viewModel, date: player.key, players: player.value)
           }
-        }
-      }.navigationBarTitle("") // Title must be set to use hidden property
-      .navigationBarHidden(true)}
-//      .navigationViewStyle(StackNavigationViewStyle())
+        }.navigationBarTitle("") // Title must be set to use hidden property
+        .navigationBarHidden(true)}
+//    }
   }
 }
+
+struct DateRow: View {
+  let viewModel: ViewModel
+  let date: String
+  let players: [Player]?
+  
+  var body: some View {
+    Section(header: Text(date)) {
+      ForEach(players ?? [Player]()) { player in
+        NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, status: player.status)) {
+          GameRow(player: player)}
+      }
+    }
+  }
+}
+
 
 struct GameRow: View {
   let player: Player
   
   var body: some View {
-    //    let game = player.game.data
     VStack {
       HStack {
         Text(player.game.data.name).bold()
@@ -50,8 +67,9 @@ struct GameRow: View {
   }
 }
 
-//struct GamesTableView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    GamesTableView()
-//  }
-//}
+struct GamesTableView_Previews: PreviewProvider {
+  static var previews: some View {
+    let user = User(id: 4, username: "jigims", email: "", firstName: "JJ", lastName: "Igims", dob: "", phone: "", players: [APIData<Player>](), favorites: [APIData<Favorite>]())
+    GamesTableView(viewModel: ViewModel(), user: .constant(user), groupedPlayers: .constant([Dictionary<String, [Player]>.Element]()), isOpen: .constant(true))
+  }
+}

@@ -62,8 +62,6 @@ struct MapView: UIViewRepresentable {
     Coordinator(self)
   }
 
-  
-  
   func makeUIView(context: Context) -> MKMapView {
     let mapView = MKMapView()
     mapView.delegate = context.coordinator
