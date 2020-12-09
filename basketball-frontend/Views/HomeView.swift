@@ -10,25 +10,26 @@ import SwiftUI
 
 struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
-  @State private var isOpen = false
-	@State var selectedEvent: Game? = nil
-	@State var showDetails: Bool = false
+  @Binding var isOpen: Bool
+  @State var selectedEvent: Game? = nil
+  @State var showDetails: Bool = false
   
   var body: some View {
     GeometryReader { geometry in
-			
-				MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
-				
-					.sheet(isPresented: self.$showDetails){
-							GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
-						
-					}
-			
-			// Content is passed as a closure to the bottom view
-			BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.8) {
-				GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, players: self.$viewModel.players)
+      MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
+        // Close the feed when the map is tapped
+//        .onTapGesture() {
+//          self.isOpen = false
+//        }
+        .sheet(isPresented: self.$showDetails){
+          GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
+        }
+      // Content is passed as a closure to the bottom view
+      BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
+        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
       }
-    }.edgesIgnoringSafeArea(.all)
+    }
+    .edgesIgnoringSafeArea(.all)
   }
 }
 

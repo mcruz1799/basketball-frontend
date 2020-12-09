@@ -37,6 +37,18 @@ class Helper {
     }
   }
   
+  static func toDate(date: String) -> Date {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+    dateFormatter.dateFormat = "MM/dd/yyyy"
+    let formattedDate = dateFormatter.date(from: date)
+    if let date: Date = formattedDate {
+      return date
+    } else {
+      return Date()
+    }
+  }
+  
   static func toAcceptableDate(date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
@@ -69,6 +81,35 @@ class Helper {
     return addressLine
   }
   
+  // Credit to Robert Chen, thorntech.com
+  static func parseCL(placemark: CLPlacemark?) -> String {
+    if let selectedItem = placemark {
+      // put a space between "4" and "Melrose Place"
+      let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
+      // put a comma between street and city/state
+      let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : ""
+      // put a space between "Washington" and "DC"
+      let secondSpace = (selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) ? " " : ""
+      let addressLine = String(
+        format:"%@%@%@%@%@%@%@",
+        // street number
+        selectedItem.subThoroughfare ?? "",
+        firstSpace,
+        // street name
+        selectedItem.thoroughfare ?? "",
+        comma,
+        // city
+        selectedItem.locality ?? "",
+        secondSpace,
+        // state
+        selectedItem.administrativeArea ?? ""
+      )
+      return addressLine
+    } else {
+      return ""
+    }
+  }
+  
   static func composeMessage(user: User?, game: Game?) -> String {
     let message = String(format: "%@%@%@%@%@%@%@",
                          user?.displayName() ?? "",
@@ -80,6 +121,36 @@ class Helper {
                          game?.onTime() ?? ""
     )
     return message
+  }
+  
+  static func coordinatesToPlacemark(latitude: Double, longitude: Double, completionHandler: @escaping (CLPlacemark?)
+                                      -> Void ) {
+    // Use the last reported location.
+    let loc = CLLocation(latitude: latitude, longitude: longitude)
+    let geocoder = CLGeocoder()
+    
+    // Look up the location and pass it to the completion handler
+    geocoder.reverseGeocodeLocation(loc,
+                                    completionHandler: { (placemarks, error) in
+                                      if error == nil {
+                                        let firstLocation = placemarks?[0]
+                                        completionHandler(firstLocation)
+                                      }
+                                      else {
+                                        // An error occurred during geocoding.
+                                        completionHandler(nil)
+                                      }
+                                    })
+  }
+  
+  static func CLtoMK(placemark: CLPlacemark?) -> MKPlacemark? {
+    var mk: MKPlacemark?
+    if let p = placemark {
+      if let address = p.postalAddress, let coordinate = p.location?.coordinate {
+        mk = MKPlacemark(coordinate: coordinate, postalAddress: address)
+      }
+    }
+    return mk
   }
   
 }

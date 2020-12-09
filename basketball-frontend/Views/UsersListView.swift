@@ -11,16 +11,19 @@ import SwiftUI
 struct UsersListView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var users: [Users]
-//  let status: String
+//  let status: String?
   
   var body: some View {
-//    VStack {
-//      Text(status + " Users")
+//    NavigationView {
+      //    VStack {
+      //      Text(status + " Users")
       List {
         ForEach(viewModel.forStatus(users: users), id: \.user.id) { arg in
           UsersListRowView(viewModel: viewModel, user: arg.user, isFavorited: arg.favorited)
         }
+        //      }
 //      }
+//      .navigationBarTitle((status ?? "" ) + " Users")
     }
   }
 }
@@ -32,7 +35,7 @@ struct UsersListRowView: View {
   
   var body: some View {
     HStack {
-      Text(user.username)
+      Text(user.displayName())
       Spacer()
       if (isFavorited) {
         Button(action: {
