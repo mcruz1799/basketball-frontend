@@ -12,6 +12,7 @@ struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var isOpen: Bool
   @Binding var selectedEvent: Game?
+  @Binding var player: Player?
   @State var event: Games?
   @State var showDetails: Bool = false
   
@@ -19,11 +20,13 @@ struct HomeView: View {
     GeometryReader { geometry in
       MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, event: $event, showDetails: self.$showDetails, games: viewModel.games)
         // Close the feed when the map is tapped
-//        .onTapGesture() {
-//          self.isOpen = false
-//        }
-        .sheet(isPresented: self.$viewModel.showDetails){
-          GameDetailsView(viewModel: self.viewModel, player: nil, game: $selectedEvent, status: "Going")
+        //        .onTapGesture() {
+        //          self.isOpen = false
+        //        }
+        .sheet(isPresented: $viewModel.showDetails){
+          NavigationView {
+            GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
+          }
         }
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {

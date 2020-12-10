@@ -28,6 +28,7 @@ class ViewModel: ObservableObject {
   var headers: HTTPHeaders?
   
   @Published var game: Game?
+  @Published var player: Player?
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
@@ -262,6 +263,18 @@ class ViewModel: ObservableObject {
     }
   }
   
+  func findPlayer(gameId: String) {
+    if let i = Int(gameId) {
+      let players = self.players.filter({ $0.game.data.id == i })
+      // There is already a player object associated with this game
+      if players.count >= 1 {
+        self.player = players.first
+      } else {
+        self.player = nil
+      }
+    }
+  }
+  
   func startCreating() {
     self.creatingGame = true
   }
@@ -492,6 +505,7 @@ class ViewModel: ObservableObject {
             self.getGame(id: self.game!.id)
             player = value.data
             self.players.insert(player!, at: 0)
+            self.player = value.data
           }
         case .failure:
           self.alert = Alert(title: Text("Create Player Failed"),
@@ -515,6 +529,54 @@ class ViewModel: ObservableObject {
       }
     return player
   }
+  
+  //  invite a player to a game
+  //  :param status (String) - status of the player, can be "going", "maybe", "invited", or "not_going"
+  //  :param userId (String) - user ID of the player
+  //  :param gameId (String) - game ID of the player
+  func inviteUser(status: String, userId: Int, gameId: Int) -> Player? {
+    let params = [
+      "status": status,
+      "user_id": String(userId),
+      "game_id": String(gameId)
+    ]
+    
+    var player: Player? = nil
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Player>>) in
+        switch response.result {
+        case .success:
+          if let value: APIData<Player> = response.value {
+            self.getGame(id: self.game!.id)
+            player = value.data
+            self.players.insert(player!, at: 0)
+          }
+        case .failure:
+          self.alert = Alert(title: Text("Create Player Failed"),
+                             message: Text("Failed to add this user to this game, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.createPlayer(status: status, userId: userId, gameId: gameId)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
+      }
+    return player
+  }
+  
   
   // edit the status of a player belonging to the current user
   // :param playerId (Int) - ID of the player
@@ -548,9 +610,10 @@ class ViewModel: ObservableObject {
         case .success:
           print(response.result)
           
-          if let _: APIData<Player> = response.value {
+          if let player: APIData<Player> = response.value {
             self.getGame(id: self.game!.id)
             self.refreshCurrentUser()
+            self.player = player.data
           }
         case .failure:
           print(response.result)
@@ -695,7 +758,8 @@ class ViewModel: ObservableObject {
   }
   
   func groupPlayers(players: [Player]) -> [Dictionary<String, [Player]>.Element] {
-    let players = Dictionary(grouping: players, by: { $0.game.data.onDate() })
+    let p = players.sorted(by: { Helper.toTime(time: $0.game.data.time) < Helper.toTime(time: $1.game.data.time) })
+    let players = Dictionary(grouping: p, by: { $0.game.data.onDate() })
     let keys = players.sorted(by: { Helper.toDate(date: $0.key) > Helper.toDate(date: $1.key) })
     return keys
   }

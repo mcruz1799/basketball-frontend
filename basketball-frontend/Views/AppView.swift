@@ -25,7 +25,7 @@ struct AppView: View {
       GeometryReader { geometry in
         ZStack {
           TabView{
-            HomeView(viewModel: viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game)
+            HomeView(viewModel: viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game, player: $viewModel.player)
               .tabItem{
                 Image(systemName: "house.fill")
                   .font(.system(size: 25))
