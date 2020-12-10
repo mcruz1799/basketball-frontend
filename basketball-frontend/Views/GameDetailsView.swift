@@ -33,7 +33,7 @@ struct GameDetailsView: View {
       VStack(alignment: .leading){
         HStack{
           //Court Name
-          Text(player.game.data.name)
+					Text(game?.name ?? "")
             .font(.system(size:32))
 
             .fontWeight(.bold)
