@@ -33,8 +33,9 @@ struct GameDetailsView: View {
       VStack(alignment: .leading){
         HStack{
           //Court Name
-          Text(game?.name ?? "")
-            .font(.system(size:25))
+          Text(player.game.data.name)
+            .font(.system(size:32))
+
             .fontWeight(.bold)
             .frame(alignment: .leading)
             .padding([.leading, .trailing])
@@ -56,16 +57,21 @@ struct GameDetailsView: View {
           }
         }
         //Game Date and Time
-        HStack{
-          Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
+
+          Text("\(player.game.data.onDate()) @ \(player.game.data.onTime())")
+
             .font(.system(size: 22))
             .italic()
+						.bold()
             .padding(.leading)
-        }
+					Text(address)
+						.font(.system(size: 22))
+						.padding(.leading)
+				
       }
       .padding(.bottom)
       
-      Text(address)
+      
       
       // MARK: - Player Lists by Status
       
@@ -205,8 +211,10 @@ struct PlayerListButton: View {
   }
   func assignUsers(users: [Users], status: String) {
     self.users = users
-    self.showingUsers = true
-    self.selectedStatusList = status
+		if (users.count > 0) {
+			self.showingUsers = true
+			self.selectedStatusList = status
+		}
   }
 }
 
