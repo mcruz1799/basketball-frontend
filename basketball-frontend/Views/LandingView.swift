@@ -12,25 +12,40 @@ import SwiftUI
 struct LandingView: View {
   @ObservedObject var viewModel: ViewModel
   
+  var CR: CGFloat = 20
+  
   var body: some View {
     VStack {
-      Button(action: {
-        self.viewModel.currentScreen = "login"
-      }) {
-        Text("Login")
+      Spacer()
+      Image("logo")
+      Spacer()
+      NavigationLink(destination: LoginView(viewModel: viewModel)) {
+        Text("Log In")
+          .padding()
+          .frame(maxWidth: .infinity)
+          .background(Color("primaryButtonColor"))
+          .foregroundColor(.black)
+          .cornerRadius(CR)
+          .padding([.trailing, .leading])
       }
       
-      Button(action: {
-        self.viewModel.currentScreen = "create-user"
-      }) {
-        Text("Create User")
+      NavigationLink(destination: CreateUserView(viewModel: viewModel)) {
+        Text("Create Account")
+          .padding()
+          .frame(maxWidth: .infinity)
+          .background(Color("secondaryButtonColor"))
+          .foregroundColor(.black)
+          .cornerRadius(CR)
+          .padding([.trailing, .leading])
       }
       
+      // TODO: Remove this before launch
       Button(action: {
         self.viewModel.login(username: "jxu", password: "secret")
       }) {
         Text("Testing")
       }
+        
     }
   }
 }

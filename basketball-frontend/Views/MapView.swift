@@ -12,6 +12,7 @@ import MapKit
 struct MapView: UIViewRepresentable {
   @ObservedObject var viewModel: ViewModel
   @Binding var selectedEvent: Game?
+  @Binding var event: Games?
   @Binding var showDetails: Bool
   let games: [Games]
   
@@ -49,7 +50,12 @@ struct MapView: UIViewRepresentable {
     
     func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
       let currAnnotation = view.annotation as? GameAnnotation
+      if let curr = currAnnotation {
+        parent.viewModel.getGame(id: Int(curr.id))
+        parent.event = curr.game
+      }
       parent.selectedEvent = parent.viewModel.game
+      print(view)
     }
 		
     func mapView(_: MKMapView, didDeselect view: MKAnnotationView) {
@@ -81,7 +87,7 @@ struct MapView: UIViewRepresentable {
   }
   
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-    let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude)})
+    let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title:   $0.name, latitude: $0.latitude, longitude: $0.longitude, game: $0)})
     uiView.addAnnotations(annotations)
     
   }
