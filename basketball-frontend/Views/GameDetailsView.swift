@@ -28,7 +28,7 @@ struct GameDetailsView: View {
   var CR: CGFloat = 20
   
   var body: some View {
-    NavigationView {
+//    NavigationView {
       VStack {
         //MARK: - Game Information
         VStack(alignment: .leading){
@@ -131,7 +131,7 @@ struct GameDetailsView: View {
         //MARK: - VSTACK Modifiers
         
       }
-    }
+//    }
     .padding()
     .background(Color("backgroundColor"))
     

@@ -62,7 +62,7 @@ struct GameRow: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-    Button(action: { showDetails = true; viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
+    Button(action: { viewModel.showDetails = true; viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
       
       VStack {
         HStack {
@@ -77,9 +77,9 @@ struct GameRow: View {
         }
       }.padding(10)
     }
-    .sheet(isPresented: $showDetails){
-      GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
-    }
+//    .sheet(isPresented: $showDetails){
+//      GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
+//    }
   }
 }
 

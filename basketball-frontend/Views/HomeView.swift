@@ -20,11 +20,13 @@ struct HomeView: View {
     GeometryReader { geometry in
       MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, event: $event, showDetails: self.$showDetails, games: viewModel.games)
         // Close the feed when the map is tapped
-//        .onTapGesture() {
-//          self.isOpen = false
-//        }
+        //        .onTapGesture() {
+        //          self.isOpen = false
+        //        }
         .sheet(isPresented: $viewModel.showDetails){
-          GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
+          NavigationView {
+            GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
+          }
         }
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
