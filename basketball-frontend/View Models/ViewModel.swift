@@ -35,6 +35,7 @@ class ViewModel: ObservableObject {
   
   @Published var userLocation = Location()
   @Published var currentScreen: String = "landing"
+	@Published var currentTab: String = "home"
   @Published var searchResults: [Users] = [Users]()
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
