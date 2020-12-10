@@ -35,6 +35,7 @@
 		7EEAFD7F257C4C6C000B0F74 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEAFD7E257C4C6C000B0F74 /* Contact.swift */; };
 		9944F6919378FA719DA35F95 /* Pods_basketball_frontend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */; };
 		D301FB4B2564F11D008447BD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D301FB4A2564F11D008447BD /* MapView.swift */; };
+		D34F4DD2258200E900E2E2EE /* OgTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34F4DD1258200E900E2E2EE /* OgTabBar.swift */; };
 		D37D9DE3255E314E00B0BE5B /* GameAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */; };
 		D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A922555D7F2004B09D2 /* AppView.swift */; };
 		D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A46A942555D7FC004B09D2 /* ProfileView.swift */; };
@@ -103,6 +104,7 @@
 		CE2B849F504731F6FF9D13D2 /* Pods-basketball-frontend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontend.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontend/Pods-basketball-frontend.release.xcconfig"; sourceTree = "<group>"; };
 		CFED0C95F3B92AFEC6EB8354 /* Pods-basketball-frontendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.debug.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D301FB4A2564F11D008447BD /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		D34F4DD1258200E900E2E2EE /* OgTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OgTabBar.swift; sourceTree = "<group>"; };
 		D37D9DE2255E314E00B0BE5B /* GameAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAnnotation.swift; sourceTree = "<group>"; };
 		D3A46A922555D7F2004B09D2 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		D3A46A942555D7FC004B09D2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				D3A46A922555D7F2004B09D2 /* AppView.swift */,
+				D34F4DD1258200E900E2E2EE /* OgTabBar.swift */,
 				D3A46A942555D7FC004B09D2 /* ProfileView.swift */,
 				D3A46A962555D80A004B09D2 /* CreateView.swift */,
 				7E63E8782566F1BA00C06881 /* LocationSearchView.swift */,
@@ -560,6 +563,7 @@
 				D3A46A932555D7F2004B09D2 /* AppView.swift in Sources */,
 				D3A46A952555D7FC004B09D2 /* ProfileView.swift in Sources */,
 				D3A46A972555D80A004B09D2 /* CreateView.swift in Sources */,
+				D34F4DD2258200E900E2E2EE /* OgTabBar.swift in Sources */,
 				7EB74DFE257DA1460056E0C4 /* InvitingContactsView.swift in Sources */,
 				4626385C2555DF7E0052CEB6 /* EditProfileForm.swift in Sources */,
 			);
