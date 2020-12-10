@@ -203,8 +203,10 @@ struct PlayerListButton: View {
   }
   func assignUsers(users: [Users], status: String) {
     self.users = users
-    self.showingUsers = true
-    self.selectedStatusList = status
+		if (users.count > 0) {
+			self.showingUsers = true
+			self.selectedStatusList = status
+		}
   }
 }
 
