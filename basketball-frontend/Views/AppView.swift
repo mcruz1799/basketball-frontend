@@ -14,10 +14,10 @@ struct AppView: View {
   @State var isOpen: Bool = false
   
   init() {
-//		UITabBar.appearance().isTranslucent = false
-		UITabBar.appearance().barTintColor = UIColor(named: "tabBarColor")
-		UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tabBarIconColor")
-	
+    //		UITabBar.appearance().isTranslucent = false
+    UITabBar.appearance().barTintColor = UIColor(named: "tabBarColor")
+    UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tabBarIconColor")
+    
   }
   var body: some View {
     
@@ -25,7 +25,7 @@ struct AppView: View {
       GeometryReader { geometry in
         ZStack {
           TabView{
-            HomeView(viewModel: viewModel, isOpen: $isOpen)
+            HomeView(viewModel: viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game)
               .tabItem{
                 Image(systemName: "house.fill")
                   .font(.system(size: 25))
@@ -42,7 +42,10 @@ struct AppView: View {
           }
           ZStack {
             Button(action: {
-                    self.creatingGame = true }) {
+              //                    self.creatingGame = true
+              viewModel.startCreating()
+              
+            }) {
               VStack {
                 Image(systemName: "plus.circle.fill")
                   .font(.system(size: 36))
@@ -52,8 +55,8 @@ struct AppView: View {
             }
           }.offset(y: geometry.size.height/2 - 20)
         }
-      }.sheet(isPresented: $creatingGame) {
-        CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+      }.sheet(isPresented: $viewModel.creatingGame) {
+        CreateView(viewModel: viewModel, creatingGame: $viewModel.creatingGame)
       }
     } else if viewModel.currentScreen == "login-splash" {
       SplashView()

@@ -15,9 +15,9 @@ struct InvitedGamesList: View {
   var body: some View {
     List {
       ForEach(viewModel.getPlayerWithStatus(status: "invited")) { player in
-        NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, status: player.status)) {
-          GameRow(player: player)
-        }
+//        NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, status: player.status)) {
+//          GameRow(player: player)
+//        }
       }
     }
   }
