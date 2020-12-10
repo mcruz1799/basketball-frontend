@@ -11,22 +11,23 @@ import SwiftUI
 struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var isOpen: Bool
-  @State var selectedEvent: Game? = nil
+  @Binding var selectedEvent: Game?
+  @State var event: Games?
   @State var showDetails: Bool = false
   
   var body: some View {
     GeometryReader { geometry in
-      MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
+      MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, event: $event, showDetails: self.$showDetails, games: viewModel.games)
         // Close the feed when the map is tapped
 //        .onTapGesture() {
 //          self.isOpen = false
 //        }
-        .sheet(isPresented: self.$showDetails){
-          GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
+        .sheet(isPresented: self.$viewModel.showDetails){
+          GameDetailsView(viewModel: self.viewModel, player: nil, game: $selectedEvent, status: "Going")
         }
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
-        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
+        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, players: self.$viewModel.players, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
       }
     }
     .edgesIgnoringSafeArea(.all)

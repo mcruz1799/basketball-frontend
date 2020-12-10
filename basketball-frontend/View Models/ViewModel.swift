@@ -20,6 +20,7 @@ class ViewModel: ObservableObject {
   @Published var user: User?
   @Published var players: [Player] = [Player]()
   @Published var groupedPlayers: [Dictionary<String, [Player]>.Element] = [Dictionary<String, [Player]>.Element]()
+  // Set of games associated with the players of the user
   @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
@@ -39,6 +40,8 @@ class ViewModel: ObservableObject {
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
+  @Published var showDetails: Bool = false
+  @Published var creatingGame: Bool = false
   
   @Published var contacts: [Contact] = [Contact]()
   @Published var contactsFiltered: [Contact] = [Contact]()
@@ -234,24 +237,33 @@ class ViewModel: ObservableObject {
   //  :param none
   //  :return none
   func getGames() {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games", headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+    let params: Parameters = [
+      "user_id": self.userId
+    ]
+    AF.request("http://secure-hollows-77457.herokuapp.com/get_games", method: .get, parameters: params, headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
       }
     }
   }
   
-  func getGame(id: Int) {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        self.game = value.data
-        self.invited = value.data.invited.map { $0.data }
-        self.maybe = value.data.maybe.map { $0.data }
-        self.going = value.data.going.map { $0.data }
-        let arr = self.invited + self.maybe + self.going
-        self.gamePlayers = Set(arr.map { $0.id })
+  func getGame(id: Int?) {
+    if let i = id {
+      AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(i), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+        if let value: APIData<Game> = response.value {
+          self.game = value.data
+          self.invited = value.data.invited.map { $0.data }
+          self.maybe = value.data.maybe.map { $0.data }
+          self.going = value.data.going.map { $0.data }
+          let arr = self.invited + self.maybe + self.going
+          self.gamePlayers = Set(arr.map { $0.id })
+        }
       }
     }
+  }
+  
+  func startCreating() {
+    self.creatingGame = true
   }
   
   //  create a new game
@@ -277,20 +289,40 @@ class ViewModel: ObservableObject {
     var game: Game? = nil
     AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        self.game = value.data
-        game = value.data
-        
-        let player: Player? = self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
-        
-        if (player != nil) {
-          self.getGame(id: self.game!.id)
-          self.players.insert(player!, at: 0)
+      switch response.result {
+      case .success:
+        if let value: APIData<Game> = response.value {
+          if let value: APIData<Game> = response.value {
+            self.game = value.data
+            game = self.game
+            self.creatingGame = false
+            self.showDetails = true
+            self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
+            if let newGame = self.game {
+              let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
+              self.games.append(newGame)
+            }
+          }
         }
-        if let newGame = self.game {
-          let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
-          self.games.append(newGame)
-        }
+      case .failure:
+        print(response.result)
+        self.alert = Alert(title: Text("Create Game Failed"),
+                           message: Text("Failed to create this game, please try again"),
+                           primaryButton: .default(
+                            Text("Try Again"),
+                            action: {
+                              self.createGame(name: name, date: date, description: description, priv: priv, latitude: latitude, longitude: longitude)
+                            }
+                           ),
+                           secondaryButton: .default(
+                            Text("Close"),
+                            action: {
+                              self.showAlert = false
+                              self.alert = nil
+                            }
+                           )
+        )
+        self.showAlert = true
       }
     }
     return game
@@ -459,6 +491,7 @@ class ViewModel: ObservableObject {
           if let value: APIData<Player> = response.value {
             self.getGame(id: self.game!.id)
             player = value.data
+            self.players.insert(player!, at: 0)
           }
         case .failure:
           self.alert = Alert(title: Text("Create Player Failed"),
@@ -666,4 +699,15 @@ class ViewModel: ObservableObject {
     let keys = players.sorted(by: { Helper.toDate(date: $0.key) > Helper.toDate(date: $1.key) })
     return keys
   }
+  
+  //  func grabPlayer(game: Game?) -> Player {
+  //    if let g = game {
+  //      // User is already associated with the game
+  //      if self.playersSet.contains(g.id) {
+  //        return self.players.filter({ $0.game.data.id == g.id })[0]
+  //      }
+  //    }
+  //    let player = self.createPlayer
+  //    return
+  //  }
 }
