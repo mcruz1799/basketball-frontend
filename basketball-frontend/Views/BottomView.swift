@@ -21,7 +21,7 @@ struct BottomView<Content: View>: View {
   
   private var indicator: some View {
     RoundedRectangle(cornerRadius: 16)
-      .fill(Color.gray)
+      .fill(Color.white)
       .frame(
         width: 60,
         height: 6
@@ -44,7 +44,7 @@ struct BottomView<Content: View>: View {
         self.indicator.padding()
         self.content
       }.frame(width: geometry.size.width, height: self.maxHeight, alignment: .top)
-      .background(Color.black)
+      .background(Color("tabBarIconColor"))
       .cornerRadius(16)
       .frame(height: geometry.size.height, alignment: .bottom)
       .offset(y: max(self.offset + self.slide, 0))
