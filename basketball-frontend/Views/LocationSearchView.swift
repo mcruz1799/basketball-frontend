@@ -12,7 +12,7 @@ import MapKit
 struct LocationSearchView: View {
   @State var locationSearch: String = ""
   @State var searchResults: [MKMapItem] = [MKMapItem]()
-  let viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   @Binding var creatingGame: Bool
   
   var body: some View {
@@ -27,8 +27,8 @@ struct LocationSearchView: View {
       VStack {
         SearchBarView<MKMapItem>(searchText: locSearch, searchResults: $searchResults)
         List {
-          ForEach(searchResults, id: \.name) { result in
-            NavigationLink(destination: CreateFormView(viewModel: viewModel,   location: result, creatingGame: $creatingGame)) {
+          ForEach(searchResults, id: \.self) { result in
+            NavigationLink(destination: CreateFormView(viewModel: viewModel, location: result, creatingGame: $creatingGame)) {
               VStack(alignment: .leading) {
                 Text(result.name ?? "").bold()
                 Text(Helper.parseAddress(selectedItem: result.placemark))
@@ -51,6 +51,7 @@ struct LocationSearchView: View {
         return
       }
       self.searchResults = response.mapItems
+      print(self.searchResults)
     }
   }
 }

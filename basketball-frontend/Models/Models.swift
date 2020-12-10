@@ -60,7 +60,7 @@ struct Games: Decodable, Encodable, Identifiable {
 struct Player: Decodable, Identifiable {
   let id: Int
   let status: String
-  let game: APIData<Games>
+  let game: APIData<Game>
   enum CodingKeys: String, CodingKey {
     case id
     case status

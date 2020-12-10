@@ -12,7 +12,8 @@ import MapKit
 struct GameDetailsView: View {
   @ObservedObject var viewModel: ViewModel
   
-  let player: Player
+  let player: Player?
+  @Binding var game: Game?
   @State var showingUsers = false
   @State var status: String
   @State var usersStatus: String = "Going"
@@ -34,27 +35,31 @@ struct GameDetailsView: View {
           //Court Name
           Text(player.game.data.name)
             .font(.system(size:32))
+
             .fontWeight(.bold)
             .frame(alignment: .leading)
             .padding([.leading, .trailing])
           Spacer()
           //Private or Public
-          if player.game.data.priv{
-            Text("- Private")
-              .italic()
-              .font(.system(size: 22))
-              .padding(.trailing)
-          }
-          else{
-            Text("- Public")
-              .italic()
-              .font(.system(size: 22))
-              .padding(.trailing)
+          if let g = game {
+            if g.priv{
+              Text("- Private")
+                .italic()
+                .font(.system(size: 22))
+                .padding(.trailing)
+            }
+            else{
+              Text("- Public")
+                .italic()
+                .font(.system(size: 22))
+                .padding(.trailing)
+            }
           }
         }
         //Game Date and Time
 
           Text("\(player.game.data.onDate()) @ \(player.game.data.onTime())")
+
             .font(.system(size: 22))
             .italic()
 						.bold()
@@ -134,13 +139,13 @@ struct GameDetailsView: View {
     .padding()
     .background(Color("backgroundColor"))
     
-    .onAppear { self.viewModel.getGame(id: player.game.data.id) }
+    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
     .sheet(isPresented: $showingUsers) {
       //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
       UsersListView(viewModel: viewModel, users: $users)
     }
     .actionSheet(isPresented: $showingActionSheet) {
-      ActionSheet(title: Text("Change Status"), message: Text("Select a new color"), buttons: [
+      ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
         //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
         .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
         .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
@@ -158,8 +163,7 @@ struct GameDetailsView: View {
   //MARK: - Helper Methods
   
   func statusChange(selectedStatus: String) {
-    print(selectedStatus)
-    viewModel.editPlayerStatus(playerId: self.player.id, status: selectedStatus)
+//    viewModel.editPlayerStatus(playerId: self.player.id, status: selectedStatus)
     self.status = selectedStatus
   }
   
@@ -170,7 +174,7 @@ struct GameDetailsView: View {
   }
   
   func getAddress() {
-    Helper.coordinatesToPlacemark(latitude: player.game.data.latitude, longitude: player.game.data.longitude) { placemark in
+    Helper.coordinatesToPlacemark(latitude: game?.latitude ?? 22.0, longitude: game?.longitude ?? 22.0) { placemark in
       //      self.address = Helper.parseAddress(selectedItem: Helper.CLtoMK(placemark: placemark)!)
       self.address = Helper.parseCL(placemark: placemark)
     }

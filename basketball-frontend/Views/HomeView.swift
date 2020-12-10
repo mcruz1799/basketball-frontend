@@ -11,7 +11,8 @@ import SwiftUI
 struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var isOpen: Bool
-  @State var selectedEvent: Game? = nil
+  @Binding var selectedEvent: Game?
+  @State var event: Games?
   @State var showDetails: Bool = false
   
   var body: some View {
@@ -56,7 +57,7 @@ struct HomeView: View {
 
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
-        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
+        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, players: self.$viewModel.players, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
       }
     }
     .edgesIgnoringSafeArea(.all)

@@ -83,6 +83,7 @@ struct AppView: View {
 			}.edgesIgnoringSafeArea(.bottom)
 				.sheet(isPresented: $creatingGame) {
 					CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+ 
       }
     } else if viewModel.currentScreen == "login-splash" {
       SplashView()
