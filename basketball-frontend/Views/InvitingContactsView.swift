@@ -96,8 +96,8 @@ extension ContactRowView {
     guard MFMessageComposeViewController.canSendText() else {
       return
     }
-//    let vc = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController
-    let vc = self.findViewController()
+    let vc = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController
+//    let vc = self.findViewController()
     let composeVC = MFMessageComposeViewController()
     composeVC.messageComposeDelegate = messageComposeDelegate
     composeVC.recipients = [contact.displayPhone()]
