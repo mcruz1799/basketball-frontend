@@ -39,13 +39,16 @@ struct DateRow: View {
   
   var body: some View {
     Section(header: Text(date)) {
-//      ForEach(players ?? [Player]()) { player in
-//        NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, game: g, status: player.status)) {
-//          GameRow(player: player)}
-//      }
+      //      ForEach(players ?? [Player]()) { player in
+      //        NavigationLink(destination: GameDetailsView(viewModel: viewModel, player: player, game: g, status: player.status)) {
+      //          GameRow(player: player)}
+      //      }
+      //      ForEach(players ?? [Player]()) { player in
+      //        NavigationLink(destination: Wrapper(viewModel: viewModel, player: player, game:   player.game.data, status: player.status)) {
+      //          GameRow(player: player)}
+      //      }
       ForEach(players ?? [Player]()) { player in
-        NavigationLink(destination: Wrapper(viewModel: viewModel, player: player, game:   player.game.data, status: player.status)) {
-          GameRow(player: player)}
+        GameRow(player: player, viewModel: viewModel)
       }
     }
   }
@@ -53,22 +56,30 @@ struct DateRow: View {
 
 
 struct GameRow: View {
-  let player: Player
+  @State var player: Player
+  @State var showDetails: Bool = false
+  @State var selectedEvent: Game? = nil
+  @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-    VStack {
-      HStack {
-        Text(player.game.data.name).bold()
-        Spacer()
-        Text(player.status)
-      }.padding(.bottom, 5)
-      HStack {
-        Text(player.game.data.onTime())
-        Spacer()
-        Image(systemName: "arrow.right")
-      }
-    }.padding(10)
-    
+    Button(action: { viewModel.showDetails = true; viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
+      
+      VStack {
+        HStack {
+          Text(player.game.data.name).bold()
+          Spacer()
+          Text(player.status)
+        }.padding(.bottom, 5)
+        HStack {
+          Text(player.game.data.onTime())
+          Spacer()
+          Image(systemName: "arrow.right")
+        }
+      }.padding(10)
+    }
+//    .sheet(isPresented: $showDetails){
+//      GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
+//    }
   }
 }
 

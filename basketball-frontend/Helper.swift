@@ -13,8 +13,9 @@ class Helper {
   
   static func onTime(time: String) -> String {
     let timeFormatter = DateFormatter()
-    timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//    timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
     timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    timeFormatter.timeZone = TimeZone(abbreviation: "EST")
     let formattedTime = timeFormatter.date(from: time)
     if let time: Date = formattedTime {
       timeFormatter.dateFormat = "h:mm a"
@@ -28,6 +29,7 @@ class Helper {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
     dateFormatter.dateFormat = "yyyy-MM-dd"
+    dateFormatter.timeZone = TimeZone(abbreviation: "EST")
     let formattedDate = dateFormatter.date(from: date)
     if let date: Date = formattedDate {
       dateFormatter.dateFormat = "MM/dd/yyyy"
@@ -41,6 +43,7 @@ class Helper {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
     dateFormatter.dateFormat = "MM/dd/yyyy"
+    dateFormatter.timeZone = TimeZone(abbreviation: "EST")
     let formattedDate = dateFormatter.date(from: date)
     if let date: Date = formattedDate {
       return date
@@ -49,10 +52,28 @@ class Helper {
     }
   }
   
+  static func toTime(time: String) -> Date {
+    let timeFormatter = DateFormatter()
+    timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+    timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    timeFormatter.timeZone = TimeZone(abbreviation: "EST")
+    let formattedTime = timeFormatter.date(from: time)
+    if let time: Date = formattedTime {
+      return time
+    } else {
+      return Date()
+    }
+  }
+  
   static func toAcceptableDate(date: Date) -> String {
+    print(date)
     let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//    dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+//    dateFormatter.calendar = Calendar.current
+//    dateFormatter.timeZone = TimeZone.current
+    dateFormatter.timeZone = TimeZone(abbreviation: "EST")
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let t = dateFormatter.string(from: date)
     return dateFormatter.string(from: date)
   }
   

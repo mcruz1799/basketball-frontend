@@ -12,20 +12,23 @@ struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
   @Binding var isOpen: Bool
   @Binding var selectedEvent: Game?
+  @Binding var player: Player?
   @State var event: Games?
   @State var showDetails: Bool = false
   
   var body: some View {
     GeometryReader { geometry in
+
 			ZStack(alignment: .topTrailing){
 				
-				MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, showDetails: self.$showDetails, games: viewModel.games)
+				MapView(viewModel: viewModel, selectedEvent: $selectedEvent, event: $event, showDetails: $showDetails, games: viewModel.games)
 					// Close the feed when the map is tapped
-	//        .onTapGesture() {
-	//          self.isOpen = false
-	//        }
-					.sheet(isPresented: self.$showDetails){
-						GameDetailsView(viewModel: self.viewModel, player: viewModel.players[0], status: "Going")
+					//        .onTapGesture() {
+					//          self.isOpen = false
+					//        }
+					.sheet(isPresented: $viewModel.showDetails){
+						GameDetailsView(viewModel:  viewModel, player: $player, game: $selectedEvent)
+
 					}
 				ZStack{
 					Spacer()
@@ -45,7 +48,6 @@ struct HomeView: View {
 							.foregroundColor(.white)
 					}.offset(x: 20, y: -18)
 
-				
 				}
 				.onTapGesture {
 					viewModel.currentTab = "invites"
@@ -53,6 +55,7 @@ struct HomeView: View {
 				.offset(x: 50, y: 50)
 				.shadow(color: .gray, radius: 2, x:1, y:1)
 			}
+
 
 
       // Content is passed as a closure to the bottom view
