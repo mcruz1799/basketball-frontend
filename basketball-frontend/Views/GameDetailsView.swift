@@ -12,10 +12,11 @@ import MapKit
 struct GameDetailsView: View {
   @ObservedObject var viewModel: ViewModel
   
-  let player: Player?
+  @Binding var player: Player?
   @Binding var game: Game?
+  
   @State var showingUsers = false
-  @State var status: String
+  //  @State var status: String
   @State var usersStatus: String = "Going"
   @State var selectedStatusList: String = "Going"
   @State var invitingUsers = false
@@ -33,9 +34,9 @@ struct GameDetailsView: View {
       VStack(alignment: .leading){
         HStack{
           //Court Name
-          Text(player.game.data.name)
+          Text(game?.name ?? "")
             .font(.system(size:32))
-
+            
             .fontWeight(.bold)
             .frame(alignment: .leading)
             .padding([.leading, .trailing])
@@ -55,116 +56,117 @@ struct GameDetailsView: View {
                 .padding(.trailing)
             }
           }
+          //Game Date and Time
+          HStack{
+            Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
+              .font(.system(size: 22))
+              .italic()
+              .padding(.leading)
+            Text(address)
+              .font(.system(size: 22))
+              .padding(.leading)
+          }
+          .padding(.bottom)
         }
-        //Game Date and Time
-
-          Text("\(player.game.data.onDate()) @ \(player.game.data.onTime())")
-
-            .font(.system(size: 22))
-            .italic()
-						.bold()
-            .padding(.leading)
-					Text(address)
-						.font(.system(size: 22))
-						.padding(.leading)
-				
-      }
-      .padding(.bottom)
-      
-      
-      
-      // MARK: - Player Lists by Status
-      
-      HStack(alignment: .lastTextBaseline) {
         
-        //Button to show list of Going players
-        PlayerListButton(selectedUsers: viewModel.going, status: "Going",
-                         image: "checkmark", users: $users,
-                         showingUsers: $showingUsers,
-                         selectedStatusList: $selectedStatusList)
+        // MARK: - Player Lists by Status
         
-        //Button to show list of Maybe players
-        PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
-                         image: "questionmark.diamond", users: $users,
-                         showingUsers: $showingUsers,
-                         selectedStatusList: $selectedStatusList)
-        
-        //Button to show list of Invited players
-        PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
-                         image: "envelope", users: $users,
-                         showingUsers: $showingUsers,
-                         selectedStatusList: $selectedStatusList)
-        
-      }
-      
-      
-      //MARK: - Change Status
-      
-      
-      Button(action: {
-        showingActionSheet = true
-      }) {
-        HStack{
-          Text(status.capitalized)
-          Image(systemName: "chevron.down")
+        HStack(alignment: .lastTextBaseline) {
+          
+          //Button to show list of Going players
+          PlayerListButton(selectedUsers: viewModel.going, status: "Going",
+                           image: "checkmark", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
+          //Button to show list of Maybe players
+          PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
+                           image: "questionmark.diamond", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
+          //Button to show list of Invited players
+          PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
+                           image: "envelope", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
         }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(Color("secondaryButtonColor"))
-        .foregroundColor(.black)
-        .cornerRadius(CR)
-        .padding([.trailing, .leading])
         
         
-      }
-      
-      
-      //MARK: - Invite Users
-      NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
-        Text("Invite Friends")
+        //MARK: - Change Status
+        
+        
+        Button(action: {
+          showingActionSheet = true
+        }) {
+          HStack{
+            Text(player?.status.capitalized ?? "Not Going")
+            Image(systemName: "chevron.down")
+          }
           .padding()
           .frame(maxWidth: .infinity)
           .background(Color("secondaryButtonColor"))
           .foregroundColor(.black)
           .cornerRadius(CR)
           .padding([.trailing, .leading])
+          
+          
+        }
+        
+        
+        //MARK: - Invite Users
+        NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
+          Text("Invite Friends")
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color("secondaryButtonColor"))
+            .foregroundColor(.black)
+            .cornerRadius(CR)
+            .padding([.trailing, .leading])
+        }
+        
+        
+        
+        
+        //MARK: - VSTACK Modifiers
+        
       }
+      //    }
+      .padding()
+      .background(Color("backgroundColor"))
       
-      
-      
-      
-      //MARK: - VSTACK Modifiers
-      
+      //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
+      .sheet(isPresented: $showingUsers) {
+        //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
+        UsersListView(viewModel: viewModel, users: $users)
+      }
+      .actionSheet(isPresented: $showingActionSheet) {
+        ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
+          //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+          .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
+          .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
+          .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
+          .cancel()
+        ])
+      }
+      .alert(isPresented: $viewModel.showAlert) {
+        viewModel.alert!
+      }
+      .onAppear(perform: getAddress)
+      Spacer()
     }
-    .padding()
-    .background(Color("backgroundColor"))
-    
-    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
-    .sheet(isPresented: $showingUsers) {
-      //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
-      UsersListView(viewModel: viewModel, users: $users)
-    }
-    .actionSheet(isPresented: $showingActionSheet) {
-      ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
-        //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
-        .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
-        .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
-        .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
-        .cancel()
-      ])
-    }
-    .alert(isPresented: $viewModel.showAlert) {
-      viewModel.alert!
-    }
-    .onAppear(perform: getAddress)
-    Spacer()
   }
   
   //MARK: - Helper Methods
   
   func statusChange(selectedStatus: String) {
-//    viewModel.editPlayerStatus(playerId: self.player.id, status: selectedStatus)
-    self.status = selectedStatus
+    if let p = self.player {
+      viewModel.editPlayerStatus(playerId: p.id, status: selectedStatus)
+    } else {
+      viewModel.createPlayer(status: selectedStatus, userId: viewModel.userId!, gameId: self.game?.id ?? 4)
+    }
+    //    self.status = selectedStatus
   }
   
   func assignUsers(users: [Users], status: String) {
@@ -211,10 +213,10 @@ struct PlayerListButton: View {
   }
   func assignUsers(users: [Users], status: String) {
     self.users = users
-		if (users.count > 0) {
-			self.showingUsers = true
-			self.selectedStatusList = status
-		}
+    if (users.count > 0) {
+      self.showingUsers = true
+      self.selectedStatusList = status
+    }
   }
 }
 
