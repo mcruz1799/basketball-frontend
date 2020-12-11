@@ -15,37 +15,39 @@ struct LandingView: View {
   var CR: CGFloat = 20
   
   var body: some View {
-    VStack {
-      Spacer()
-      Image("logo")
-      Spacer()
-      NavigationLink(destination: LoginView(viewModel: viewModel)) {
-        Text("Log In")
-          .padding()
-          .frame(maxWidth: .infinity)
-          .background(Color("primaryButtonColor"))
-          .foregroundColor(.black)
-          .cornerRadius(CR)
-          .padding([.trailing, .leading])
-      }
-      
-      NavigationLink(destination: CreateUserView(viewModel: viewModel)) {
-        Text("Create Account")
-          .padding()
-          .frame(maxWidth: .infinity)
-          .background(Color("secondaryButtonColor"))
-          .foregroundColor(.black)
-          .cornerRadius(CR)
-          .padding([.trailing, .leading])
-      }
-      
-      // TODO: Remove this before launch
-      Button(action: {
-        self.viewModel.login(username: "jxu", password: "secret")
-      }) {
-        Text("Testing")
-      }
+    NavigationView {
+      VStack {
+        Spacer()
+        Image("logo")
+        Spacer()
+        NavigationLink(destination: LoginView(viewModel: viewModel)) {
+          Text("Log In")
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color("primaryButtonColor"))
+            .foregroundColor(.black)
+            .cornerRadius(CR)
+            .padding([.trailing, .leading])
+        }
         
+        NavigationLink(destination: CreateUserView(viewModel: viewModel)) {
+          Text("Create Account")
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color("secondaryButtonColor"))
+            .foregroundColor(.black)
+            .cornerRadius(CR)
+            .padding([.trailing, .leading])
+        }
+        
+        // TODO: Remove this before launch
+        Button(action: {
+          self.viewModel.login(username: "jxu", password: "secret")
+        }) {
+          Text("Testing")
+        }
+      }
+      
     }
   }
 }

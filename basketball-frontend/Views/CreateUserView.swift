@@ -22,39 +22,38 @@ struct CreateUserView: View {
   @State var passwordConfirmation: String = ""
   
   var body: some View {
-    NavigationView {
+    
+    Form {
+      Section {
+        TextField("Username", text: $username)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+        TextField("First Name", text: $firstname)
+          .disableAutocorrection(true)
+        TextField("Last Name", text: $lastname)
+          .disableAutocorrection(true)
+        DatePicker("Date of Birth", selection: $dob, in: ...Date(), displayedComponents: [.date])
+        TextField("Email", text: $email)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+        TextField("Phone", text: $phone)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+        SecureField("Password", text: $password)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+        SecureField("Password Confirmation", text: $passwordConfirmation)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+      }
       
-      Form {
-        Section {
-          TextField("Username", text: $username)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-          TextField("First Name", text: $firstname)
-            .disableAutocorrection(true)
-          TextField("Last Name", text: $lastname)
-            .disableAutocorrection(true)
-          DatePicker("Date of Birth", selection: $dob, in: ...Date(), displayedComponents: [.date])
-          TextField("Email", text: $email)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-          TextField("Phone", text: $phone)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-          SecureField("Password", text: $password)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-          SecureField("Password Confirmation", text: $passwordConfirmation)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-        }
-        
-        Button(action: {
-          createUser()
-        }) {
-          Text("Sign Up")
-        }
-      }.navigationBarTitle("Create Your Profile")
-    }.alert(isPresented: $viewModel.showAlert) {
+      Button(action: {
+        createUser()
+      }) {
+        Text("Sign Up")
+      }
+    }.navigationBarTitle("Create Your Profile")
+    .alert(isPresented: $viewModel.showAlert) {
       viewModel.alert!
     }
   }
