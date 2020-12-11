@@ -12,6 +12,7 @@ struct ProfileView: View {
   @Binding var user: User?
   @Binding var favorites: [Favorite]
   @ObservedObject var viewModel: ViewModel
+  @State var showDetails: Bool = false
   
   var body: some View {
     NavigationView {
@@ -38,8 +39,10 @@ struct ProfileView: View {
         }.padding()
         
         HStack {
-          Text("Search Users")
-          Image(systemName: "magnifyingglass")
+          Button(action: { showDetails = true }){
+            Text("Search Users")
+            Image(systemName: "magnifyingglass")
+          }
         }
         
         List {
@@ -65,6 +68,11 @@ struct ProfileView: View {
                                 Text("Log Out")
                               }
       )
+    }
+    .sheet(isPresented: $showDetails){
+      NavigationView {
+        UsersSearchView(viewModel: viewModel, searchResults: $viewModel.searchResults)
+      }
     }
   }
 }
