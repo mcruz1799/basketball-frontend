@@ -93,9 +93,9 @@ extension ContactRowView {
   
   // Present an message compose view controller modally in UIKit environment
   private func presentMessageCompose() {
-//    guard MFMessageComposeViewController.canSendText() else {
-//      return
-//    }
+    guard MFMessageComposeViewController.canSendText() else {
+      return
+    }
     let vc = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController
     let composeVC = MFMessageComposeViewController()
     composeVC.messageComposeDelegate = messageComposeDelegate
