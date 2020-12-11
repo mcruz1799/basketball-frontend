@@ -21,7 +21,7 @@ struct AppView: View {
         VStack{
           
           if viewModel.currentTab == "home" {
-            HomeView(viewModel: viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game, player: $viewModel.player)
+            HomeView(viewModel: $viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game, player: $viewModel.player)
           }
           
           else if viewModel.currentTab == "profile" {
@@ -104,4 +104,4 @@ struct AppView_Previews: PreviewProvider {
     AppView()
   }
 }
-  
+
