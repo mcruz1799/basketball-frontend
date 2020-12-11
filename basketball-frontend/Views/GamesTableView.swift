@@ -26,7 +26,7 @@ struct GamesTableView: View {
           DateRow(viewModel: viewModel, date: player.key, players: player.value, game: $viewModel.game)
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
-      .navigationBarHidden(true)}
+       .navigationBarHidden(true)}
     //    }
   }
 }

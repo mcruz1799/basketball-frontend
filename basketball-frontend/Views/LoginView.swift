@@ -16,25 +16,24 @@ struct LoginView: View {
   @State var password: String = ""
   
   var body: some View {
-    NavigationView {
-      Form {
-        Section {
-          TextField("Username", text: $username)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-          SecureField("Password", text: $password)
-            .autocapitalization(.none)
-            .disableAutocorrection(true)
-        }
-        
-        Button(action: {
-          login()
-        }) {
-          Text("Login")
-        }
-        
-      }.navigationBarTitle("Login")
-    }.alert(isPresented: $viewModel.showAlert) {
+    Form {
+      Section {
+        TextField("Username", text: $username)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+        SecureField("Password", text: $password)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+      }
+      
+      Button(action: {
+        login()
+      }) {
+        Text("Login")
+      }
+      
+    }.navigationBarTitle("Login")
+    .alert(isPresented: $viewModel.showAlert) {
       viewModel.alert!
     }
   }

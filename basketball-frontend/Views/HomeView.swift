@@ -25,11 +25,6 @@ struct HomeView: View {
           //        .onTapGesture() {
           //          self.isOpen = false
           //        }
-          .sheet(isPresented: $viewModel.showDetails){
-            NavigationView {
-              GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
-            }
-          }
         ZStack{
           Spacer()
           Circle()
@@ -59,6 +54,11 @@ struct HomeView: View {
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
         GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, players: self.$viewModel.players, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
+      }
+      .sheet(isPresented: $viewModel.showDetails){
+        NavigationView {
+          GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
+        }
       }
     }
     .edgesIgnoringSafeArea(.all)
