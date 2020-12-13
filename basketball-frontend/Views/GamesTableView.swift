@@ -62,7 +62,7 @@ struct GameRow: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-    Button(action: { viewModel.showDetails = true; viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
+    Button(action: { viewModel.showDetails(); viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
       
       VStack {
         HStack {

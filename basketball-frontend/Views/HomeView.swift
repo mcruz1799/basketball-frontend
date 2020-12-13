@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
-  @Binding var isOpen: Bool
+  @State var isOpen: Bool = false
   @Binding var selectedEvent: Game?
   @Binding var player: Player?
   @State var event: Games?
@@ -21,15 +21,10 @@ struct HomeView: View {
       ZStack(alignment: .topTrailing){
         
         MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, event: $event, showDetails: self.$showDetails, games: viewModel.games)
-          // Close the feed when the map is tapped
-          //        .onTapGesture() {
-          //          self.isOpen = false
-          //        }
-          .sheet(isPresented: $viewModel.showDetails){
-            NavigationView {
-              GameDetailsView(viewModel: self.viewModel, player: $player, game: $selectedEvent)
-            }
-          }
+          //           Close the feed when the map is tapped
+//          .onTapGesture() {
+//            self.isOpen = false
+//          }
         ZStack{
           Spacer()
           Circle()
@@ -62,11 +57,6 @@ struct HomeView: View {
       }
     }
     .edgesIgnoringSafeArea(.all)
-//    .sheet(isPresented: $viewModel.showDetails){
-//      NavigationView {
-//        GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
-//      }
-//    }
   }
 }
 

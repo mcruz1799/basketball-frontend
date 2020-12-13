@@ -10,15 +10,14 @@ import SwiftUI
 
 struct CreateView: View {
   @ObservedObject var viewModel: ViewModel
-  @Binding var creatingGame: Bool
   
   var body: some View {
-    LocationSearchView(viewModel: viewModel, creatingGame: $creatingGame)
+    LocationSearchView(viewModel: viewModel)
   }
 }
 
 struct CreateView_Previews: PreviewProvider {
   static var previews: some View {
-    CreateView(viewModel: ViewModel(), creatingGame: .constant(true))
+    CreateView(viewModel: ViewModel())
   }
 }

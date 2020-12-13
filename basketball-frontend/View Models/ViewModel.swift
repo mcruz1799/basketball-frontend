@@ -37,15 +37,15 @@ class ViewModel: ObservableObject {
   
   @Published var userLocation = Location()
   @Published var currentScreen: String = "landing"
-	@Published var currentTab: String = "home"
+  @Published var currentTab: String = "home"
   @Published var searchResults: [Users] = [Users]()
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
-  @Published var showDetails: Bool = false
-  @Published var creatingGame: Bool = false
-  @Published var activeSheet: Sheet = .creating
-  @Published var showSheet: Bool = false
+  //  @Published var showDetails: Bool = false
+  //  @Published var creatingGame: Bool = false
+  @Published var activeSheet: Sheet = .creatingGame
+  @Published var showingSheet: Bool = false
   
   @Published var contacts: [Contact] = [Contact]()
   @Published var contactsFiltered: [Contact] = [Contact]()
@@ -279,7 +279,14 @@ class ViewModel: ObservableObject {
   }
   
   func startCreating() {
-    self.creatingGame = true
+    self.showingSheet = true
+    self.activeSheet = .creatingGame
+  }
+  
+  func showDetails() {
+    self.showingSheet = true
+    self.activeSheet = .showingDetails
+    print("SHOW")
   }
   
   //  create a new game
@@ -307,18 +314,22 @@ class ViewModel: ObservableObject {
       ( response: AFDataResponse<APIData<Game>> ) in
       switch response.result {
       case .success:
+        self.showingSheet = false
         if let value: APIData<Game> = response.value {
           if let value: APIData<Game> = response.value {
             self.game = value.data
             game = self.game
-            self.creatingGame = false
-            self.showDetails = true
+            //            self.showingSheet = false
+            //            self.activeSheet = .showingDetails
+            //            self.showingSheet = true
             self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
             if let newGame = self.game {
               let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
               self.games.append(newGame)
             }
           }
+          self.activeSheet = .showingDetails
+          self.showingSheet = true
         }
       case .failure:
         print(response.result)
