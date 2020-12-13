@@ -13,6 +13,7 @@
 		461306F92577610C006A0998 /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461306F82577610C006A0998 /* LandingView.swift */; };
 		4613070A257763A9006A0998 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46130709257763A9006A0998 /* LoginView.swift */; };
 		4626385C2555DF7E0052CEB6 /* EditProfileForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */; };
+		4694C4AC258160D4005F335A /* basketball_frontendViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4694C4AB258160D4005F335A /* basketball_frontendViewModelTests.swift */; };
 		4694C498257F45D9005F335A /* InvitedGamesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4694C497257F45D9005F335A /* InvitedGamesList.swift */; };
 		46D660CF255366670020F38F /* FavoriteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D660CE255366670020F38F /* FavoriteRow.swift */; };
 		7E533EBA255CE058002EB837 /* InvitingUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E533EB9255CE057002EB837 /* InvitingUsersView.swift */; };
@@ -75,6 +76,7 @@
 		461306F82577610C006A0998 /* LandingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
 		46130709257763A9006A0998 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4626385B2555DF7E0052CEB6 /* EditProfileForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileForm.swift; sourceTree = "<group>"; };
+		4694C4AB258160D4005F335A /* basketball_frontendViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = basketball_frontendViewModelTests.swift; sourceTree = "<group>"; };
 		4694C497257F45D9005F335A /* InvitedGamesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedGamesList.swift; sourceTree = "<group>"; };
 		46D660CE255366670020F38F /* FavoriteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRow.swift; sourceTree = "<group>"; };
 		494BCCD094B36B78693B9CEA /* Pods_basketball_frontend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -283,6 +285,7 @@
 			children = (
 				D3E18A5B2550C47200AEB104 /* basketball_frontendTests.swift */,
 				D3E18A5D2550C47200AEB104 /* Info.plist */,
+				4694C4AB258160D4005F335A /* basketball_frontendViewModelTests.swift */,
 			);
 			path = "basketball-frontendTests";
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3E18A5C2550C47200AEB104 /* basketball_frontendTests.swift in Sources */,
+				4694C4AC258160D4005F335A /* basketball_frontendViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,7 +784,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "basketball-frontendTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -802,7 +806,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "basketball-frontendTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
