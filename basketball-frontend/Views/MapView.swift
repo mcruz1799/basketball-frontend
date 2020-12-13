@@ -43,8 +43,7 @@ struct MapView: UIViewRepresentable {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
       if control == view.rightCalloutAccessoryView {
-//        parent.showDetails = true
-        parent.viewModel.showDetails = true
+        parent.viewModel.showDetails()
       }
     }
     
@@ -57,12 +56,10 @@ struct MapView: UIViewRepresentable {
         parent.event = curr.game
       }
       parent.selectedEvent = parent.viewModel.game
-      print(view)
     }
 		
     func mapView(_: MKMapView, didDeselect view: MKAnnotationView) {
       parent.selectedEvent = nil
-      parent.showDetails = false
     }
   }
   

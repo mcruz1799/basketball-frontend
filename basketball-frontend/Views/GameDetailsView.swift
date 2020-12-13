@@ -28,32 +28,32 @@ struct GameDetailsView: View {
   var CR: CGFloat = 20
   
   var body: some View {
-//    NavigationView {
-      VStack {
-        //MARK: - Game Information
-        VStack(alignment: .leading){
-          HStack{
-            //Court Name
-            Text(game?.name ?? "")
-              .font(.system(size:25))
-              .fontWeight(.bold)
-              .frame(alignment: .leading)
-              .padding([.leading, .trailing])
-            Spacer()
-            //Private or Public
-            if let g = game {
-              if g.priv{
-                Text("- Private")
-                  .italic()
-                  .font(.system(size: 22))
-                  .padding(.trailing)
-              }
-              else{
-                Text("- Public")
-                  .italic()
-                  .font(.system(size: 22))
-                  .padding(.trailing)
-              }
+    
+    VStack {
+      //MARK: - Game Information
+      VStack(alignment: .leading){
+        HStack{
+          //Court Name
+          Text(game?.name ?? "")
+            .font(.system(size:32))
+            
+            .fontWeight(.bold)
+            .frame(alignment: .leading)
+            .padding([.leading, .trailing])
+          Spacer()
+          //Private or Public
+          if let g = game {
+            if g.priv{
+              Text("- Private")
+                .italic()
+                .font(.system(size: 22))
+                .padding(.trailing)
+            }
+            else{
+              Text("- Public")
+                .italic()
+                .font(.system(size: 22))
+                .padding(.trailing)
             }
           }
           //Game Date and Time
@@ -62,11 +62,12 @@ struct GameDetailsView: View {
               .font(.system(size: 22))
               .italic()
               .padding(.leading)
+            Text(address)
+              .font(.system(size: 22))
+              .padding(.leading)
           }
+          .padding(.bottom)
         }
-        .padding(.bottom)
-        
-        Text(address)
         
         // MARK: - Player Lists by Status
         
@@ -131,29 +132,30 @@ struct GameDetailsView: View {
         //MARK: - VSTACK Modifiers
         
       }
-//    }
-    .padding()
-    .background(Color("backgroundColor"))
-    
-    //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
-    .sheet(isPresented: $showingUsers) {
-      //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
-      UsersListView(viewModel: viewModel, users: $users)
+      //    }
+      .padding()
+      .background(Color("backgroundColor"))
+      
+      //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
+      .sheet(isPresented: $showingUsers) {
+        //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
+        UsersListView(viewModel: viewModel, users: $users)
+      }
+      .actionSheet(isPresented: $showingActionSheet) {
+        ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
+          //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+          .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
+          .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
+          .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
+          .cancel()
+        ])
+      }
+      .alert(isPresented: $viewModel.showAlert) {
+        viewModel.alert!
+      }
+      .onAppear(perform: getAddress)
+      Spacer()
     }
-    .actionSheet(isPresented: $showingActionSheet) {
-      ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
-        //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
-        .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
-        .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
-        .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
-        .cancel()
-      ])
-    }
-    .alert(isPresented: $viewModel.showAlert) {
-      viewModel.alert!
-    }
-    .onAppear(perform: getAddress)
-    Spacer()
   }
   
   //MARK: - Helper Methods
@@ -211,8 +213,10 @@ struct PlayerListButton: View {
   }
   func assignUsers(users: [Users], status: String) {
     self.users = users
-    self.showingUsers = true
-    self.selectedStatusList = status
+    if (users.count > 0) {
+      self.showingUsers = true
+      self.selectedStatusList = status
+    }
   }
 }
 

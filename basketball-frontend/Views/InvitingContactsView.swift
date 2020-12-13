@@ -97,6 +97,7 @@ extension ContactRowView {
       return
     }
     let vc = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController
+//    let vc = self.findViewController()
     let composeVC = MFMessageComposeViewController()
     composeVC.messageComposeDelegate = messageComposeDelegate
     composeVC.recipients = [contact.displayPhone()]
@@ -109,4 +110,16 @@ struct InvitingContactsView_Previews: PreviewProvider {
   static var previews: some View {
     InvitingContactsView(viewModel: ViewModel(), searchResults: .constant([Contact]()))
   }
+}
+
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
+    }
 }

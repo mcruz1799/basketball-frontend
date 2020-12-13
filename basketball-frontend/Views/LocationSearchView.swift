@@ -13,7 +13,6 @@ struct LocationSearchView: View {
   @State var locationSearch: String = ""
   @State var searchResults: [MKMapItem] = [MKMapItem]()
   @ObservedObject var viewModel: ViewModel
-  @Binding var creatingGame: Bool
   
   var body: some View {
     let locSearch = Binding(
@@ -28,7 +27,7 @@ struct LocationSearchView: View {
         SearchBarView<MKMapItem>(searchText: locSearch, searchResults: $searchResults)
         List {
           ForEach(searchResults, id: \.self) { result in
-            NavigationLink(destination: CreateFormView(viewModel: viewModel, location: result, creatingGame: $creatingGame)) {
+            NavigationLink(destination: CreateFormView(viewModel: viewModel, location: result)) {
               VStack(alignment: .leading) {
                 Text(result.name ?? "").bold()
                 Text(Helper.parseAddress(selectedItem: result.placemark))
@@ -58,6 +57,6 @@ struct LocationSearchView: View {
 
 struct LocationSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    LocationSearchView(viewModel: ViewModel(), creatingGame: .constant(true))
+    LocationSearchView(viewModel: ViewModel())
   }
 }

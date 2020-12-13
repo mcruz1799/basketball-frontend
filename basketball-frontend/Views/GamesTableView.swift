@@ -26,7 +26,7 @@ struct GamesTableView: View {
           DateRow(viewModel: viewModel, date: player.key, players: player.value, game: $viewModel.game)
         }
       }.navigationBarTitle("") // Title must be set to use hidden property
-      .navigationBarHidden(true)}
+       .navigationBarHidden(true)}
     //    }
   }
 }
@@ -62,7 +62,7 @@ struct GameRow: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-    Button(action: { viewModel.showDetails = true; viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
+    Button(action: { viewModel.showDetails(); viewModel.game = player.game.data; viewModel.player = player; viewModel.getGame(id: player.game.data.id) }) {
       
       VStack {
         HStack {
