@@ -62,6 +62,11 @@ struct HomeView: View {
       }
     }
     .edgesIgnoringSafeArea(.all)
+//    .sheet(isPresented: $viewModel.showDetails){
+//      NavigationView {
+//        GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
+//      }
+//    }
   }
 }
 

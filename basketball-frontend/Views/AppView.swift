@@ -17,11 +17,11 @@ struct AppView: View {
     
     
     if viewModel.currentScreen == "app" {
-      GeometryReader {geometry in
-        VStack{
+      GeometryReader { geometry in
+        VStack {
           
           if viewModel.currentTab == "home" {
-            HomeView(viewModel: $viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game, player: $viewModel.player)
+            HomeView(viewModel: viewModel, isOpen: $isOpen, selectedEvent: $viewModel.game, player: $viewModel.player)
           }
           
           else if viewModel.currentTab == "profile" {
@@ -36,12 +36,12 @@ struct AppView: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
               .foregroundColor(Color("tabBarIconColor"))
-              //					if self.tabBarController.currentView == "home" {
-              //						.foregroundColor(.white)
-              //					}
-              //					else{
-              //						.foregroundColor(Color("tabBarIconColor"))
-              //					}
+              //          if self.tabBarController.currentView == "home" {
+              //            .foregroundColor(.white)
+              //          }
+              //          else{
+              //            .foregroundColor(Color("tabBarIconColor"))
+              //          }
               .padding(20)
               .frame(width: geometry.size.width/3, height: 75)
               .foregroundColor(Color("tabBarIconColor"))
@@ -63,7 +63,7 @@ struct AppView: View {
                 .foregroundColor(Color("tabBarIconColor"))
                 .offset(y: -geometry.size.height/10/2)
                 .onTapGesture {
-                  viewModel.startCreating()
+                  viewModel.creatingGame = true
                 }
             }
             //Profile Icon
@@ -81,9 +81,20 @@ struct AppView: View {
           .background(Color("tabBarColor").shadow(radius: 5))
         }
       }.edgesIgnoringSafeArea(.bottom)
-      .sheet(isPresented: $viewModel.creatingGame) {
-        CreateView(viewModel: viewModel, creatingGame: $viewModel.creatingGame)
-      }
+      //      .sheet(isPresented: $viewModel.creatingGame) {
+      //        switch sheet {
+      //        case .creating:
+      //          CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+      //        case .viewing:
+      //          NavigationView {
+      //            GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
+      //          }
+      //        }
+      //      }
+      
+//      .sheet(isPresented: $viewModel.creatingGame) {
+//        CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+//      }
     } else if viewModel.currentScreen == "login-splash" {
       SplashView()
     } else if viewModel.currentScreen == "create-user" {
@@ -96,6 +107,9 @@ struct AppView: View {
       SplashView()
         .onAppear { self.viewModel.login(username: "jxu", password: "secret") }
     }
+    .sheet(isPresented: $viewModel.creatingGame) {
+      CreateView(viewModel: viewModel, creatingGame: $creatingGame)
+    }
   }
 }
 
@@ -104,4 +118,3 @@ struct AppView_Previews: PreviewProvider {
     AppView()
   }
 }
-

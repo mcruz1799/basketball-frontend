@@ -44,6 +44,8 @@ class ViewModel: ObservableObject {
   @Published var showAlert: Bool = false
   @Published var showDetails: Bool = false
   @Published var creatingGame: Bool = false
+  @Published var activeSheet: Sheet = .creating
+  @Published var showSheet: Bool = false
   
   @Published var contacts: [Contact] = [Contact]()
   @Published var contactsFiltered: [Contact] = [Contact]()

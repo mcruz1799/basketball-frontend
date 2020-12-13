@@ -99,6 +99,7 @@
 		7EC3671125525A470022DAE0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7ED70E212581E5C600389C66 /* Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wrapper.swift; sourceTree = "<group>"; };
 		7EEAFD7E257C4C6C000B0F74 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		7EF602C32585AD56009BEEF2 /* users.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
 		9450BD356A1CA954D7510BB1 /* Pods-basketball-frontendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-basketball-frontendTests.release.xcconfig"; path = "Target Support Files/Pods-basketball-frontendTests/Pods-basketball-frontendTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA331069BFB6C11156171B0F /* Pods_basketball_frontend_basketball_frontendUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontend_basketball_frontendUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEB421B33D6EAC948F2183 /* Pods_basketball_frontendTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_basketball_frontendTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -264,6 +265,7 @@
 				D3E18A4C2550C47100AEB104 /* Preview Content */,
 				7E8B20152555E70F00842AF9 /* APIPlayground.playground */,
 				7EB468A12559A5480044B4D2 /* players.json */,
+				7EF602C32585AD56009BEEF2 /* users.json */,
 			);
 			path = "basketball-frontend";
 			sourceTree = "<group>";

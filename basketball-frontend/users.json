@@ -1,0 +1,15 @@
+{
+  "data": {
+    "id": 4,
+    "type": "users",
+    "attributes": {
+      "id": 4,
+      "username": "jigims",
+      "email": "",
+      "firstName": "",
+      "lastName": "",
+      "dob": "",
+      "phone": ""
+    }
+  }
+}

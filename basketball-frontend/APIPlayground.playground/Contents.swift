@@ -221,4 +221,49 @@ func refreshCurrentUser() {
 //  }
 }
 
-print(refreshCurrentUser())
+//print(refreshCurrentUser())
+
+extension Bundle {
+  // Borrowed from Paul Hudson (@twostraws)
+  func decode<T: Decodable>(_ type: T.Type, from file: String) -> T {
+    guard let url = self.url(forResource: file, withExtension: nil) else {
+      fatalError("Failed to locate \(file) in bundle.")
+    }
+    
+    guard let data = try? Data(contentsOf: url) else {
+      fatalError("Failed to load \(file) from bundle.")
+    }
+    
+    let decoder = JSONDecoder()
+    
+    guard let loaded = try? decoder.decode(T.self, from: data) else {
+      fatalError("Failed to decode \(file) from bundle.")
+    }
+    
+    return loaded
+  }
+}
+
+let data =
+  """
+{
+  "data": {
+    "id": "4",
+    "type": "users",
+    "attributes": {
+      "id": 4,
+      "username": "jigims",
+      "email": "",
+      "firstname": "",
+      "lastname": "",
+      "dob": "",
+      "phone": ""
+    }
+  }
+}
+""".data(using: .utf8)
+
+let decoder = JSONDecoder()
+let f = try decoder.decode(APIData<Users>.self, from: data!)
+let favorite = Favorite(id: 4, favoriter_id: 3, favoritee_id: 4, user: f)
+print(favorite)
