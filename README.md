@@ -1,4 +1,4 @@
-# basketball-frontend
+# Got Next
 An iOS app built using SwiftUI to help you find pick-up basketball games near you
 
 ## Setup

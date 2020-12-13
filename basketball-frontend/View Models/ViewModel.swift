@@ -8,12 +8,19 @@
 import Foundation
 import Alamofire
 import SwiftUI
+import Photos
+import Contacts
+import MessageUI
 
 class ViewModel: ObservableObject {
+  
+  let appDelegate: AppDelegate = AppDelegate()
   
   @Published var games: [Games] = [Games]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
+  @Published var groupedPlayers: [Dictionary<String, [Player]>.Element] = [Dictionary<String, [Player]>.Element]()
+  // Set of games associated with the players of the user
   @Published var playersSet: Set<Int> = Set()
   @Published var favorites: [Favorite] = [Favorite]()
   @Published var favoritesSet: Set<Int> = Set()
@@ -21,6 +28,7 @@ class ViewModel: ObservableObject {
   var headers: HTTPHeaders?
   
   @Published var game: Game?
+  @Published var player: Player?
   @Published var invited: [Users] = [Users]()
   @Published var maybe: [Users] = [Users]()
   @Published var going: [Users] = [Users]()
@@ -33,6 +41,11 @@ class ViewModel: ObservableObject {
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
+  @Published var showDetails: Bool = false
+  @Published var creatingGame: Bool = false
+  
+  @Published var contacts: [Contact] = [Contact]()
+  @Published var contactsFiltered: [Contact] = [Contact]()
   
   init () {}
   
@@ -65,6 +78,7 @@ class ViewModel: ObservableObject {
             self.createAuthHeader(token: token)
             self.refreshCurrentUser()
             self.getGames()
+            self.fetchContacts()
             self.currentScreen = "app"
           }
         case .failure:
@@ -77,6 +91,31 @@ class ViewModel: ObservableObject {
       }
   }
   
+  //  perform logout for a user by clearing all stored variables in ViewModel
+  //  :param none
+  //  :return none
+  func logout() {
+    self.games = [Games]()
+    self.user = nil
+    self.players = [Player]()
+    self.playersSet = Set()
+    self.favorites = [Favorite]()
+    self.favoritesSet = Set()
+    self.userId = nil
+    self.headers = nil
+    self.game = nil
+    self.invited = [Users]()
+    self.maybe = [Users]()
+    self.going = [Users]()
+    self.gamePlayers = Set()
+    self.userLocation = Location()
+    self.currentScreen = "landing"
+    self.searchResults = [Users]()
+    self.isLoaded = false
+    self.alert = nil
+    self.showAlert = false
+  }
+  
   //  refresh the current user by updating self.user
   //  :param none
   //  :return none
@@ -86,6 +125,7 @@ class ViewModel: ObservableObject {
       if let value: APIData<User> = response.value {
         self.user = value.data
         self.players = value.data.players.map { $0.data }
+        self.groupedPlayers = self.groupPlayers(players: self.players)
         self.playersSet = Set(self.players.map { $0.game.data.id })
         self.favorites = value.data.favorites.map { $0.data }
         self.favoritesSet = Set(self.favorites.map { $0.user.data.id })
@@ -198,24 +238,45 @@ class ViewModel: ObservableObject {
   //  :param none
   //  :return none
   func getGames() {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games", headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
+    let params: Parameters = [
+      "user_id": self.userId
+    ]
+    AF.request("http://secure-hollows-77457.herokuapp.com/get_games", method: .get, parameters: params, headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
       }
     }
   }
   
-  func getGame(id: Int) {
-    AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(id), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        self.game = value.data
-        self.invited = value.data.invited.map { $0.data }
-        self.maybe = value.data.maybe.map { $0.data }
-        self.going = value.data.going.map { $0.data }
-        let arr = self.invited + self.maybe + self.going
-        self.gamePlayers = Set(arr.map { $0.id })
+  func getGame(id: Int?) {
+    if let i = id {
+      AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(i), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
+        if let value: APIData<Game> = response.value {
+          self.game = value.data
+          self.invited = value.data.invited.map { $0.data }
+          self.maybe = value.data.maybe.map { $0.data }
+          self.going = value.data.going.map { $0.data }
+          let arr = self.invited + self.maybe + self.going
+          self.gamePlayers = Set(arr.map { $0.id })
+        }
       }
     }
+  }
+  
+  func findPlayer(gameId: String) {
+    if let i = Int(gameId) {
+      let players = self.players.filter({ $0.game.data.id == i })
+      // There is already a player object associated with this game
+      if players.count >= 1 {
+        self.player = players.first
+      } else {
+        self.player = nil
+      }
+    }
+  }
+  
+  func startCreating() {
+    self.creatingGame = true
   }
   
   //  create a new game
@@ -241,16 +302,40 @@ class ViewModel: ObservableObject {
     var game: Game? = nil
     AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!).responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        self.game = value.data
-        game = value.data
-        
-        let player: Player? = self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
-        
-        if (player != nil) {
-          self.getGame(id: self.game!.id)
-          self.players.insert(player!, at: 0)
+      switch response.result {
+      case .success:
+        if let value: APIData<Game> = response.value {
+          if let value: APIData<Game> = response.value {
+            self.game = value.data
+            game = self.game
+            self.creatingGame = false
+            self.showDetails = true
+            self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
+            if let newGame = self.game {
+              let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
+              self.games.append(newGame)
+            }
+          }
         }
+      case .failure:
+        print(response.result)
+        self.alert = Alert(title: Text("Create Game Failed"),
+                           message: Text("Failed to create this game, please try again"),
+                           primaryButton: .default(
+                            Text("Try Again"),
+                            action: {
+                              self.createGame(name: name, date: date, description: description, priv: priv, latitude: latitude, longitude: longitude)
+                            }
+                           ),
+                           secondaryButton: .default(
+                            Text("Close"),
+                            action: {
+                              self.showAlert = false
+                              self.alert = nil
+                            }
+                           )
+        )
+        self.showAlert = true
       }
     }
     return game
@@ -419,6 +504,8 @@ class ViewModel: ObservableObject {
           if let value: APIData<Player> = response.value {
             self.getGame(id: self.game!.id)
             player = value.data
+            self.players.insert(player!, at: 0)
+            self.player = value.data
           }
         case .failure:
           self.alert = Alert(title: Text("Create Player Failed"),
@@ -443,6 +530,54 @@ class ViewModel: ObservableObject {
     return player
   }
   
+  //  invite a player to a game
+  //  :param status (String) - status of the player, can be "going", "maybe", "invited", or "not_going"
+  //  :param userId (String) - user ID of the player
+  //  :param gameId (String) - game ID of the player
+  func inviteUser(status: String, userId: Int, gameId: Int) -> Player? {
+    let params = [
+      "status": status,
+      "user_id": String(userId),
+      "game_id": String(gameId)
+    ]
+    
+    var player: Player? = nil
+    
+    AF.request("http://secure-hollows-77457.herokuapp.com/players", method: .post, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
+        ( response: AFDataResponse<APIData<Player>>) in
+        switch response.result {
+        case .success:
+          if let value: APIData<Player> = response.value {
+            self.getGame(id: self.game!.id)
+            player = value.data
+            self.players.insert(player!, at: 0)
+          }
+        case .failure:
+          self.alert = Alert(title: Text("Create Player Failed"),
+                             message: Text("Failed to add this user to this game, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.createPlayer(status: status, userId: userId, gameId: gameId)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
+        }
+      }
+    return player
+  }
+  
+  
   // edit the status of a player belonging to the current user
   // :param playerId (Int) - ID of the player
   // :param status (String) - status of the player, can be "going", "maybe", "invited", "not_going", "I'm going", "I'm Invited", "I'm Maybe", or "I'm Not Going"
@@ -465,6 +600,7 @@ class ViewModel: ObservableObject {
     let params: Parameters = [
       "status": s
     ]
+    print(params)
     
     AF.request("http://secure-hollows-77457.herokuapp.com/players/" + String(playerId), method: .patch, parameters: params, headers: self.headers!)
       .validate()
@@ -472,11 +608,16 @@ class ViewModel: ObservableObject {
         ( response: AFDataResponse<APIData<Player>> ) in
         switch response.result {
         case .success:
-          if let _: APIData<Player> = response.value {
+          print(response.result)
+          
+          if let player: APIData<Player> = response.value {
             self.getGame(id: self.game!.id)
             self.refreshCurrentUser()
+            self.player = player.data
           }
         case .failure:
+          print(response.result)
+          
           self.alert = Alert(title: Text("Edit Player Status Failed"),
                              message: Text("Failed to edit the status of this player, please try again"),
                              primaryButton: .default(
@@ -496,6 +637,20 @@ class ViewModel: ObservableObject {
           self.showAlert = true
         }
       }
+  }
+  
+  //  get all players of a specific status
+  //  :param status (String) - status of a player, can be "going", "maybe", "invited", or "not_going"
+  //  :return ([Player]) - an array of Player objects with the specified status
+  func getPlayerWithStatus(status: String) -> [Player] {
+    var filteredResults: [Player] = [Player]()
+    
+    for player in self.players {
+      if (player.status == status) {
+        filteredResults.append(player)
+      }
+    }
+    return filteredResults
   }
   
   //
@@ -558,4 +713,65 @@ class ViewModel: ObservableObject {
                  )
     )
   }
+  
+  //  loads contacts
+  // :return none
+  func fetchContacts() {
+    let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey, CNContactImageDataKey]
+    let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+    do {
+      try CNContactStore().enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+        let newContact = Contact()
+        newContact.firstName = contact.givenName
+        newContact.lastName = contact.familyName
+        newContact.phone = contact.phoneNumbers.first?.value
+        if let uiImageNSData: NSData = contact.imageData as NSData? {
+          newContact.picture = Image(uiImage: UIImage(data: uiImageNSData as Data, scale: 1.0)!)
+        }
+        self.contacts.append(newContact)
+      })
+      self.contacts.sort()
+    }
+    catch {
+      NSLog("[Contacts] ERROR: was unable to parse contacts")
+    }
+  }
+  
+  // invites a user from the user's contacts to the game
+  // :param contact (Contact) - the contact who is being invited
+  // :return none
+  func inviteContact(contact: Contact) {    
+    return
+  }
+  
+  // filters the contacts based on a query
+  // :param query (String) - the query to filter by
+  // :return none
+  func searchContacts(query: String) {
+    if query == "" {
+      self.contactsFiltered = self.contacts
+    } else {
+      let q = query.lowercased()
+      let c = self.contacts
+      self.contactsFiltered = c.filter({ $0.name().lowercased().contains(q) })
+    }
+  }
+  
+  func groupPlayers(players: [Player]) -> [Dictionary<String, [Player]>.Element] {
+    let p = players.sorted(by: { Helper.toTime(time: $0.game.data.time) < Helper.toTime(time: $1.game.data.time) })
+    let players = Dictionary(grouping: p, by: { $0.game.data.onDate() })
+    let keys = players.sorted(by: { Helper.toDate(date: $0.key) > Helper.toDate(date: $1.key) })
+    return keys
+  }
+  
+  //  func grabPlayer(game: Game?) -> Player {
+  //    if let g = game {
+  //      // User is already associated with the game
+  //      if self.playersSet.contains(g.id) {
+  //        return self.players.filter({ $0.game.data.id == g.id })[0]
+  //      }
+  //    }
+  //    let player = self.createPlayer
+  //    return
+  //  }
 }

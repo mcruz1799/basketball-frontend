@@ -25,6 +25,9 @@ struct Users: Decodable, Identifiable {
     case dob
     case phone
   }
+  func displayName() -> String {
+    return self.firstName + " " + self.lastName
+  }
 }
 
 struct Games: Decodable, Encodable, Identifiable {
@@ -57,7 +60,7 @@ struct Games: Decodable, Encodable, Identifiable {
 struct Player: Decodable, Identifiable {
   let id: Int
   let status: String
-  let game: APIData<Games>
+  let game: APIData<Game>
   enum CodingKeys: String, CodingKey {
     case id
     case status
@@ -99,7 +102,6 @@ struct User: Decodable {
     case players
     case favorites
   }
-  
   func displayName() -> String {
     return self.firstName + " " + self.lastName
   }

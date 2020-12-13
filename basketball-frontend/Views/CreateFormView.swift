@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 
 struct CreateFormView: View {
-  let viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   let location: MKMapItem
   @State var game: Games = Games(id: 4, name: "", date: "", time: "", description: "", priv: false, longitude: 2.0, latitude: 2.0)
   @State var date: Date = Date()
@@ -42,11 +42,14 @@ struct CreateFormView: View {
         }
       }
     }.navigationBarTitle("Game Details")
+    .alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
+    }
   }
   
   func createGame() {
     viewModel.createGame(name: game.name, date: date, description: game.description, priv: game.priv, latitude: self.location.placemark.location!.coordinate.latitude, longitude: self.location.placemark.location!.coordinate.longitude)
-    self.creatingGame = false
+    //    self.creatingGame = false
   }
 }
 

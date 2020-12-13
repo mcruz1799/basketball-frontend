@@ -34,9 +34,7 @@ struct SearchBarView<T>: View {
             if isEditing {
               Button(action: {
                 self.isEditing = false
-                self.searchText = ""
-                self.searchResults = []
-                
+                self.searchText = ""                
               }){
                 Image(systemName: "multiply.circle.fill")
                   .foregroundColor(.gray)
@@ -49,7 +47,6 @@ struct SearchBarView<T>: View {
         Button(action: {
           self.isEditing = false
           self.searchText = ""
-          self.searchResults = []
           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }) {
           Text("Cancel")

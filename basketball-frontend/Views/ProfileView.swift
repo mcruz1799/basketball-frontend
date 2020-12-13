@@ -12,6 +12,7 @@ struct ProfileView: View {
   @Binding var user: User?
   @Binding var favorites: [Favorite]
   @ObservedObject var viewModel: ViewModel
+  @State var showDetails: Bool = false
   
   var body: some View {
     NavigationView {
@@ -36,6 +37,14 @@ struct ProfileView: View {
           Spacer()
           Text(user?.displayName() ?? "N/A")
         }.padding()
+        
+        HStack {
+          Button(action: { showDetails = true }){
+            Text("Search Users")
+            Image(systemName: "magnifyingglass")
+          }
+        }
+        
         List {
           ForEach(favorites) { favorite in
             FavoriteRow(favorite: favorite, viewModel: self.viewModel)
@@ -43,24 +52,27 @@ struct ProfileView: View {
         }
       }
       .navigationBarItems(leading:
-                            NavigationLink(destination: UsersSearchView(viewModel: viewModel, searchResults: $viewModel.searchResults))
+                            NavigationLink(destination: EditProfileForm(
+                                            viewModel: viewModel,
+                                            username: viewModel.user?.username ?? "n/a",
+                                            firstName: viewModel.user?.firstName ?? "n/a",
+                                            lastName: viewModel.user?.lastName ?? "n/a",
+                                            email: viewModel.user?.email ?? "n/a",
+                                            phone: viewModel.user?.phone ?? "n/a"))
                             {
-                              HStack {
-                                Text("Search Users")
-                                Image(systemName: "magnifyingglass")
-                              }
+                              Image(systemName: "pencil")
                             }, trailing:
-                              NavigationLink(destination: EditProfileForm(
-                                              viewModel: viewModel,
-                                              username: viewModel.user?.username ?? "n/a",
-                                              firstName: viewModel.user?.firstName ?? "n/a",
-                                              lastName: viewModel.user?.lastName ?? "n/a",
-                                              email: viewModel.user?.email ?? "n/a",
-                                              phone: viewModel.user?.phone ?? "n/a"))
-                              {
-                                Image(systemName: "pencil")
+                              Button(action: {
+                                viewModel.logout()
+                              }) {
+                                Text("Log Out")
                               }
       )
+    }
+    .sheet(isPresented: $showDetails){
+      NavigationView {
+        UsersSearchView(viewModel: viewModel, searchResults: $viewModel.searchResults)
+      }
     }
   }
 }
