@@ -374,32 +374,6 @@ class basketball_frontendViewModelTests: XCTestCase {
     return game
   }
   
-  //  edit a game
-  //  :param game (Game) - a Game object
-  //  :return (Game) - the edited game object if successful, the previous game object otherwise
-  func editGame(game: Game) -> Game {
-    let params = [
-      "name": game.name,
-      "date": game.date,
-      "time": game.time,
-      "description": game.description,
-      "private": "false",
-      "longitude": game.longitude,
-      "latitude": game.latitude
-    ] as [String : Any]
-    
-    var game: Game = game
-    let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
-    
-    AF.request(requestUrl, method: .patch, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        game = value.data
-      }
-    }
-    return game
-  }
-  
   //
   // FAVORITE FUNCTIONS
   //
