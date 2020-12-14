@@ -6,6 +6,12 @@
 //  Copyright © 2020 Matthew Cruz. All rights reserved.
 //
 
+//  IMPORTANT!!!!!!
+//  RUN testLoginSuccess() once before running all tests
+//  API needs a call to warm up
+//
+//  If a test fails, check for database conflicts before running again
+
 import XCTest
 import Alamofire
 import Foundation
