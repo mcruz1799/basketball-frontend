@@ -46,6 +46,8 @@ class basketball_frontendViewModelTests: XCTestCase {
   var isLoaded: Bool = false
   var alert: Alert?
   var showAlert: Bool = false
+  var activeSheet: Sheet = .creatingGame
+  var showingSheet: Bool = false
   
   //
   // USER FUNCTIONS
@@ -99,6 +101,8 @@ class basketball_frontendViewModelTests: XCTestCase {
       XCTAssertEqual(self.currentScreen, "app")
       XCTAssertEqual(self.userId!, 1)
       XCTAssertEqual(self.headers!["Authorization"]!, "Token 37935062f0b281fe9e36a08727680363")
+      XCTAssertFalse(self.showAlert)
+      XCTAssertNil(self.alert)
       expectation.fulfill()
     }
     waitForExpectations(timeout: expired)
@@ -111,7 +115,7 @@ class basketball_frontendViewModelTests: XCTestCase {
     
     self.login(username: "", password: "") {
       XCTAssertEqual(self.currentScreen, "login")
-      XCTAssertEqual(self.showAlert, true)
+      XCTAssertTrue(self.showAlert)
       XCTAssertNotNil(self.alert)
       expectation.fulfill()
     }
@@ -181,7 +185,7 @@ class basketball_frontendViewModelTests: XCTestCase {
   //  :param password (String) - user password, at least 6 characters
   //  :param passwordConfirmation (String) - a confirmation of user password, should be the same as password
   //  :return (User?) - a user object if the user is successfully created, nil otherwise
-  func createUser(firstName: String, lastName: String, username: String, email: String, dob: Date, phone: String, password: String, passwordConfirmation: String) -> User? {
+  func createUser(firstName: String, lastName: String, username: String, email: String, dob: Date, phone: String, password: String, passwordConfirmation: String, completionHandler: @escaping (User?) -> Void) -> User? {
     let acceptableDate = Helper.toAcceptableDate(date: dob)
     let params = [
       "firstname": firstName,
@@ -205,15 +209,43 @@ class basketball_frontendViewModelTests: XCTestCase {
           if let value: APIData<User> = response.value {
             user = value.data
             self.login(username: username, password: password, completionHandler: { () in print("done") })
+            completionHandler(user)
           }
         case .failure:
           self.alert = self.createAlert(title: "Invalid Profile Information",
                                         message: "The profile information you entered was invalid, please check your inputs and try again",
                                         button: "Got it")
           self.showAlert = true
+          completionHandler(user)
         }
       }
     return user
+  }
+  
+  func testCreateUserSuccess() {
+    let expectation = self.expectation(description: "Able to create a user")
+    
+    let dob = Date(timeIntervalSinceReferenceDate: -100000000)
+    self.createUser(firstName: "Test", lastName: "Test", username: "test", email: "test@gmail.com", dob: dob, phone: "1234567890", password: "secret", passwordConfirmation: "secret") { (user) in
+      XCTAssertEqual(user!.username, "test")
+      XCTAssertEqual(user!.displayName(), "Test Test")
+      self.deleteUserHelper(id: user!.id)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 10.0)
+  }
+  
+  func testCreateUserFailure() {
+    let expectation = self.expectation(description: "Unable to create a user")
+    
+    let dob = Date(timeIntervalSinceReferenceDate: -100000000)
+    self.createUser(firstName: "Test", lastName: "Test", username: "test", email: "test@gmail.com", dob: dob, phone: "1234567890", password: "secret", passwordConfirmation: "") { (user) in
+      XCTAssertNil(user)
+      XCTAssertTrue(self.showAlert)
+      XCTAssertNotNil(self.alert)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: expired)
   }
   
   //  edit the current user
@@ -336,70 +368,6 @@ class basketball_frontendViewModelTests: XCTestCase {
     waitForExpectations(timeout: expired)
   }
   
-  //  create a new game
-  //  :param name (String) - name of the game court
-  //  :date (Date) - date and time of the game
-  //  :description (String) - description of the game
-  //  :priv (Bool) - whether the game is private
-  //  :latitude (Double) - latitude of the game location
-  //  :longitude: (Double) - longitude of the game location
-  //  :return (Game?) - the game object if created successfully, nil otherwise
-  func createGame(name: String, date: Date, description: String, priv: Bool, latitude: Double, longitude: Double) -> Game? {
-    let acceptableDate = Helper.toAcceptableDate(date: date)
-    let params: Parameters = [
-      "name": name,
-      "date": acceptableDate,
-      "time": acceptableDate,
-      "description": description,
-      "private": priv,
-      "longitude": longitude,
-      "latitude": latitude
-    ]
-    
-    var game: Game? = nil
-    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        self.game = value.data
-        game = value.data
-        
-        let player: Player? = self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id, completionHandler: { (player) in print(player)})
-        
-        if (player != nil) {
-          self.getGame(id: self.game!.id) {}
-          self.players.insert(player!, at: 0)
-        }
-      }
-    }
-    return game
-  }
-  
-  //  edit a game
-  //  :param game (Game) - a Game object
-  //  :return (Game) - the edited game object if successful, the previous game object otherwise
-  func editGame(game: Game) -> Game {
-    let params = [
-      "name": game.name,
-      "date": game.date,
-      "time": game.time,
-      "description": game.description,
-      "private": "false",
-      "longitude": game.longitude,
-      "latitude": game.latitude
-    ] as [String : Any]
-    
-    var game: Game = game
-    let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
-    
-    AF.request(requestUrl, method: .patch, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        game = value.data
-      }
-    }
-    return game
-  }
-  
   //
   // FAVORITE FUNCTIONS
   //
@@ -469,7 +437,7 @@ class basketball_frontendViewModelTests: XCTestCase {
     
     self.favorite(favoriterId: 0, favoriteeId: 0) { (favorite) in
       XCTAssertNil(favorite)
-      XCTAssertEqual(self.showAlert, true)
+      XCTAssertTrue(self.showAlert)
       XCTAssertNotNil(self.alert)
       expectation.fulfill()
     }
@@ -488,6 +456,40 @@ class basketball_frontendViewModelTests: XCTestCase {
     return false
   }
   
+  func testIsFavorite() {
+    let data =
+      """
+    {
+      "data": {
+        "id": "4",
+        "type": "users",
+        "attributes": {
+          "id": 4,
+          "username": "jigims",
+          "email": "",
+          "firstname": "",
+          "lastname": "",
+          "dob": "",
+          "phone": ""
+        }
+      }
+    }
+    """.data(using: .utf8)
+    
+    var f: APIData<Users>?
+    let decoder = JSONDecoder()
+    do {
+      f = try decoder.decode(APIData<Users>.self, from: data!)
+    } catch {
+      f = nil
+    }
+    let favorite = Favorite(id: 1, favoriter_id: 1, favoritee_id: 2, user: f!)
+    self.favorites.append(favorite)
+    
+    XCTAssertTrue(self.isFavorite(userId: 2))
+    XCTAssertFalse(self.isFavorite(userId: 10))
+  }
+  
   //  find a favorite object in self.favorites given favoriter and favoritee
   //  :param favoriterId (Int) - user ID of the favoriter
   //  :param favoriteeId (Int) - user ID of the favoritee
@@ -499,6 +501,40 @@ class basketball_frontendViewModelTests: XCTestCase {
       }
     }
     return nil
+  }
+  
+  func testFindFavorite() {
+    let data =
+      """
+    {
+      "data": {
+        "id": "4",
+        "type": "users",
+        "attributes": {
+          "id": 4,
+          "username": "jigims",
+          "email": "",
+          "firstname": "",
+          "lastname": "",
+          "dob": "",
+          "phone": ""
+        }
+      }
+    }
+    """.data(using: .utf8)
+    
+    var f: APIData<Users>?
+    let decoder = JSONDecoder()
+    do {
+      f = try decoder.decode(APIData<Users>.self, from: data!)
+    } catch {
+      f = nil
+    }
+    let favorite = Favorite(id: 1, favoriter_id: 1, favoritee_id: 2, user: f!)
+    self.favorites.append(favorite)
+    
+    XCTAssertEqual(self.findFavorite(favoriterId: 1, favoriteeId: 2)!.favoriter_id, 1)
+    XCTAssertNil(self.findFavorite(favoriterId: 2, favoriteeId: 3))
   }
   
   // unfavorite another user
@@ -537,6 +573,46 @@ class basketball_frontendViewModelTests: XCTestCase {
           completionHandler()
         }
       }
+  }
+  
+  func testUnfavoriteFailure() {
+    let data =
+      """
+    {
+      "data": {
+        "id": "4",
+        "type": "users",
+        "attributes": {
+          "id": 4,
+          "username": "jigims",
+          "email": "",
+          "firstname": "",
+          "lastname": "",
+          "dob": "",
+          "phone": ""
+        }
+      }
+    }
+    """.data(using: .utf8)
+    
+    var f: APIData<Users>?
+    let decoder = JSONDecoder()
+    do {
+      f = try decoder.decode(APIData<Users>.self, from: data!)
+    } catch {
+      f = nil
+    }
+    let favorite = Favorite(id: 1, favoriter_id: 0, favoritee_id: 0, user: f!)
+    self.favorites.append(favorite)
+    
+    let expectation = self.expectation(description: "Able to unfavorite a user")
+    
+    self.unfavorite(favoriteeId: 0) {
+      XCTAssertTrue(self.showAlert)
+      XCTAssertNotNil(self.alert)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: expired)
   }
   
   //
@@ -769,6 +845,14 @@ class basketball_frontendViewModelTests: XCTestCase {
   }
   
   // HELPERS
+  func deleteUserHelper(id: Int) {
+    AF.request("http://secure-hollows-77457.herokuapp.com/users/" + String(id), method: .delete, parameters: nil, headers: self.headers!)
+      .responseDecodable { ( response: AFDataResponse<APIData<User>> ) in
+        if let _: APIData<User> = response.value {
+          print("User deleted")
+        }
+      }
+  }
   
   func unfavoriteHelper(id: Int) {
     AF.request("http://secure-hollows-77457.herokuapp.com/favorites/" + String(id), method: .delete, parameters: nil, headers: self.headers!)

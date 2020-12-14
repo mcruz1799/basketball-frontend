@@ -42,8 +42,6 @@ class ViewModel: ObservableObject {
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
-  //  @Published var showDetails: Bool = false
-  //  @Published var creatingGame: Bool = false
   @Published var activeSheet: Sheet = .creatingGame
   @Published var showingSheet: Bool = false
   
@@ -251,6 +249,9 @@ class ViewModel: ObservableObject {
     }
   }
   
+  //  get a game by ID
+  //  id (Int?) - the id for a game
+  //  return (none)
   func getGame(id: Int?) {
     if let i = id {
       AF.request("http://secure-hollows-77457.herokuapp.com/games/" + String(i), headers: self.headers!).responseDecodable { ( response: AFDataResponse<APIData<Game>> ) in
@@ -310,72 +311,44 @@ class ViewModel: ObservableObject {
     ]
     
     var game: Game? = nil
-    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!).responseDecodable {
+    AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!)
+      .validate()
+      .responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
       switch response.result {
-      case .success:
-        self.showingSheet = false
-        if let value: APIData<Game> = response.value {
+        case .success:
+          self.showingSheet = false
           if let value: APIData<Game> = response.value {
-            self.game = value.data
-            game = self.game
-            //            self.showingSheet = false
-            //            self.activeSheet = .showingDetails
-            //            self.showingSheet = true
-            self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
-            if let newGame = self.game {
-              let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
-              self.games.append(newGame)
+            if let value: APIData<Game> = response.value {
+              self.game = value.data
+              game = self.game
+              self.createPlayer(status: "going", userId: self.user!.id, gameId: value.data.id)
+              if let newGame = self.game {
+                let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
+                self.games.append(newGame)
+              }
             }
+            self.activeSheet = .showingDetails
+            self.showingSheet = true
           }
-          self.activeSheet = .showingDetails
-          self.showingSheet = true
-        }
-      case .failure:
-        print(response.result)
-        self.alert = Alert(title: Text("Create Game Failed"),
-                           message: Text("Failed to create this game, please try again"),
-                           primaryButton: .default(
-                            Text("Try Again"),
-                            action: {
-                              self.createGame(name: name, date: date, description: description, priv: priv, latitude: latitude, longitude: longitude)
-                            }
-                           ),
-                           secondaryButton: .default(
-                            Text("Close"),
-                            action: {
-                              self.showAlert = false
-                              self.alert = nil
-                            }
-                           )
-        )
-        self.showAlert = true
-      }
-    }
-    return game
-  }
-  
-  //  edit a game
-  //  :param game (Game) - a Game object
-  //  :return (Game) - the edited game object if successful, the previous game object otherwise
-  func editGame(game: Game) -> Game {
-    let params = [
-      "name": game.name,
-      "date": game.date,
-      "time": game.time,
-      "description": game.description,
-      "private": "false",
-      "longitude": game.longitude,
-      "latitude": game.latitude
-    ] as [String : Any]
-    
-    var game: Game = game
-    let requestUrl = "http://secure-hollows-77457.herokuapp.com/games/" + String(game.id)
-    
-    AF.request(requestUrl, method: .patch, parameters: params, headers: self.headers!).responseDecodable {
-      ( response: AFDataResponse<APIData<Game>> ) in
-      if let value: APIData<Game> = response.value {
-        game = value.data
+        case .failure:
+          self.alert = Alert(title: Text("Create Game Failed"),
+                             message: Text("Failed to create this game, please try again"),
+                             primaryButton: .default(
+                              Text("Try Again"),
+                              action: {
+                                self.createGame(name: name, date: date, description: description, priv: priv, latitude: latitude, longitude: longitude)
+                              }
+                             ),
+                             secondaryButton: .default(
+                              Text("Close"),
+                              action: {
+                                self.showAlert = false
+                                self.alert = nil
+                              }
+                             )
+          )
+          self.showAlert = true
       }
     }
     return game
