@@ -42,8 +42,6 @@ class ViewModel: ObservableObject {
   @Published var isLoaded: Bool = false
   @Published var alert: Alert?
   @Published var showAlert: Bool = false
-  //  @Published var showDetails: Bool = false
-  //  @Published var creatingGame: Bool = false
   @Published var activeSheet: Sheet = .creatingGame
   @Published var showingSheet: Bool = false
   
