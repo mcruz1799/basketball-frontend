@@ -8,6 +8,7 @@
 
 import XCTest
 import Alamofire
+import Contacts
 @testable import basketball_frontend
 
 class basketball_frontendTests: XCTestCase {
@@ -42,5 +43,17 @@ class basketball_frontendTests: XCTestCase {
     let time = games.onTime()
     
     XCTAssertEqual(time, "8:16 PM")
+  }
+  
+  func testContactModel() {
+    let contact = Contact(firstName: "Test", lastName: "Test", phone: CNPhoneNumber(stringValue: "1234567890"), imagePath: nil)
+    
+    XCTAssertEqual(contact.name(), "Test Test")
+    XCTAssertEqual(contact.displayPhone(), "1234567890")
+    
+    let contact1 = Contact(firstName: "Test1", lastName: "Test", phone: CNPhoneNumber(stringValue: "1234567890"), imagePath: nil)
+    
+    XCTAssertFalse(contact == contact1)
+    XCTAssertTrue(contact < contact1)
   }
 }
