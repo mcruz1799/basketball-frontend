@@ -57,37 +57,40 @@ class Location: NSObject {
     saveLocation()
   }
     
-    func documentsDirectory() -> String {
-      let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-      return paths[0]
-    }
+  func documentsDirectory() -> String {
+    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    return paths[0]
+  }
 
-    func dataFilePath() -> String {
-      return documentsDirectory().stringByAppendingPathComponent(aPath: "Coordinates.plist")
-    }
-    func saveLocation() {
-      let data = NSMutableData()
-      let archiver = NSKeyedArchiver(forWritingWith: data)
-      archiver.encode(self.latitude, forKey: "latitude")
-      archiver.encode(self.longitude, forKey: "longitude")
-      archiver.finishEncoding()
-      data.write(toFile: dataFilePath(), atomically: true)
-    }
-    func loadLocation() {
-      let path = dataFilePath()
-      if FileManager.default.fileExists(atPath: path) {
-        if let data = NSData(contentsOfFile: path) {
-          let unarchiver = NSKeyedUnarchiver(forReadingWith: data as Data)
-          self.latitude = unarchiver.decodeDouble(forKey: "latitude")
-          self.longitude = unarchiver.decodeDouble(forKey: "longitude")
-          unarchiver.finishDecoding()
-        } else {
-          print("\nFILE NOT FOUND AT: \(path)")
-        }
+  func dataFilePath() -> String {
+    return documentsDirectory().stringByAppendingPathComponent(aPath: "Coordinates.plist")
+  }
+  
+  func saveLocation() {
+    let data = NSMutableData()
+    let archiver = NSKeyedArchiver(forWritingWith: data)
+    archiver.encode(self.latitude, forKey: "latitude")
+    archiver.encode(self.longitude, forKey: "longitude")
+    archiver.finishEncoding()
+    data.write(toFile: dataFilePath(), atomically: true)
+  }
+  
+  func loadLocation() {
+    let path = dataFilePath()
+    if FileManager.default.fileExists(atPath: path) {
+      if let data = NSData(contentsOfFile: path) {
+        let unarchiver = NSKeyedUnarchiver(forReadingWith: data as Data)
+        self.latitude = unarchiver.decodeDouble(forKey: "latitude")
+        self.longitude = unarchiver.decodeDouble(forKey: "longitude")
+        unarchiver.finishDecoding()
+      } else {
+        print("\nFILE NOT FOUND AT: \(path)")
       }
     }
-    func clearLocation () {
-      self.latitude = 0.00
-      self.longitude = 0.00
-    }
+  }
+  
+  func clearLocation () {
+    self.latitude = 0.00
+    self.longitude = 0.00
+  }
 }
