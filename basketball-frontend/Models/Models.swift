@@ -81,27 +81,6 @@ struct Favorite: Decodable, Identifiable {
   }
 }
 
-let s = """
-{
-  data: {
-    id: 4,
-    type: users,
-    attributes: {
-      id: 4,
-      username: "jigims",
-      email: "",
-      firstName: "",
-      lastName: "",
-      dob: "",
-      phone: ""
-    }
-  }
-}
-"""
-
-let data = Bundle.main.decode(APIData<Users>.self, from: s)
-let favorite = Favorite(id: 4, favoriter_id: 3, favoritee_id: 4, user: data)
-
 struct User: Decodable {
   let id: Int
   let username: String
