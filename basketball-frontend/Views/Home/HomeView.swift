@@ -16,7 +16,7 @@ struct HomeView: View {
     GeometryReader { geometry in
       ZStack(alignment: .topTrailing){
         
-        MapView(viewModel: self.viewModel)
+        MapView(viewModel: self.viewModel, gameAnnotations: $viewModel.gameAnnotations)
         ZStack{
           Spacer()
           Circle()

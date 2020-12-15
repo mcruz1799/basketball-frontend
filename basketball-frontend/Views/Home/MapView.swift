@@ -11,12 +11,15 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
   @ObservedObject var viewModel: ViewModel
+  @Binding var gameAnnotations: [GameAnnotation]
   
   class Coordinator: NSObject, MKMapViewDelegate {
     var parent: MapView
+    var gameAnnotations: [GameAnnotation]
     
     init (_ parent: MapView) {
       self.parent = parent
+      self.gameAnnotations = parent.gameAnnotations
     }
     
     // Runs every time user interacts and moves map some way
@@ -74,18 +77,23 @@ struct MapView: UIViewRepresentable {
     let region = MKCoordinateRegion(center: coordinate, span: span)
     mapView.setRegion(region, animated: true)
     mapView.showsUserLocation = true
+//    mapView.addAnnotations(gameAnnotations)
     return mapView
     
   }
   
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-    let annotations = viewModel.games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude, game: $0)})
-    uiView.addAnnotations(annotations)
+    if gameAnnotations.count != uiView.annotations.count {
+      //            view.removeAnnotations(view.annotations)
+      uiView.removeAnnotations(uiView.annotations)
+      uiView.addAnnotations(viewModel.gameAnnotations)
+      
+    }
   }
 }
 
 struct MapView_Previews: PreviewProvider {
   static var previews: some View {
-    MapView(viewModel: ViewModel())
+    MapView(viewModel: ViewModel(), gameAnnotations: .constant([GameAnnotation]()))
   }
 }
