@@ -13,9 +13,9 @@ class Helper {
   
   static func onTime(time: String) -> String {
     let timeFormatter = DateFormatter()
-//    timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+    timeFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
     timeFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-    timeFormatter.timeZone = TimeZone(abbreviation: "EST")
+    timeFormatter.timeZone = TimeZone(abbreviation: "GMT")
     let formattedTime = timeFormatter.date(from: time)
     if let time: Date = formattedTime {
       timeFormatter.dateFormat = "h:mm a"
