@@ -11,7 +11,6 @@ import SwiftUI
 
 struct LoginView: View {
   @ObservedObject var viewModel: ViewModel
-  
   @State var username: String = ""
   @State var password: String = ""
   
@@ -40,5 +39,11 @@ struct LoginView: View {
   
   func login() {
     viewModel.login(username: username, password: password)
+  }
+}
+
+struct LoginView_Previews: PreviewProvider {
+  static var previews: some View {
+    LoginView(viewModel: ViewModel())
   }
 }

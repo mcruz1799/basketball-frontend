@@ -11,7 +11,6 @@ import SwiftUI
 
 struct LandingView: View {
   @ObservedObject var viewModel: ViewModel
-  
   var CR: CGFloat = 20
   
   var body: some View {
@@ -48,5 +47,11 @@ struct LandingView: View {
         }
       }
     }
+  }
+}
+
+struct LandingView_Previews: PreviewProvider {
+  static var previews: some View {
+    LandingView(viewModel: ViewModel())
   }
 }

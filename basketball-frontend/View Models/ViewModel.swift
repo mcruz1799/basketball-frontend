@@ -245,6 +245,7 @@ class ViewModel: ObservableObject {
     AF.request("http://secure-hollows-77457.herokuapp.com/get_games", method: .get, parameters: params, headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
+        print("Success")
       }
     }
   }
@@ -287,7 +288,11 @@ class ViewModel: ObservableObject {
   func showDetails() {
     self.showingSheet = true
     self.activeSheet = .showingDetails
-    print("SHOW")
+  }
+  
+  func searchUsers() {
+    self.showingSheet = true
+    self.activeSheet = .searchingUsers
   }
   
   //  create a new game

@@ -10,7 +10,6 @@ import SwiftUI
 
 struct SearchBarView<T>: View {
   @Binding var searchText: String
-  @Binding var searchResults: [T]
   @State var isEditing: Bool = false
   
   // Simon NJ, appcoda.com
@@ -21,7 +20,6 @@ struct SearchBarView<T>: View {
         .padding(.horizontal, 25)
         .background(Color(.systemGray6))
         .cornerRadius(8)
-        .padding(.horizontal, 10)
         .onTapGesture {
           self.isEditing = true
         }.overlay(
@@ -55,12 +53,12 @@ struct SearchBarView<T>: View {
         .transition(.move(edge: .trailing))
         .animation(.default)
       }
-    }
+    }.padding(5)
   }
 }
 
 struct SearchBarView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchBarView<Int>(searchText: .constant(""), searchResults: .constant([2, 2]))
+    SearchBarView<Int>(searchText: .constant(""))
   }
 }

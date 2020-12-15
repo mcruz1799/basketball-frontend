@@ -283,7 +283,7 @@ class NormalizingDecoder: JSONDecoder {
 }
 
 enum Sheet: Identifiable {
-  case creatingGame, showingDetails
+  case creatingGame, showingDetails, searchingUsers
   
   var id: Int {
     hashValue
