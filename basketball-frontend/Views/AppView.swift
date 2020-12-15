@@ -18,11 +18,11 @@ struct AppView: View {
         VStack {
           
           if viewModel.currentTab == "home" {
-            HomeView(viewModel: viewModel, selectedEvent: $viewModel.game, player: $viewModel.player)
+            HomeView(viewModel: viewModel)
           }
           
           else if viewModel.currentTab == "profile" {
-            ProfileView(user: $viewModel.user, favorites: $viewModel.favorites, viewModel: viewModel)
+            ProfileView(viewModel: viewModel)
           }
           else if viewModel.currentTab == "invites" {
             InvitedGamesList(viewModel: viewModel)
@@ -54,10 +54,6 @@ struct AppView_Previews: PreviewProvider {
 }
 
 extension AppView {
-  //  enum Sheet {
-  //    case creatingGame, showingDetails
-  //  }
-  
   @ViewBuilder func sheetContent() -> some View {
     switch viewModel.activeSheet {
     case .creatingGame:
@@ -66,6 +62,8 @@ extension AppView {
       NavigationView {
         GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
       }
+    case .searchingUsers:
+      UsersSearchView(viewModel: viewModel)
     }
   }
 }

@@ -9,10 +9,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-  @Binding var user: User?
-  @Binding var favorites: [Favorite]
   @ObservedObject var viewModel: ViewModel
-  @State var showDetails: Bool = false
   
   var body: some View {
     NavigationView {
@@ -27,7 +24,7 @@ struct ProfileView: View {
               .shadow(radius: 10)
           )
         
-        Text(user?.username ?? "N/A")
+        Text(viewModel.user?.username ?? "N/A")
           .padding()
         
         HStack {
@@ -35,18 +32,20 @@ struct ProfileView: View {
             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
             .padding(.leading)
           Spacer()
-          Text(user?.displayName() ?? "N/A")
+          Text(viewModel.user?.displayName() ?? "N/A")
         }.padding()
         
         HStack {
-          Button(action: { showDetails = true }){
+          Button(action: { viewModel.searchUsers()
+          })
+          {
             Text("Search Users")
             Image(systemName: "magnifyingglass")
           }
         }
         
         List {
-          ForEach(favorites) { favorite in
+          ForEach(viewModel.favorites) { favorite in
             FavoriteRow(favorite: favorite, viewModel: self.viewModel)
           }
         }
@@ -69,16 +68,11 @@ struct ProfileView: View {
                               }
       )
     }
-    .sheet(isPresented: $showDetails){
-      NavigationView {
-        UsersSearchView(viewModel: viewModel, searchResults: $viewModel.searchResults)
-      }
-    }
   }
 }
 
 struct ProfileView_Previews: PreviewProvider {
   static var previews: some View {
-    ProfileView(user: .constant(nil), favorites: .constant([Favorite]()), viewModel: ViewModel())
+    ProfileView(viewModel: ViewModel())
   }
 }

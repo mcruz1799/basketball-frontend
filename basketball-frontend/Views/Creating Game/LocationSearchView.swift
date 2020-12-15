@@ -24,7 +24,7 @@ struct LocationSearchView: View {
     )
     NavigationView {
       VStack {
-        SearchBarView<MKMapItem>(searchText: locSearch, searchResults: $searchResults)
+        SearchBarView<MKMapItem>(searchText: locSearch)
         List {
           ForEach(searchResults, id: \.self) { result in
             NavigationLink(destination: CreateFormView(viewModel: viewModel, location: result)) {
@@ -42,7 +42,6 @@ struct LocationSearchView: View {
   func search() {
     let searchRequest = MKLocalSearch.Request()
     searchRequest.naturalLanguageQuery = self.locationSearch
-    //    searchRequest.region = yourMapView.region
     let search = MKLocalSearch(request: searchRequest)
     search.start { response, error in
       guard let response = response else {
@@ -50,7 +49,6 @@ struct LocationSearchView: View {
         return
       }
       self.searchResults = response.mapItems
-      print(self.searchResults)
     }
   }
 }

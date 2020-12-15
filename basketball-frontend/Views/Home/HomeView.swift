@@ -11,20 +11,12 @@ import SwiftUI
 struct HomeView: View {
   @ObservedObject var viewModel: ViewModel
   @State var isOpen: Bool = false
-  @Binding var selectedEvent: Game?
-  @Binding var player: Player?
-  @State var event: Games?
-  @State var showDetails: Bool = false
   
   var body: some View {
     GeometryReader { geometry in
       ZStack(alignment: .topTrailing){
         
-        MapView(viewModel: self.viewModel, selectedEvent: self.$selectedEvent, event: $event, showDetails: self.$showDetails, games: viewModel.games)
-          //           Close the feed when the map is tapped
-//          .onTapGesture() {
-//            self.isOpen = false
-//          }
+        MapView(viewModel: self.viewModel)
         ZStack{
           Spacer()
           Circle()
@@ -42,8 +34,6 @@ struct HomeView: View {
             Text("\(viewModel.getPlayerWithStatus(status: "invited").count)")
               .foregroundColor(.white)
           }.offset(x: 20, y: -18)
-          
-          
         }
         .onTapGesture {
           self.viewModel.currentTab = "invites"
@@ -53,7 +43,7 @@ struct HomeView: View {
       }
       // Content is passed as a closure to the bottom view
       BottomView(isOpen: self.$isOpen, maxHeight: geometry.size.height * 0.84) {
-        GamesTableView(viewModel: self.viewModel, user: self.$viewModel.user, players: self.$viewModel.players, groupedPlayers: self.$viewModel.groupedPlayers, isOpen: $isOpen)
+        GamesTableView(viewModel: self.viewModel)
       }
     }
     .edgesIgnoringSafeArea(.all)
@@ -61,8 +51,8 @@ struct HomeView: View {
 }
 
 
-//struct HomeView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    HomeView()
-//  }
-//}
+struct HomeView_Previews: PreviewProvider {
+  static var previews: some View {
+    HomeView(viewModel: ViewModel())
+  }
+}

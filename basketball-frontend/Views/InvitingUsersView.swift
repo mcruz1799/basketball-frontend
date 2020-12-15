@@ -19,14 +19,14 @@ struct InvitingUsersView: View {
         }
       }
       .navigationBarTitle("Invite Favorites")
-      //    .navigationBarItems(trailing:
-      //                          NavigationLink(destination: InvitingContactsView(
-      //                                          viewModel: viewModel, searchResults: $viewModel.contactsFiltered))
-      //                          {
-      //                            Text("Invite Contacts")
-      //                          })
+//          .navigationBarItems(trailing:
+//                                NavigationLink(destination: InvitingContactsView(
+//                                                viewModel: viewModel, searchResults: $viewModel.contactsFiltered))
+//                                {
+//                                  Text("Invite Contacts")
+//                                })
       NavigationLink(destination: InvitingContactsView(
-                      viewModel: viewModel, searchResults: $viewModel.contactsFiltered))
+                      viewModel: viewModel))
       {
         Text("Invite Contacts")
       }

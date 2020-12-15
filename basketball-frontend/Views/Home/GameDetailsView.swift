@@ -139,7 +139,8 @@ struct GameDetailsView: View {
       //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
       .sheet(isPresented: $showingUsers) {
         //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
-        UsersListView(viewModel: viewModel, users: $users)
+//        UsersListView(viewModel: viewModel, users: $users)
+        UsersListView(viewModel: viewModel)
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
