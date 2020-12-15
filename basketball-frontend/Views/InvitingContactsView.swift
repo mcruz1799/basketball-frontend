@@ -12,8 +12,6 @@ import MessageUI
 struct InvitingContactsView: View {
   @ObservedObject var viewModel: ViewModel
   @State var contactSearch: String = ""
-  @Binding var searchResults: [Contact]
-  @State private var isEditing = false
   
   var body: some View {
     let usSearch = Binding(
@@ -25,9 +23,10 @@ struct InvitingContactsView: View {
       }
     )
     VStack {
-      SearchBarView<Contact>(searchText: usSearch, searchResults: $searchResults)
-      ContactsListView(viewModel: viewModel, contacts: $searchResults)
-    } .navigationBarTitle("Invite Contacts")
+      SearchBarView<Contact>(searchText: usSearch)
+      ContactsListView(viewModel: viewModel, contacts: $viewModel.contactsFiltered)
+    }
+    .navigationBarTitle("Invite Contacts")
     .onAppear { search() }
   }
   
@@ -108,7 +107,7 @@ extension ContactRowView {
 
 struct InvitingContactsView_Previews: PreviewProvider {
   static var previews: some View {
-    InvitingContactsView(viewModel: ViewModel(), searchResults: .constant([Contact]()))
+    InvitingContactsView(viewModel: ViewModel())
   }
 }
 

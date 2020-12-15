@@ -17,6 +17,7 @@ class ViewModel: ObservableObject {
   let appDelegate: AppDelegate = AppDelegate()
   
   @Published var games: [Games] = [Games]()
+  @Published var gameAnnotations: [GameAnnotation] = [GameAnnotation]()
   @Published var user: User?
   @Published var players: [Player] = [Player]()
   @Published var groupedPlayers: [Dictionary<String, [Player]>.Element] = [Dictionary<String, [Player]>.Element]()
@@ -245,6 +246,7 @@ class ViewModel: ObservableObject {
     AF.request("http://secure-hollows-77457.herokuapp.com/get_games", method: .get, parameters: params, headers: self.headers!).responseDecodable { ( response: AFDataResponse<ListData<Games>> ) in
       if let value: ListData<Games> = response.value {
         self.games = value.data
+        self.gameAnnotations = value.data.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title: $0.name, latitude: $0.latitude, longitude: $0.longitude)})
       }
     }
   }
@@ -287,7 +289,11 @@ class ViewModel: ObservableObject {
   func showDetails() {
     self.showingSheet = true
     self.activeSheet = .showingDetails
-    print("SHOW")
+  }
+  
+  func searchUsers() {
+    self.showingSheet = true
+    self.activeSheet = .searchingUsers
   }
   
   //  create a new game
@@ -311,10 +317,13 @@ class ViewModel: ObservableObject {
     ]
     
     var game: Game? = nil
+    print(params)
+    print(self.headers!)
     AF.request("http://secure-hollows-77457.herokuapp.com/games", method: .post, parameters: params, headers: self.headers!)
       .validate()
       .responseDecodable {
       ( response: AFDataResponse<APIData<Game>> ) in
+        print(response)
       switch response.result {
         case .success:
           self.showingSheet = false
@@ -326,6 +335,8 @@ class ViewModel: ObservableObject {
               if let newGame = self.game {
                 let newGame = Games(id: newGame.id, name: newGame.name, date: newGame.date, time: newGame.time, description: newGame.description, priv: newGame.priv, longitude: newGame.longitude, latitude: newGame.latitude)
                 self.games.append(newGame)
+                let gameAnnotation = GameAnnotation(id: newGame.id, subtitle: newGame.name, title: newGame.name, latitude: newGame.latitude, longitude: newGame.longitude)
+                self.gameAnnotations.append(gameAnnotation)
               }
             }
             self.activeSheet = .showingDetails

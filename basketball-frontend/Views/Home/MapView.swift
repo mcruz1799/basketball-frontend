@@ -11,24 +11,24 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
   @ObservedObject var viewModel: ViewModel
-  @Binding var selectedEvent: Game?
-  @Binding var event: Games?
-  @Binding var showDetails: Bool
-  let games: [Games]
+  @Binding var gameAnnotations: [GameAnnotation]
   
   class Coordinator: NSObject, MKMapViewDelegate {
     var parent: MapView
+    var gameAnnotations: [GameAnnotation]
     
     init (_ parent: MapView) {
       self.parent = parent
+      self.gameAnnotations = parent.gameAnnotations
     }
-    //runs every time user interacts and moves map some way
-    //can possibly be used to make pins disappear at certain distance?
+    
+    // Runs every time user interacts and moves map some way
+    // Can possibly be used to make pins disappear at certain distance?
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-      //			print(mapView.centerCoordinate)
     }
-    //used to change what the annotation view looks like
-    //can build a custom view
+    
+    // Used to change what the annotation view looks like
+    // Can build a custom view
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
       if annotation is MKUserLocation {
         return nil
@@ -36,7 +36,6 @@ struct MapView: UIViewRepresentable {
       let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: nil)
       view.canShowCallout = true
       view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-      
       return view
     }
     
@@ -53,20 +52,17 @@ struct MapView: UIViewRepresentable {
       if let curr = currAnnotation {
         parent.viewModel.getGame(id: Int(curr.id))
         parent.viewModel.findPlayer(gameId: curr.id)  
-        parent.event = curr.game
       }
-      parent.selectedEvent = parent.viewModel.game
     }
-		
+    
     func mapView(_: MKMapView, didDeselect view: MKAnnotationView) {
-      parent.selectedEvent = nil
     }
   }
   
   func makeCoordinator() -> MapView.Coordinator {
     Coordinator(self)
   }
-
+  
   func makeUIView(context: Context) -> MKMapView {
     let mapView = MKMapView()
     mapView.delegate = context.coordinator
@@ -81,20 +77,23 @@ struct MapView: UIViewRepresentable {
     let region = MKCoordinateRegion(center: coordinate, span: span)
     mapView.setRegion(region, animated: true)
     mapView.showsUserLocation = true
+//    mapView.addAnnotations(gameAnnotations)
     return mapView
     
   }
   
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-    let annotations = games.map({ GameAnnotation(id: $0.id, subtitle: $0.name, title:   $0.name, latitude: $0.latitude, longitude: $0.longitude, game: $0)})
-    uiView.addAnnotations(annotations)
-    
+    if gameAnnotations.count != uiView.annotations.count {
+      //            view.removeAnnotations(view.annotations)
+      uiView.removeAnnotations(uiView.annotations)
+      uiView.addAnnotations(viewModel.gameAnnotations)
+      
+    }
   }
-  
 }
 
-//struct MapView_Previews: PreviewProvider {
-//    static var previews: some View {
-//			MapView(viewModel: ViewModel(), gameAnnotations: viewModel.gameAnnotations)
-//    }
-//}
+struct MapView_Previews: PreviewProvider {
+  static var previews: some View {
+    MapView(viewModel: ViewModel(), gameAnnotations: .constant([GameAnnotation]()))
+  }
+}

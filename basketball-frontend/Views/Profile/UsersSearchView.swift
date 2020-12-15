@@ -9,10 +9,8 @@
 import SwiftUI
 
 struct UsersSearchView: View {
-  let viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   @State var userSearch: String = ""
-  @Binding var searchResults: [Users] 
-  @State private var isEditing = false
   
   var body: some View {
     let usSearch = Binding(
@@ -23,10 +21,12 @@ struct UsersSearchView: View {
         search()
       }
     )
-    VStack {
-      SearchBarView<Users>(searchText: usSearch, searchResults: $searchResults)
-      UsersListView(viewModel: viewModel, users: $searchResults)
-    }.navigationBarTitle("Search Users")
+    NavigationView {
+      VStack {
+        SearchBarView<Users>(searchText: usSearch)
+        UsersListView(viewModel: viewModel)
+      }.navigationBarTitle("Search Users")
+    }
     .onAppear { search() }
   }
   
@@ -37,6 +37,6 @@ struct UsersSearchView: View {
 
 struct UsersSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    UsersSearchView(viewModel: ViewModel(), searchResults: .constant([Users]()))
+    UsersSearchView(viewModel: ViewModel())
   }
 }

@@ -62,3 +62,9 @@ struct CreateUserView: View {
     viewModel.createUser(firstName: firstname, lastName: lastname, username: username, email: email, dob: dob, phone: phone, password: password, passwordConfirmation: passwordConfirmation)
   }
 }
+
+struct CreateUserView_Previews: PreviewProvider {
+  static var previews: some View {
+    CreateUserView(viewModel: ViewModel())
+  }
+}
