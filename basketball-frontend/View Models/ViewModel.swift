@@ -758,7 +758,7 @@ class ViewModel: ObservableObject {
   func groupPlayers(players: [Player]) -> [Dictionary<String, [Player]>.Element] {
     let p = players.sorted(by: { Helper.toTime(time: $0.game.data.time) < Helper.toTime(time: $1.game.data.time) })
     let players = Dictionary(grouping: p, by: { $0.game.data.onDate() })
-    let keys = players.sorted(by: { Helper.toDate(date: $0.key) > Helper.toDate(date: $1.key) })
+    let keys = players.sorted(by: { Helper.toDate(date: $0.key) < Helper.toDate(date: $1.key) })
     return keys
   }
   
