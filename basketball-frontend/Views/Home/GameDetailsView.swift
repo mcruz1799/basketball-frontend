@@ -63,9 +63,6 @@ struct GameDetailsView: View {
               .font(.system(size: 22))
               .italic()
               .padding(.leading)
-            //            Text(address)
-            //              .font(.system(size: 22))
-            //              .padding(.leading)
           }
           .padding(.bottom)
         }
@@ -134,10 +131,18 @@ struct GameDetailsView: View {
       }
       
       //MARK: - Game Description
-      //			VStack{
-      //				Text("Description:")
-      //				Text(game?.description ?? "")
-      //			}
+			if let g = game{
+				if (g.description != ""){
+					ZStack{
+					
+						VStack(alignment: .leading){
+							Text("Game Notes:")
+							Text(g.description)
+						}
+					}
+				}
+			}
+
       
       
       
