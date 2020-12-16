@@ -10,10 +10,11 @@ import SwiftUI
 
 struct UsersListView: View {
   @ObservedObject var viewModel: ViewModel
+  @Binding var users: [Users]
   
   var body: some View {
     List {
-      ForEach(viewModel.forStatus(users: viewModel.searchResults), id: \.user.id) { arg in
+      ForEach(viewModel.forStatus(users: users), id: \.user.id) { arg in
         UsersListRowView(viewModel: viewModel, user: arg.user, isFavorited: arg.favorited)
       }
     }
@@ -61,6 +62,6 @@ struct UsersListRowView: View {
 
 struct UsersListView_Previews: PreviewProvider {
   static var previews: some View {
-    UsersListView(viewModel: ViewModel())
+    UsersListView(viewModel: ViewModel(), users: .constant([Users]()))
   }
 }

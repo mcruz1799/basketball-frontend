@@ -57,45 +57,48 @@ struct GameDetailsView: View {
                 .padding(.trailing)
             }
           }
-				}
-				//Game Date, Time, Address
-				VStack(alignment: .leading){
-					HStack{
-						Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
-							.font(.system(size: 22))
-							.italic()
-							.padding(.leading)
-					}
-					Text(address)
-						.font(.system(size: 22))
-						.padding(.leading)
-				}
-			}
+          //Game Date and Time
+          HStack{
+            Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
+              .font(.system(size: 22))
+              .italic()
+              .padding(.leading)
+            //            Text(address)
+            //              .font(.system(size: 22))
+            //              .padding(.leading)
+          }
+          .padding(.bottom)
+        }
         
-			// MARK: - Player Lists by Status
-			
-			HStack(alignment: .lastTextBaseline) {
-				
-				//Button to show list of Going players
-				PlayerListButton(selectedUsers: viewModel.going, status: "Going",
-												 image: "checkmark", users: $users,
-												 showingUsers: $showingUsers,
-												 selectedStatusList: $selectedStatusList)
-				
-				//Button to show list of Maybe players
-				PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
-												 image: "questionmark.diamond", users: $users,
-												 showingUsers: $showingUsers,
-												 selectedStatusList: $selectedStatusList)
-				
-				//Button to show list of Invited players
-				PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
-												 image: "envelope", users: $users,
-												 showingUsers: $showingUsers,
-												 selectedStatusList: $selectedStatusList)
-				
-			}
-			
+        Text(address)
+          .font(.system(size: 22))
+          .padding(.leading)
+        
+        // MARK: - Player Lists by Status
+        
+        HStack(alignment: .lastTextBaseline) {
+          
+          //Button to show list of Going players
+          PlayerListButton(selectedUsers: viewModel.going, status: "Going",
+                           image: "checkmark", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
+          //Button to show list of Maybe players
+          PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
+                           image: "questionmark.diamond", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
+          //Button to show list of Invited players
+          PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
+                           image: "envelope", users: $users,
+                           showingUsers: $showingUsers,
+                           selectedStatusList: $selectedStatusList)
+          
+        }
+        
+        
         
 			//MARK: - Change Status
 			
@@ -145,8 +148,7 @@ struct GameDetailsView: View {
       .padding()
       .background(Color("backgroundColor"))
       .sheet(isPresented: $showingUsers) {
- 
-        UsersListView(viewModel: viewModel)
+        UsersStatusView(viewModel: viewModel, users: $users, status: selectedStatusList)
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
