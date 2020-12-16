@@ -77,18 +77,12 @@ struct MapView: UIViewRepresentable {
     let region = MKCoordinateRegion(center: coordinate, span: span)
     mapView.setRegion(region, animated: true)
     mapView.showsUserLocation = true
-//    mapView.addAnnotations(gameAnnotations)
     return mapView
     
   }
   
   func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-    if gameAnnotations.count != uiView.annotations.count {
-      //            view.removeAnnotations(view.annotations)
-      uiView.removeAnnotations(uiView.annotations)
-      uiView.addAnnotations(viewModel.gameAnnotations)
-      
-    }
+    uiView.addAnnotations(viewModel.gameAnnotations)
   }
 }
 

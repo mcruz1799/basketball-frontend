@@ -24,7 +24,7 @@ struct UsersSearchView: View {
     NavigationView {
       VStack {
         SearchBarView<Users>(searchText: usSearch)
-        UsersListView(viewModel: viewModel)
+        UsersListView(viewModel: viewModel, users: $viewModel.searchResults)
       }.navigationBarTitle("Search Users")
     }
     .onAppear { search() }

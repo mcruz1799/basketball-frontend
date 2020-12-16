@@ -62,12 +62,16 @@ struct GameDetailsView: View {
               .font(.system(size: 22))
               .italic()
               .padding(.leading)
-            Text(address)
-              .font(.system(size: 22))
-              .padding(.leading)
+            //            Text(address)
+            //              .font(.system(size: 22))
+            //              .padding(.leading)
           }
           .padding(.bottom)
         }
+        
+        Text(address)
+          .font(.system(size: 22))
+          .padding(.leading)
         
         // MARK: - Player Lists by Status
         
@@ -135,12 +139,8 @@ struct GameDetailsView: View {
       //    }
       .padding()
       .background(Color("backgroundColor"))
-      
-      //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
       .sheet(isPresented: $showingUsers) {
-        //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
-//        UsersListView(viewModel: viewModel, users: $users)
-        UsersListView(viewModel: viewModel)
+        UsersStatusView(viewModel: viewModel, users: $users, status: selectedStatusList)
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
