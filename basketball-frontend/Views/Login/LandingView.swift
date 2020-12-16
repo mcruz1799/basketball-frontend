@@ -38,13 +38,6 @@ struct LandingView: View {
             .cornerRadius(CR)
             .padding([.trailing, .leading])
         }
-        
-        // TODO: Remove this before launch
-        Button(action: {
-          self.viewModel.login(username: "jxu", password: "secret")
-        }) {
-          Text("Testing")
-        }
       }
     }
   }
