@@ -57,47 +57,40 @@ struct GameDetailsView: View {
                 .padding(.trailing)
             }
           }
-          //Game Date and Time
-          HStack{
-            Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
-              .font(.system(size: 22))
-              .italic()
-              .padding(.leading)
-            //            Text(address)
-            //              .font(.system(size: 22))
-            //              .padding(.leading)
-          }
-          .padding(.bottom)
-        }
-        
+				}
+				//Game Date and Time
+				Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
+					.font(.system(size: 22))
+					.italic()
+					.padding(.leading)
         Text(address)
           .font(.system(size: 22))
           .padding(.leading)
+			}
         
         // MARK: - Player Lists by Status
         
-        HStack(alignment: .lastTextBaseline) {
+			HStack(alignment: .lastTextBaseline) {
+				
+				//Button to show list of Going players
+				PlayerListButton(selectedUsers: viewModel.going, status: "Going",
+												 image: "checkmark", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
+				
+				//Button to show list of Maybe players
+				PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
+												 image: "questionmark.diamond", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
+				
+				//Button to show list of Invited players
+				PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
+												 image: "envelope", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
           
-          //Button to show list of Going players
-          PlayerListButton(selectedUsers: viewModel.going, status: "Going",
-                           image: "checkmark", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-          //Button to show list of Maybe players
-          PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
-                           image: "questionmark.diamond", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-          //Button to show list of Invited players
-          PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
-                           image: "envelope", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-        }
-      }
+			}
       
       
       
