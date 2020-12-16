@@ -31,9 +31,9 @@ struct GameDetailsView: View {
     //VStack with whole Game Details View
     VStack {
       //MARK: - Game Information
-			//VStack with all game info
+      //VStack with all game info
       VStack(alignment: .leading){
-				HStack{
+        HStack{
           //Court Name
           Text(game?.name ?? "")
             .font(.system(size:32))
@@ -97,74 +97,75 @@ struct GameDetailsView: View {
                            selectedStatusList: $selectedStatusList)
           
         }
+      }
+      
+      
+      
+      //MARK: - Change Status
+      
+      
+      Button(action: {
+        showingActionSheet = true
+      }) {
+        HStack{
+          Text(player?.status.capitalized ?? "Not Going")
+          Image(systemName: "chevron.down")
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color("secondaryButtonColor"))
+        .foregroundColor(.black)
+        .cornerRadius(CR)
+        .padding([.trailing, .leading])
         
-        
-        
-			//MARK: - Change Status
-			
-			
-			Button(action: {
-				showingActionSheet = true
-			}) {
-				HStack{
-					Text(player?.status.capitalized ?? "Not Going")
-					Image(systemName: "chevron.down")
-				}
-				.padding()
-				.frame(maxWidth: .infinity)
-				.background(Color("secondaryButtonColor"))
-				.foregroundColor(.black)
-				.cornerRadius(CR)
-				.padding([.trailing, .leading])
-				
-				
-			}
-        
-        
-			//MARK: - Invite Users
-			NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
-				Text("Invite Friends")
-					.padding()
-					.frame(maxWidth: .infinity)
-					.background(Color("secondaryButtonColor"))
-					.foregroundColor(.black)
-					.cornerRadius(CR)
-					.padding([.trailing, .leading])
-			}
-			
-			//MARK: - Game Description
-//			VStack{
-//				Text("Description:")
-//				Text(game?.description ?? "")
-//			}
-			
-			
-        
-        
-			//MARK: - VSTACK Modifiers
         
       }
-      //    }
-      .padding()
-      .background(Color("backgroundColor"))
-      .sheet(isPresented: $showingUsers) {
-        UsersStatusView(viewModel: viewModel, users: $users, status: selectedStatusList)
+      
+      
+      //MARK: - Invite Users
+      NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
+        Text("Invite Friends")
+          .padding()
+          .frame(maxWidth: .infinity)
+          .background(Color("secondaryButtonColor"))
+          .foregroundColor(.black)
+          .cornerRadius(CR)
+          .padding([.trailing, .leading])
       }
-      .actionSheet(isPresented: $showingActionSheet) {
-        ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
-
-          .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
-          .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
-          .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
-          .cancel()
-        ])
-      }
-      .alert(isPresented: $viewModel.showAlert) {
-        viewModel.alert!
-      }
-      .onAppear(perform: getAddress)
-      Spacer()
+      
+      //MARK: - Game Description
+      //			VStack{
+      //				Text("Description:")
+      //				Text(game?.description ?? "")
+      //			}
+      
+      
+      
+      
+      //MARK: - VSTACK Modifiers
+      
     }
+    //    }
+    .padding()
+    .background(Color("backgroundColor"))
+    .sheet(isPresented: $showingUsers) {
+      UsersStatusView(viewModel: viewModel, users: $users, status: selectedStatusList)
+    }
+    .actionSheet(isPresented: $showingActionSheet) {
+      ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
+        
+        .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
+        .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
+        .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
+        .cancel()
+      ])
+    }
+    .alert(isPresented: $viewModel.showAlert) {
+      viewModel.alert!
+    }
+    .onAppear(perform: getAddress)
+    Spacer()
+  }
   
   //MARK: - Helper Methods
   
