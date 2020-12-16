@@ -28,11 +28,12 @@ struct GameDetailsView: View {
   var CR: CGFloat = 20
   
   var body: some View {
-    
+    //VStack with whole Game Details View
     VStack {
       //MARK: - Game Information
+			//VStack with all game info
       VStack(alignment: .leading){
-        HStack{
+				HStack{
           //Court Name
           Text(game?.name ?? "")
             .font(.system(size:32))
@@ -56,95 +57,100 @@ struct GameDetailsView: View {
                 .padding(.trailing)
             }
           }
-          //Game Date and Time
-          HStack{
-            Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
-              .font(.system(size: 22))
-              .italic()
-              .padding(.leading)
-            Text(address)
-              .font(.system(size: 22))
-              .padding(.leading)
-          }
-          .padding(.bottom)
-        }
+				}
+				//Game Date, Time, Address
+				VStack(alignment: .leading){
+					HStack{
+						Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
+							.font(.system(size: 22))
+							.italic()
+							.padding(.leading)
+					}
+					Text(address)
+						.font(.system(size: 22))
+						.padding(.leading)
+				}
+			}
         
-        // MARK: - Player Lists by Status
+			// MARK: - Player Lists by Status
+			
+			HStack(alignment: .lastTextBaseline) {
+				
+				//Button to show list of Going players
+				PlayerListButton(selectedUsers: viewModel.going, status: "Going",
+												 image: "checkmark", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
+				
+				//Button to show list of Maybe players
+				PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
+												 image: "questionmark.diamond", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
+				
+				//Button to show list of Invited players
+				PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
+												 image: "envelope", users: $users,
+												 showingUsers: $showingUsers,
+												 selectedStatusList: $selectedStatusList)
+				
+			}
+			
         
-        HStack(alignment: .lastTextBaseline) {
-          
-          //Button to show list of Going players
-          PlayerListButton(selectedUsers: viewModel.going, status: "Going",
-                           image: "checkmark", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-          //Button to show list of Maybe players
-          PlayerListButton(selectedUsers: viewModel.maybe, status: "Maybe",
-                           image: "questionmark.diamond", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-          //Button to show list of Invited players
-          PlayerListButton(selectedUsers: viewModel.invited, status: "Invited",
-                           image: "envelope", users: $users,
-                           showingUsers: $showingUsers,
-                           selectedStatusList: $selectedStatusList)
-          
-        }
-        
-        
-        //MARK: - Change Status
-        
-        
-        Button(action: {
-          showingActionSheet = true
-        }) {
-          HStack{
-            Text(player?.status.capitalized ?? "Not Going")
-            Image(systemName: "chevron.down")
-          }
-          .padding()
-          .frame(maxWidth: .infinity)
-          .background(Color("secondaryButtonColor"))
-          .foregroundColor(.black)
-          .cornerRadius(CR)
-          .padding([.trailing, .leading])
-          
-          
-        }
-        
-        
-        //MARK: - Invite Users
-        NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
-          Text("Invite Friends")
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color("secondaryButtonColor"))
-            .foregroundColor(.black)
-            .cornerRadius(CR)
-            .padding([.trailing, .leading])
-        }
+			//MARK: - Change Status
+			
+			
+			Button(action: {
+				showingActionSheet = true
+			}) {
+				HStack{
+					Text(player?.status.capitalized ?? "Not Going")
+					Image(systemName: "chevron.down")
+				}
+				.padding()
+				.frame(maxWidth: .infinity)
+				.background(Color("secondaryButtonColor"))
+				.foregroundColor(.black)
+				.cornerRadius(CR)
+				.padding([.trailing, .leading])
+				
+				
+			}
         
         
+			//MARK: - Invite Users
+			NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
+				Text("Invite Friends")
+					.padding()
+					.frame(maxWidth: .infinity)
+					.background(Color("secondaryButtonColor"))
+					.foregroundColor(.black)
+					.cornerRadius(CR)
+					.padding([.trailing, .leading])
+			}
+			
+			//MARK: - Game Description
+//			VStack{
+//				Text("Description:")
+//				Text(game?.description ?? "")
+//			}
+			
+			
         
         
-        //MARK: - VSTACK Modifiers
+			//MARK: - VSTACK Modifiers
         
       }
       //    }
       .padding()
       .background(Color("backgroundColor"))
-      
-      //    .onAppear { self.viewModel.getGame(id: player?.game.data.id) }
       .sheet(isPresented: $showingUsers) {
-        //      UsersListView(viewModel: viewModel, users: $users, status: selectedStatusList)
-//        UsersListView(viewModel: viewModel, users: $users)
+ 
         UsersListView(viewModel: viewModel)
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
-          //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+
           .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
           .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
           .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
@@ -157,7 +163,6 @@ struct GameDetailsView: View {
       .onAppear(perform: getAddress)
       Spacer()
     }
-  }
   
   //MARK: - Helper Methods
   
