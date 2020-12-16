@@ -28,11 +28,12 @@ struct GameDetailsView: View {
   var CR: CGFloat = 20
   
   var body: some View {
-    
+    //VStack with whole Game Details View
     VStack {
       //MARK: - Game Information
+			//VStack with all game info
       VStack(alignment: .leading){
-        HStack{
+				HStack{
           //Court Name
           Text(game?.name ?? "")
             .font(.system(size:32))
@@ -98,42 +99,49 @@ struct GameDetailsView: View {
         }
         
         
-        //MARK: - Change Status
+        
+			//MARK: - Change Status
+			
+			
+			Button(action: {
+				showingActionSheet = true
+			}) {
+				HStack{
+					Text(player?.status.capitalized ?? "Not Going")
+					Image(systemName: "chevron.down")
+				}
+				.padding()
+				.frame(maxWidth: .infinity)
+				.background(Color("secondaryButtonColor"))
+				.foregroundColor(.black)
+				.cornerRadius(CR)
+				.padding([.trailing, .leading])
+				
+				
+			}
         
         
-        Button(action: {
-          showingActionSheet = true
-        }) {
-          HStack{
-            Text(player?.status.capitalized ?? "Not Going")
-            Image(systemName: "chevron.down")
-          }
-          .padding()
-          .frame(maxWidth: .infinity)
-          .background(Color("secondaryButtonColor"))
-          .foregroundColor(.black)
-          .cornerRadius(CR)
-          .padding([.trailing, .leading])
-          
-          
-        }
+			//MARK: - Invite Users
+			NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
+				Text("Invite Friends")
+					.padding()
+					.frame(maxWidth: .infinity)
+					.background(Color("secondaryButtonColor"))
+					.foregroundColor(.black)
+					.cornerRadius(CR)
+					.padding([.trailing, .leading])
+			}
+			
+			//MARK: - Game Description
+//			VStack{
+//				Text("Description:")
+//				Text(game?.description ?? "")
+//			}
+			
+			
         
         
-        //MARK: - Invite Users
-        NavigationLink(destination: InvitingUsersView(viewModel: viewModel)) {
-          Text("Invite Friends")
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color("secondaryButtonColor"))
-            .foregroundColor(.black)
-            .cornerRadius(CR)
-            .padding([.trailing, .leading])
-        }
-        
-        
-        
-        
-        //MARK: - VSTACK Modifiers
+			//MARK: - VSTACK Modifiers
         
       }
       //    }
@@ -144,7 +152,7 @@ struct GameDetailsView: View {
       }
       .actionSheet(isPresented: $showingActionSheet) {
         ActionSheet(title: Text("Change Status"), message: Text("Select a status"), buttons: [
-          //				.default(Text("Invited")) { statusChange(selectedStatus: "I'm Invited") },
+
           .default(Text("Maybe")) { statusChange(selectedStatus: "I'm Maybe") },
           .default(Text("Going")) { statusChange(selectedStatus: "I'm Going") },
           .default(Text("Not Going")) { statusChange(selectedStatus: "I'm Not Going") },
@@ -157,7 +165,6 @@ struct GameDetailsView: View {
       .onAppear(perform: getAddress)
       Spacer()
     }
-  }
   
   //MARK: - Helper Methods
   
