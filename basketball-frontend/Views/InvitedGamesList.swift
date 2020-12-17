@@ -13,10 +13,20 @@ struct InvitedGamesList: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
-		Text("Your Invites")
-			.font(.largeTitle)
-			.foregroundColor(Color("tabBarIconColor"))
-			.padding()
+		HStack{
+			VStack(alignment: .leading){
+				Image(systemName: "arrow.left")
+					.font(.system(size: 24))
+					.onTapGesture {
+						self.viewModel.currentTab = "home"
+					}
+			}
+		
+			Text("Your Invites")
+				.font(.largeTitle)
+				.foregroundColor(Color("tabBarIconColor"))
+				.padding()
+		}
     List {
       ForEach(viewModel.getPlayerWithStatus(status: "invited")) { player in
         GameRow(viewModel: viewModel, player: player)
