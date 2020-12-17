@@ -61,7 +61,10 @@ extension AppView {
     case .showingDetails:
       NavigationView {
         GameDetailsView(viewModel: self.viewModel, player: $viewModel.player, game: $viewModel.game)
+					.navigationBarTitle("")
+					.navigationBarHidden(true)
       }
+
     case .searchingUsers:
       UsersSearchView(viewModel: viewModel)
     }

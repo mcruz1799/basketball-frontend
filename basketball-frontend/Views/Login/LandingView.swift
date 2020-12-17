@@ -18,6 +18,9 @@ struct LandingView: View {
       VStack {
         Spacer()
         Image("logo")
+				Text("GotNext")
+					.font(.largeTitle)
+					.foregroundColor(Color("tabBarColor"))
         Spacer()
         NavigationLink(destination: LoginView(viewModel: viewModel)) {
           Text("Log In")
