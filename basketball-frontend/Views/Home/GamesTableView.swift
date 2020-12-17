@@ -12,6 +12,13 @@ struct GamesTableView: View {
   @ObservedObject var viewModel: ViewModel
   
   var body: some View {
+		VStack(alignment: .leading){
+			Text("Your Games")
+				.font(.system(size: 28))
+				.bold()
+				.foregroundColor(.white)
+				.padding(.bottom, 5)
+		}
     NavigationView {
       List {
         ForEach(viewModel.groupPlayers(players: viewModel.players), id: \.key) { player in
@@ -29,12 +36,24 @@ struct DateRow: View {
   let players: [Player]?
   
   var body: some View {
-    Section(header: Text(date)) {
-      ForEach(players ?? [Player]()) { player in
-        GameRow(viewModel: viewModel, player: player)
-      }
-    }
-  }
+		if players != nil{
+			if players!.count > 0{
+				Section(header:
+									Text(date)
+//									CustomHeader(
+//										name: date)
+				) {
+					ForEach(players ?? [Player]()) { player in
+						GameRow(viewModel: viewModel, player: player)
+					}
+				}
+			}
+			else{
+				Text("No Current Games \n Checkout Games Nearby Above!")
+					.font(.system(size: 24))
+			}
+		}
+	}
 }
 
 
@@ -66,3 +85,23 @@ struct GamesTableView_Previews: PreviewProvider {
     GamesTableView(viewModel: ViewModel())
   }
 }
+
+struct CustomHeader: View {
+		let name: String
+
+		var body: some View {
+				VStack {
+						Spacer()
+						HStack {
+								Text(name)
+								Spacer()
+						}
+						Spacer()
+				}
+				.padding(0)
+				.frame(maxWidth: .infinity)
+				.background(Color("tabBarIconColor"))
+			
+		}
+}
+

@@ -12,7 +12,7 @@ struct SplashView: View {
   
   var body: some View {
     VStack {
-      Text("Logging in...")
+      Text("Warming up...")
         .font(Font.largeTitle)
     }
   }

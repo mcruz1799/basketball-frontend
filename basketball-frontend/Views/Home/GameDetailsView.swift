@@ -59,6 +59,7 @@ struct GameDetailsView: View {
           }
 
 				}
+				.padding(.bottom)
 				//Game Date and Time
 				Text("\(game?.onDate() ?? "") @ \(game?.onTime() ?? "")")
 					.font(.system(size: 22))
@@ -66,7 +67,7 @@ struct GameDetailsView: View {
 					.padding(.leading)
         Text(address)
           .font(.system(size: 22))
-          .padding(.leading)
+					.padding([.leading,.bottom])
 			}
         
         // MARK: - Player Lists by Status
@@ -92,6 +93,7 @@ struct GameDetailsView: View {
 												 selectedStatusList: $selectedStatusList)
           
 			}
+			.padding(.bottom)
       
       
       
@@ -126,17 +128,22 @@ struct GameDetailsView: View {
           .cornerRadius(CR)
           .padding([.trailing, .leading])
       }
+			.padding(.bottom)
       
       //MARK: - Game Description
 			if let g = game{
 				if (g.description != ""){
-					ZStack{
-					
-						VStack(alignment: .leading){
-							Text("Game Notes:")
-							Text(g.description)
-						}
+					VStack(alignment: .leading){
+						Text("Game Notes:")
+							.font(.system(size: 20))
+						Text(g.description)
 					}
+					.padding()
+					.frame(maxWidth: .infinity)
+					.background(Color("secondaryButtonColor"))
+					.foregroundColor(.black)
+					.cornerRadius(CR)
+					.padding()
 				}
 			}
 
@@ -148,7 +155,9 @@ struct GameDetailsView: View {
       
     }
     //    }
-    .padding()
+		.padding([.leading,.trailing])
+		.edgesIgnoringSafeArea(.all)
+		.frame(maxHeight: .infinity)
     .background(Color("backgroundColor"))
     .sheet(isPresented: $showingUsers) {
       UsersStatusView(viewModel: viewModel, users: $users, status: selectedStatusList)
